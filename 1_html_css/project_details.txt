@@ -1,0 +1,31 @@
+1) Concept Deliberation - DOM tree
+- In your own words, explain what the DOM is.
+
+2) Concept Deliberation - Semantic Vs. Non Semantic
+- What are non-semantic tags? Please provide some examples and
+scenarios when you will use them.
+
+- What are semantic tags? Can you give some examples
+
+3) Concept Deliberation - Layout Principles
+- What is a grid based layout principle?
+
+- Google for other layout principles and explain the one that you
+thought was most interesting (other than grid based!).
+
+4) Concept Deliberation - Responsive Design
+- What does the term "Responsive Design" mean?
+
+- What attributes or media queries do you need in your HTML and CSS to
+make a website render appropriately on an iPad?
+
+5) Concept Deliberation - Sepatation of Concerns
+- Why do you think it is important to separate structure (HTML) from
+design/style (CSS)?
+
+6) Concept Deliberation - Code Quality
+- It is very clear why our code should be logical and correct, but why do
+we need to write code that is easy to read?
+
+- Why do you think Udacity provided a style guide? Do you think every
+company dicates styles? What purpose do style guides serve?
