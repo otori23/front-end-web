@@ -1,0 +1,87 @@
+1) In your own words, explain what the DOM is.
+
+The DOM is a computational abstraction of an html document; The DOM is represented as a tree like structure.
+
+2) What does the term Boxify mean?
+
+Deconstruct you html document into a seris of component boxes.
+
+3) Udacity pluses:
+
+I like the interview with the actual engineers where they talk about the strategies they use to apporach their  
+jobs (strategies for approaching new designs).
+
+4) In CSS the most specific tool applies to the element.
+CSS selector types include (start at most sepcific):
+- id, class, tag, attribute, positional, pseudo
+- selectors can be combined
+- can also use combinators: ~(siblings), +(directly following), >(direct children)
+- also investigate what pseudo-elements are all about
+- may also what the search the css documentation page for answers to css questions
+
+5) Notes about box model
+- padding: clears an area around the content and is affected by the background color of the box
+- border: is inherited from the color property of the box
+- margin: clears an area around the border; doesn't have a background color and is completely transparent.
+- By default the size of your actual element = (border + padding + content) widths.
+i.e. The width and height properties are measured including only the content, but not the padding, border or  
+margin.
+- using this default box model, it is difficult to know how much space your element will actually take on the  
+page
+- The box-sizing CSS property is used to alter the default CSS box model used to calculate widths and heights of  
+elements.
+- box-sizing: border-box => means, The width and height properties include the padding and border, but not the  
+margin.
+- box-sizing is a new property so may not be supported by older browsers.
+- If you want older browsers to use this property correctly, you need to include browser specific prefixes
+
+6) Browser specific prefixes
+i.e. regularly you say: box-sizing: border-box
+for safari, -webkit-box-sizing: border-box
+for mozilla, -moz-box-sizing: border-box
+for iexplorer, -ms-box-sizing: border-box
+
+7) Sizing boxes
+- using % will change size of element as screen size changes
+- using px will NOT change size of element as screen size changes 
+
+8) CSS positioning
+It is complex, and there are many ways to do positioning. One way is to use the flex-box layout.
+
+9) Flex box layout
+-The Flexbox Layout (Flexible Box) module (currently a W3C Last Call Working Draft) aims at providing a more  
+efficient way to lay out, align and distribute space among items in a container, even when their size is unknown  
+and/or dynamic (thus the word "flex").
+
+- flexbox is a whole module and not a single property (so have flex container, and flex items)
+
+- If you want several elements to display next to each other, change the value of the display attribute of parent  
+container to 'flex'. i.e. display: flex 
+
+- The child elements of the div must have sizes smaller than the default 100%	
+
+- can apply prefix to attribute value to support older browsers i.e. (display: -webkit-flex;). 
+
+- Note: Flexbox layout is most appropriate to the components of an application, and small-scale layouts, while  
+the Grid layout is intended for larger scale layouts.
+
+10) Web development work-flow: Code - Test - Refine
+
+- Get structure of the page right
+- Work on tags, i.e. apply h1, p, img, etc tags to content
+- Then think about the size of the boxes, who big should they be
+- Then think of how to position them where you want on the screen
+- One the general layout is complete, focus on little details to get the page to look exactly like the mock.
+- Look at your page in other browsers, resize windows etc
+- or - 
+
+- Look for natural boxes (Divide and conquer)
+- Look for repeated styles and semantic element 
+- Write your HTML
+- Apply styles (from Biggest to smallest)
+- Fix things
+repeat last three steps until satisfied.
+
+11) Developer Tools
+- Use the developer tools to experiment on the fly; change styles and view results in browser.
+
