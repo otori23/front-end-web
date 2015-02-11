@@ -11,13 +11,13 @@ Deconstruct you html document into a seris of component boxes.
 I like the interview with the actual engineers where they talk about the strategies they use to apporach their  
 jobs (strategies for approaching new designs).
 
-4) In CSS the most specific tool applies to the element.
+4) In CSS the most specific rule applies to the element.
 CSS selector types include (start at most sepcific):
 - id, class, tag, attribute, positional, pseudo
 - selectors can be combined
 - can also use combinators: ~(siblings), +(directly following), >(direct children)
 - also investigate what pseudo-elements are all about
-- may also what the search the css documentation page for answers to css questions
+- may also want to search the css documentation page for answers to css questions
 
 5) Notes about box model
 - padding: clears an area around the content and is affected by the background color of the box
@@ -67,12 +67,13 @@ the Grid layout is intended for larger scale layouts.
 
 10) Web development work-flow: Code - Test - Refine
 
-- Get structure of the page right
+- Get structure of the page right i.e. General layout, Boxify
 - Work on tags, i.e. apply h1, p, img, etc tags to content
 - Then think about the size of the boxes, who big should they be
 - Then think of how to position them where you want on the screen
-- One the general layout is complete, focus on little details to get the page to look exactly like the mock.
+- Once the general layout is complete, focus on little details to get the page to look exactly like the mock.
 - Look at your page in other browsers, resize windows etc
+
 - or - 
 
 - Look for natural boxes (Divide and conquer)
@@ -85,3 +86,8 @@ repeat last three steps until satisfied.
 11) Developer Tools
 - Use the developer tools to experiment on the fly; change styles and view results in browser.
 
+12) Mock up projects notes
+- How do you find/get the font size and font family of the text used in mock?
+- How to position/align the text in the header?
+- How to make the image dimensions bigger?
+- How to use developer tools efficiently? i.e. experiment with style values, and move them into source files

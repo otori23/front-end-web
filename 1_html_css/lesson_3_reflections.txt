@@ -1,0 +1,39 @@
+1) CSS framworks
+Bootstrap: http://getbootstrap.com/ 
+Foundation: http://foundation.zurb.com/ 
+Yaml: http://www.yaml.de/ 
+960 Grid: http://960.gs/ 
+Suzy: http://susy.oddbird.net/ 
+Frameless: http://framelessgrid.com/
+
+What design decision are made when picking a css framework?
+Basically what are the properties of framework and how well do it match my needs
+
+2) Bootstrap offerings
+- The framework is divided into categories: CSS, Components, JavaScript
+- Bootstrap is a huge framework so, you'll almost never need all it offers
+- A user can pick and choose what parts of the bootstrap system to download and use (see Customize link)
+
+3) Minified files
+- remove all whitespace so that they are smaller than the original
+- always include minified versions of your files on your site for faster downloads
+
+4) Class Notes
+
+To use the Bootstrap files in your project just copy the css and js folders to your project folder. Don't forget to include the files in your head element:
+
+<link rel="stylesheet" href="css/bootstrap.min.css"> 
+<script src="js/bootstrap.min.js"></script>
+
+NOTE: CSS minification does not happen automatically by default, therefore if you edit your unminified CSS file, but include the minified version in your HTML, the page will not use the updated CSS by default.
+
+You can manually minify your CSS using a site like http://cssminifier.com/.
+
+You can also use a more advanced and automated workflow where CSS files get minimized automatically, for example using a plugin for your code editor or a build system like Gruntjs.
+
+5) Custom CSS
+Can use bootstrap in addition to custom CSS. Use bootstrap for big general stuff and your custom CSS for the smaller more specific stuff
+
+
+Lesson Notes:
+- Dive more into the Bootstrap framework documentation

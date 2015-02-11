@@ -1,6 +1,7 @@
-* {
+/* * {
    outline: 1px solid red !important;
 }
+*/
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -10,18 +11,28 @@
 
 .screenshot {
 	max-width: 460px;
+	margin-right: 40px;
 }
 
 .description {
 	max-width: 705px;
+	font-family: sans-serif;
+	font-size: 24px;
+	color: #7c8b88
 }
 
 .app {
     display: -webkit-flex;
     display: flex;
+	margin-top: 70px;
 }
 
 .title {
 	background-color: #33BEBE;
 	color: #FFFFFF;
+	height: 128px;
+	width: 1135px;
+	padding-left: 30px;
+	font-family: sans-serif;
+	font-size: 60px;
 }

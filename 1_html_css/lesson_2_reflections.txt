@@ -1,0 +1,79 @@
+1) Grid based layout:
+- Eyes go from left to right then top to bottom
+- Think of page broken down into columns
+- Actually, it more like, rows first, then divide each rows into the # of columns you want. Like the lego model from lesson 2 lecture 5, defining the layout.
+
+2) CSS frameowrks:
+CSS frameworks are pre-prepared software frameworks that are meant to allow for easier, more standards-compliant web design using the Cascading Style Sheets language
+
+i.e. pre-written css you can build on
+
+3) Responsive Web Pages
+- layout adapts/resizes the to screen resolution (i.e pixels width and height)
+- use % to size components (as opposed to px)
+- traditionally screen resolution ~ 1024px or 1200px, therefore set max-width css property to 960px leave space for scroll bars. Kepp in mind that today screens are much wider/bigger.
+
+4) Adaptive design
+Account for device use for control (i.e. mouse or thumbs).
+
+5) Negative space
+i.e. Space with nothing in them. Use margin and padding to create negative spaces
+
+6) Overflow (CSS property)
+- Alot of text you want to contain in a small area
+- probably use in a row container
+- allows content to flow within your container
+
+7) Media queries
+- A way to conditionally apply css rule based on properties of screen
+- place in css file; starts with @media; see example below
+
+@media only screen and (max-width: 300px) {
+  p {
+    background-color: blue;
+  }
+}
+
+- @media: to start
+- only: keyword to help with older browsers
+- screen: keyword says media query applies to any kind of screen
+- print: may see print in place of screen for styles applying to pages users may want to print.
+- and: logical operator
+- (... ): a condition within parentheses, in this case says, the media query applies only if the width of the screen is smaller than 300px.
+
+- see gizmodo.com for good example
+
+8) CSS Resetting
+- To ensure that your web page renders the same way on different browsers you will want to override all the default styles each browser wants to impose on you.
+
+- link to normalize.css (google search: css normalize). This will basically disable the default styles on the browser.
+<link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+
+- normalize.css is a github project
+
+- help ensure that your css styles are interpreted thesame way across all browsers
+
+9) Semantic tags
+- Tags that not only make sense to the browser, but also make sense to any humans looking at them
+i.e. <h1>, <img>, <form>, ... etc
+
+10) Place holder images 
+- Use while constructing page - see site, placehold.it
+- Get whatever size place holder you want by specifying dimensions in url i.e.,
+http://placehold.it/350x150
+- another source of placeholder images: placepuppy.it, placekitten.com, etc
+
+11) How to find fonts?
+- No easy way. Can ask the designer to tell you which fonts they used. or...
+- Use Google fonts (www.google.com/fonts)
+- Can add fonts to your site, like linking to css file from head section of web page
+- Then use then in the css file 
+
+Lesson 2 notes
+- How do fonts work?
+- In the examples I saw, what could I improve on
+- Use machine learning for recognizing fonts from images?
+- Experiment with the "Jane Doette" portfolio mock up
+- Experiment with overflow CSS property. E.g. use it in portfolio experiment
+- More on media queries
+- more on developer tools
