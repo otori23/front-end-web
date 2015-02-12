@@ -34,6 +34,26 @@ You can also use a more advanced and automated workflow where CSS files get mini
 5) Custom CSS
 Can use bootstrap in addition to custom CSS. Use bootstrap for big general stuff and your custom CSS for the smaller more specific stuff
 
+6) alt text
+Always set alt attribute on img tags
 
+7) Web development work flow concept
+- use Bootstrap to get general layout down
+- use custom css for your exact fonts, colors, and all things specific to your design
+- for smaller projets organize csss rules from most general at top of file (e.g. body) to most specific at bottom of file.
+
+8) Linking to style sheets
+- The order in which you link to stylesheets is important
+- The latest stylesheets override the previous stylesheets
+
+9) Modal windows
+A modal window is any type of window that is a child (secondary window) to a parent window and usurps the parent's control. It is commonly associated with an Internet Web site pop-up window that stays in front of the original window.  A user may not press any controls or enter any information on the parent window (the original window which opened the modal) until the modal has been closed. A modal window is commonly used when the author wants to retain the user's focus on the information in the modal as it is impossible for the user to interact with the other windows of the same process.
+
+10) Semantics (noun)
+The branch of linguistics and logic concerned with meaning.
+ 
 Lesson Notes:
 - Dive more into the Bootstrap framework documentation
+- Bootstrap documentation will become one of your closest friends
+- Reproduce Jacques html and css for the portfolio mock
+- Explore bootstraps javascript modals
