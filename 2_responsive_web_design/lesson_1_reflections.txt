@@ -1,0 +1,37 @@
+1) The first step to developing a responsive site is to get inspired by other responsive sites.
+i.e. http://alistapart.com/
+
+2) http://alistapart.com/
+A great resource for web developers who want to stay on top of their game
+
+3) Think moblie first. Approach your initial design with responsiveness at its core
+
+4) BrowserStack (http://www.browserstack.com)
+Cross browser development tool in the cloud
+
+5) Google developers (http://developers.google.com)
+- Seems to be a good resource for web developers - review
+- Find something similar for apple products
+
+6) Google Chrome developer tools
+- Can use developer tools to emulate several devices
+- Some device properties displayed, Viewport size, Device pixel ration, User Agent
+- Use Esc to bring up Emulation panel, and do some custom emulation.
+
+7) Chrome Canary
+Chrome Canary is the developer version of Chrome. It looks and acts like the regular Chrome browser, but it includes new and experimental features that haven't been released yet. We recommend analyzing websites with Canary to take advantage of the latest tech.
+
+8) Remote debugging (https://developer.chrome.com/devtools/docs/remote-debugging)
+- Do debugging on real android device
+- See website for mor details
+- Can drive the debugging of mobile device from the development machine
+- All the familiar tools avaiable for web developers are also available for mobile
+
+9) Chromium (http://www.chromium.org/getting-involved/dev-channel)
+Linux analog for Canary
+
+10) iOS WbKit debug proxy (https://github.com/google/ios-webkit-debug-proxy)
+- iOS analog for Canary
+
+11) Next Lesson
+- Break down basic components of responsive design: viewport, element sizes and tap targets.

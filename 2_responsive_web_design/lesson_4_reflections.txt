@@ -1,0 +1,186 @@
+Responsive Patterns
+
+1) Quickly evolving, but a handful work well on almost any device, they are:
+ 
+- Column Drop
+- Mostly Fluid
+- Layout Shifter
+- Off Canvas
+
+- Pages may use a combination of patterns
+- Will implement all patterns using flex box and media queries
+- Remember the default order for all elements (in a flex box) is 0.
+- Can using any integer (+ or -) to implement order sequence
+
+2) Column Drop
+- At it's narrowest view port each elements stacks verically one on top of the other (i.e. think one column)
+- As the viewport gets wider, the elements get wider until the first breakpoint is reached
+- Then you get two elements side by side and the third element is underneath (i.e. think 2 columns)
+- etc unitl a max # of colums (say 3) and max viewport width is reached, then any extra space is added to the right and left margins of the page
+- implement this strategy using media queries with screen's min-width, and specify size of boxes at each breakpoint.
+
+i.e. 
+HTML
+<div class="container">
+  <div class="box dark_blue"></div>
+  <div class="box light_blue"></div>
+  <div class="box green"></div>
+</div>
+
+CSS
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 100%
+}
+
+@media screen and (min-width: 450px) {
+  .dark_blue {
+    width: 25%;
+  }
+
+  .light_blue{
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .dark_blue, .green {
+    width: 25%;
+  }
+
+  .light_blue{
+    width: 50%;
+  }
+}
+
+3) Moslty Fluid
+- Like Column Drop, but has more columns and very grid like.
+- HTML and CSS are pretty my like above
+- Just add one more meida query, to add space to left and right margins when viewport >= a certain width
+
+@media screen and (min-width: 700px) {
+  .container {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+4) Layout Shifter
+- Probably the most responsive
+- Key to this layout is the way content moves about (basically also use the order css property to change order of boxes as viewport width changes)
+- Need more planning because layout changes are more dramatic
+- As always, when not breakpoint has been hit, the default styles are applied
+
+i.e.
+HTML
+<div class="container">
+  <div class="box dark_blue"></div>
+  <div class="container" id="container2">
+    <div class="box light_blue"></div>
+    <div class="box green"></div>
+  </div>
+  <div class="box red"></div>
+</div>
+
+CSS
+.container {
+  width: 100%; /*do this so that the element inside takes up the full width*/
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 100%;
+}
+
+@media screen and (min-width: 500px) {
+  .dark_blue {
+    width: 50%; 
+  }
+  #container2 {
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .dark_blue {
+    width: 50%;
+    order: 1; 
+  }
+  #container2 {
+    width: 50%;
+    
+  }
+  .red {
+    width: 25%;
+    order:-1;
+  }
+}
+
+5) Off Canvas
+- Instead of stacking elements vertically, the off canvas pattern places less frequently used content (i.e. navigation, or app menus), only showing them if the screen is large enough.
+- On smaller screens, the off canvas content is typically shown when the user taps on hamburger icon
+
+i.e. 
+HTML
+<nav id="drawer" class="dark_blue">
+<nav>
+
+<main class="light_blue">
+</main>
+
+CSS
+/* In order to make sure the elements take up the full viewport width */
+html, body, main {
+  height: 100%;
+  width: 100%;
+}
+
+/* Style for off-canvas style element
+nav {
+  width: 300px; /* Careful not to overflow the viewport */
+  height: 100%;
+  position: absolute; /* means nav will cover exisiting content when it comes into view */
+  transform: translate(-300px, 0); /* use translate to move it off the screen */
+  transition: transform 0.3s ease; /* add tranisiton of .3 secs for nice animation */
+}
+
+/* When you want nav to appear, use the open class below */
+nav.open {
+  transform: translate(0, 0);
+}
+
+/* add media query to show everything at once when screen is big enough */
+@media screen and (min-width: 600px) {
+  nav {
+    position: relative;
+    transform: translate(0, 0); /* Basically, the media query resets the transform */
+  }
+  body {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  main {
+    width: auto;
+    flex-grow: 1; /* Allows the main element to grow and take up the full remaining width of the viewport */
+  }
+}
+
+JS
+menu.addEventListener('click', function(e) {
+  drawer.classList.toggle('open');
+  e.stopPropagation();
+}
+
+Summary:
+- Explore more the off-canvas/hamburger icon machinary
+- Don't need to be using flex box module to change order of sections in a layout
+- Pattern: at breakpoints, change order, and width[%] properties of sections
+- How to make images and text responsive (without bootstrap) - i.e. Brighton Times header
+- What does flex box get me again (experiment using developer tools add remove display: flex property) - not use in Brighton times site
+- Research HTML5 elements (a la Brighton news: header, nav, main, section, footer).

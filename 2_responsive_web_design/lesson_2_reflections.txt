@@ -1,0 +1,85 @@
+Basic components of responsive design
+For responsiveness want to avoid content flowing off the page and having to pinch and zoom in to see anything
+
+1) Viewport
+- Defines the area of the screen (i.e the physical display) that the browser can render content to
+- Note a browsers viewport may be smaller than the total screen size of the device
+
+2) Pixel size
+Device screens have different pixel densities i.e. 1 px on one device in smaller/bigger than 1 px on another device
+
+3) Device Independent Pixels (DIPs) vs Hardware pixels
+- Browser will report screen size in the # of DIPs (i.e. during development). 
+- DIPs are units of measurement that relate pixels to a real distance (design using DIPs)
+- When page is rendered, the display will convert DIPs into hardware pixels (i.e. scale the DIPs from the browser)
+- If you don't set a viewport, browser assumes page is for 980 px [DIPs]
+
+4) Font boosting
+- With no viewport set, browser will attempt to guess what content of your page is most important and increase that content's font.
+
+- Without defining the viewport, you are leaving it up to the browser to define the viewport size
+
+5) Device pixel ratio
+# hardware pixels/ # dips (in one dimension i.e. the width)
+
+6) Screen resolution
+width [px] x height [px], using hardware pixels
+
+7) DIPs (from wikipedia)
+
+A Device independent pixel (also: density-independent pixel, dip, dp) is a physical unit of measurement based on a co-ordinate system held by a computer and represents an abstraction of a pixel for use by an application that an underlying system then converts to physical pixels.
+
+A typical use is to allow mobile device software to scale the display of information and user interaction to different screen sizes. The abstraction allows an application to work in pixels as a measurement, while the underlying graphics system converts the abstract pixel measurements of the application into real pixel measurements appropriate to the particular device. For example, on the Android operating system a device-independent pixel is equivalent to one physical pixel on a 160 dpi screen,[1] while the Windows Presentation Foundation specifies one device independent pixel as equivalent to 1/96th of an inch.[2]
+
+As dp is a physical unit it has an absolute value which can be measured in traditional units, e.g. for Android devices 1 dp equals 1/160 of inch or 0.15875 mm.
+
+While traditional pixels only refer to the display of information, Device independent pixels may also be used to measure user input such as input on a touch screen device.
+
+- CSS pixels vs DIPs ???
+
+8) Setting the viewport (https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag)
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+The width property controls the size of the viewport. It can be set to a specific number of pixels like width=600 or to the special value device-width value which is the width of the screen in CSS pixels at a scale of 100%. (There are corresponding height and device-height values, which may be useful for pages with elements that change size or position based on the viewport height.)
+
+The initial-scale property controls the zoom level when the page is first loaded. The maximum-scale, minimum-scale, and user-scalable properties control how users are allowed to zoom the page in or out.
+i.e. CSS px == DIPs
+
+9) Responsive design idea
+- Want to make sure content fits within viewport
+- When designing don't use fix widths i.e px use relate widths i.e. %
+
+10) Avoid container overflow
+- CSS containers (i.e. divs) allow thier content to overflow the container's size.
+- To avoid overflow in general rule, add the following rule to your CSS
+
+img, embed, 
+object, video {
+  max-width: 100%
+}
+
+i.e. The widths of the specified elements are constrained/limited to 100% of their containers 
+
+11) width vs max-width
+- The max-width css property overrides the width property
+
+12) Tap targets.
+- Human finger ~ 10mm ~ 0.5in ~ 40 css px
+- make anything that fingers interact with ~ 48 X 48 css px
+
+i.e. use 
+
+nav a, button {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+use min-widht/min-height to allow element to resize if its contents have bigger size.
+
+13) Building Up - Responsive design process
+Design for smallest viewport first, then for bigger viewports later
+
+14) em
+padding: 1.5em - means padding on all 4 sides is 1.5 times the font size
+padding: 1.5em inherit - neams top/bottom padding ~ 1.5 times font size, left/right padding inherited from parent container

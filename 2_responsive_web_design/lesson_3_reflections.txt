@@ -1,0 +1,184 @@
+To think responsively, means thinkin about the user's experience on every device.
+
+Apply different styles for different devices by selectively applying css styles, i.e. (responsive styles).
+
+several ways to accomplish this:
+
+1) media queries
+- logic to apply different style according to device charcteristics i.e width, height, device pixel ratio (dpr = hardware pixels / device independent pixels)
+
+2) How to add media queries:
+- include an additional style sheet to your page with a media query
+
+3) Include media query logic in html (add media attribute to link element)
+- in html add:
+<link rel="stylesheet" media="screen and (min-width: 500px)" href="over500.css">
+
+- in over500.css
+body {
+  boackground-color: blue;
+} 
+
+- media query logic says: apply the style in over500.css when the screen is bigger than 500px.
+so, change background color of the page to blue when viewport is bigger than 500px.
+
+- other media type values include: handheld, projected or embossed. You ccan ignore these, they don't do any thing.
+
+- stick with screen, and print (if users will print the page)
+
+4) Include media query directly in CSS
+
+- use @media tag, i.e.
+@media screen and (min-width: 500px) {
+  body { background-color: green; }
+}
+
+- use @import tag, i.e.
+@import url("no.css") only screen and (min-width: 500px);
+
+- don't use Aimport because thier performance is very expensive
+
+5) Linked css vs @media
+- Linked css: many small files, therefore many http requests
+- @media: few big files, therefore fewer http requests
+
+6) Precedence
+
+Example 1
+@media screen and (min-width: 500px) {
+  body { color: green; }
+}
+
+@media screen and (min-width: 800px) {
+  body { background-color: red; }
+}
+
+screen < 500px, no styles apply
+500px < screen < 800px, text = green
+screen > 800px background = red
+
+Example 2
+body {
+  background-color: green;
+}
+
+@media screen and (max-width: 400px) {
+  body { background-color: red; }
+}
+
+@media screen and (min-width: 600px) {
+  body { background-color: blue; }
+}
+
+Apply 1st rule when the last two have not been triggered
+Apply 2nd and 3rd rule when their conditions are met 
+
+7)  Most used media queries (min-width and max-width)
+- min-width: trigger when viewport width is bigger than some value; 
+i.e. smallest with that triggers style
+
+- max-width: trigger when viewport width is less than some value
+
+- Don't use min-device-width or max-device-width. They refer to actual physical dimensions of screen.
+
+8) Breakpoint
+- The point at which a screen changes its layout.
+- Can have several breakpoints.
+- media queries are mainly used to implement breakpoints
+see: skinnyties.com, cnn.com, medium
+
+Menu icon also called hamburger icon
+
+9) Where do i put my break points
+- The million dollar question
+- Don't base decision on device
+- Base the decision on you content (don't choose breakpoints, find them using you content as a guide).
+
+10) Remember... Start small
+- Start with small screen
+- Open developer tools
+- with devloper tools open, when you resize viewport, the dimension are display in top right
+- resize screen and see how content re-flows
+- use this as a guide to experiment with your break points
+
+11) More on process
+<link rel="stylesheet" href="weather.css">
+<link rel="stylesheet" media="screen and (min-width: 550px)" href="weather-medium.css">
+<link rel="stylesheet" media="screen and (min-width: 700px)" href="weather-large.css">
+
+- you want content to tell you where it wants a break point
+- 1st link element is a default set of styles applied for any view port width
+- 2nd link element is for screen sizes bigger than 550px
+- etc
+- The basic idea is to dynamically change # of columns and sapce around columns as the viewport changes size.
+- smallest size: use onlu one columns
+- get bigger: use two columns
+- get bigger: excess space between columns, some use another column
+- get bigger: don't want the add anymore columns, so add all extra space to right and left margins of the page.  
+
+12) Complex media queries
+
+@media screen and (min-width: 500px) and (max-width: 600px) {
+  .yes {
+    opacity: 1;
+  }
+  .no {
+    opacity: 0;
+  }
+}
+
+13) The grid fulid system
+- Simple most important responsive design patterns
+- columns wrap to next line as browser width gets smaller (see http://www.html5rocks.com)
+- Flex box is a powerful tool for responsive design layout
+
+14) Flex box (Flex container/Flex item)
+- One of the most powerful tools you can use for layout
+- Use with media queries to implement breakpoints and acheive a responsive design
+- Has extra-ordinary ability to fill the spacce available
+- remember to use vendor prefixes for backward compatibility
+
+15) Flex box - wrapping
+- default flex direction is row
+- By default, flex items fit on a single line; no matter what you set the items width to be, they won't wrap. Instead, the browser will resize them to fit within the viewport.
+- Can change this behaviour by adding the following rule to container class css:
+flex-wrap: wrap
+Now, the containers items will wrap when viewport width is smaller than cummulative widths of items.
+
+16) Flex box - order
+- Can dynamically change order of items in container
+
+i.e. 
+html:
+<div class="container">
+  <div class="box dark_blue"><div>
+  ...
+  <div class="box red"><div>
+</div>
+
+css:
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 150px;
+}
+
+@media screen and (min-width: 400px) {
+  .dark_blue { order: 4;}
+  ...
+  .red { order: 1;}
+}
+
+17) Summary properties of flex containers:
+- display: flex (on container)
+- flex-wrap: wrap (on container)
+- order: 1 (on item)
+
+18) More complex techniques for creating responsive layouts - see next lesson
+
+

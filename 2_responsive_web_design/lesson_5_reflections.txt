@@ -1,0 +1,213 @@
+Images, Tables, Typography in Responsive Design
+Can go into greater detials on all these topics (i.e. their own courses)
+
+1) Images
+- https://developers.google.com/web/fundamentals/media/images/ - for more details
+- use different resolutions of same image reponsively (i.e. change src attribute responsively)
+- art direction: picture element uses media queries to select which images to use
+- See google course above for details.
+- Responsive image media query based on dpr
+@media (min-resolution: 2ddpx), 
+(-webkit-min-device-pixel-ratio: 2) {
+  .logo {
+    background-image: url("logo@2x.png");
+    ...
+  }
+}
+
+MORE IMAGES
+- can use new css function: image-set(). This is new, but supported on chrome and safari, webkit require prefix
+- image-set() takes a set of image files and screen resolution, and the browser applies appropriate image based on screen resolution
+- i.e in css set the background-image property like so:
+background-image: image-set(url("icon1x.jpg") 1x, url("icon2.jpg") 2x)
+- for webkit, use prefix, 
+-webkit-image-set(....)
+
+- for markup, can use <picture> element, but this is not yet fully supported
+- or, use img and set the srcset attribute 
+- i.e. <img src="photo.png" srcset="photo.png 1x, photo@2x.png 2x..." >  
+2) Tables
+- Easily overflow viewport
+- Techniques for making the responsive include:
+-- Hidden Columns
+-- No more tables
+-- Contained tables
+
+3) Hidden Columns
+- Hides columns of tables, based on their importance, as the viewport gets smaller
+- basicall use css property display: none to hide information as viewport gets smaller
+- start small, and ask yourself what is the most important information
+- use with caution as for small screen some information is permanently hidden from users
+
+i.e.
+HTML
+<tr>
+  <td>
+    <span class="shortName">TOR</span>
+    <span class="longName">Toronto Blue Jays</spans>
+  </td>
+  <td class="inning">0</td>
+  <td class="inning">0</td>
+  <td class="inning">0</td>
+  <td class="inning">4</td>
+  <td class="inning">0</td>
+  <td class="inning">1</td>
+  <td class="inning">0</td>
+  <td class="inning">0</td>
+  <td class="inning">0</td>
+  <td class="final">5</td>
+</tr>
+
+CSS
+body {
+  margin: 1em;
+}
+
+.longName {
+  display: none;
+}  
+
+.inning {
+  display: none;
+}
+
+4) No More Tables
+- http://css-tricks.com/responsive-data-table-roundup/ - see for an example
+- Below a certain width, the table is collapsed and resembles a long list
+- Like long form data - duplicate header for each data row (i.e. record/individual),
+so the header elements are like keys, and record elements are like values. Go ahead and create these key/value pairings for all records in table 
+- Another interpretation: transpose table header, then assign values to each header element using the transpose of the first record. Call this one "row". Then repeat process using the second record, to create the second "row". etc
+- yet another interpretation: Every column becomes its own row with the table header beside it (to the left of it)
+- advantage: use can see all data no matter size of view port
+- 
+
+i.e.
+HTML
+<tr>
+  <td data-th="Team">Toronto</td>
+  <td data-th="1st">0</td>
+  <td data-th="2nd">0</td>
+  <td data-th="3rd">0</td>
+  <td data-th="4th">4</td>
+  <td data-th="5th">0</td>
+  <td data-th="6th">1</td>
+  <td data-th="7th"">0</td>
+  <td data-th="8th">0</td>
+  <td data-th="9th">0</td>
+  <td class="Final">5</td>
+</tr>
+
+CSS
+/* below a certian width don't act like a table anymore */
+@media screen and (max-width: 500px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  /* hide the table header */
+  /* could use display: none, but that cause problems for people using screen readers */
+  /* Instead, position content way off screen */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /* make room for header (i.e. on left)*/
+  /* since cells are displayed as block elements, use the css as below */
+  td {
+    position: relative;
+    padding-left: 50%;
+  }
+
+  /* Add row lables (i.e. to left of row data) */
+  /* use the pseudo selector, td:before */
+  td:before {
+    position: absolute;
+    left: 6px;
+    content: attr(data-th);
+  }
+}
+
+5) Contained Scrolling
+- Get table (only the table) to scroll within the viewport
+- wrap the table in a div
+
+i.e.
+HTML
+<div class="contained_table">
+  <table>
+    ...
+  </table>
+</div>
+
+CSS
+div.contained_table {
+  width: 100%;
+  overflow-x: auto; 
+}
+
+6) Typography (i.e. fonts)
+- measure: the length of a line
+- ideal measure: 45-90 characters/line (cpl)
+- ideal measure ~ 65 cpl for the web
+- Use measures as a factor for picking breakpoints
+- make sure fonts are big enough to read across any device
+- set base fonts to at least 16 px (may increase for text heavy sites)
+
+CSS
+.goodFonts {
+  font-size: 16px;
+  line-height: 1.2em;
+} 
+
+7) Major/Minor Breakpoints
+- major breakpoints: layout changes significantly
+- minor breakpoints: layout does not change much
+
+8) Major Breakpoint
+- Change layout
+
+9) Minor Breakpoint
+- make small changes in-between major breakpoints
+- may want to address, margins, paddings, font-size, to make things easier to read
+
+i.e.
+CSS
+/* gets trigger when viewport is between 450px and 550px */
+/* i.e. between major breakpoints */
+@media screen and (min-width: 450px) and (max-width: 550px) {
+  /* up the base font */
+  body { font-size: 1em; }
+
+  /* These elements now have the css properties below */
+  /* i.e. they got a little bigger */
+  .seven-day-fc .temp-low,
+  .seven-day-fc .temp-high {
+    display: inline-block;
+    width:  30%;
+  }
+
+  /* The image icon get bigger */
+  .seven-day-fc .icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* limit max-width of forcast panel (i.e. see weather table in Brighton new sample) */
+@media screen and (min-width: 700px) {
+  .weather-forecast {
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}
+ 
+ 
+Summary:
+- overflow vs overflow-x what is difference: oh, overflow just in the x dimension
+- what is the line-height property again?
+- see http://indigo-aurora-826.appspot.com/#/, just slick, learn from it with developer tools.
+- The project (Brighton news) has the hamburger icon code
