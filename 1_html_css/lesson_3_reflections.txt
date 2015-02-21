@@ -13,6 +13,11 @@ Basically what are the properties of framework and how well do it match my needs
 - The framework is divided into categories: CSS, Components, JavaScript
 - Bootstrap is a huge framework so, you'll almost never need all it offers
 - A user can pick and choose what parts of the bootstrap system to download and use (see Customize link)
+- for our little class project, we used: 
+
+Common CSS: Typography and Grid system
+Components: none
+JavaScript components: Modals
 
 3) Minified files
 - remove all whitespace so that they are smaller than the original

@@ -86,7 +86,11 @@ repeat last three steps until satisfied.
 11) Developer Tools
 - Use the developer tools to experiment on the fly; change styles and view results in browser.
 
-12) Mock up projects notes
+12) Verifying HTML and CSS
+To verify HTML: http://validator.w3.org/#validate_by_input
+To verify CSS: http://jigsaw.w3.org/css-validator/#validate_by_input
+
+13) Mock up projects notes
 - How do you find/get the font size and font family of the text used in mock?
 - How to position/align the text in the header?
 - How to make the image dimensions bigger?
