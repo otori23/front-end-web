@@ -15,7 +15,6 @@ The <div> element is used to organize a web page into rectangular sections, and 
 - What are semantic tags? Can you give some examples
 Semantic tags tells a developer the meaning of the infomation in its content. Examples, of semantic tags, include the <img> and <em> elements. The <img> tag denotes that its content is an image, and the <em> tag denotes that the text within the tag is emphasized in some way. 
 
-
 3) Concept Deliberation - Layout Principles
 - What is a grid based layout principle?
 A grid based layout use a two-dimensional system of rows and columns as a guide to organize content and space on a web page.
@@ -33,20 +32,21 @@ make a website render appropriately on an iPad?
 5) Concept Deliberation - Sepatation of Concerns
 - Why do you think it is important to separate structure (HTML) from
 design/style (CSS)?
-Separating structure (HTML) from design/style (CSS) provides a divide and conquer method for managing the complexity of creating a web page.
+Separating structure (HTML) from design/style (CSS) provides a divide and conquer method for managing the complexity of creating and maintaining a web page.
 
 6) Concept Deliberation - Code Quality
 - It is very clear why our code should be logical and correct, but why do
 we need to write code that is easy to read?
+Easy to read code simplifies the process of maintaining and extending the existing code base.
 
 - Why do you think Udacity provided a style guide? Do you think every
 company dicates styles? What purpose do style guides serve?
 
+Udacity provides a style guide so that all students produce uniform, quality, code that is based on best practices. The uniformity of the code will allow the auto-graders to be more efficient at grading the students work.
 
+I don't think every company dictates style, but I think many companies do provide sytle guides as Udacity does.
 
-
-
-
+Style guides improve code readability and maintainence because the guides create a uniform expectation on how the code should be written.  
 
 
 1) HTML5 offers new semantic elements to define different parts of a web page:  
@@ -67,4 +67,18 @@ company dicates styles? What purpose do style guides serve?
 
 2) Semantic HTML is the use of HTML markup to reinforce the semantics, or meaning, of the information in webpages rather than merely to define its presentation or look.
 
-3) The value of separation of concerns is simplifying development and maintenance of computer programs
+3) The value of separation of concerns is simplifying development and maintenance of computer programs.
+
+Separate structure from presentation from behavior.
+
+Strictly keep structure (markup), presentation (styling), and behavior (scripting) apart,
+ and try to keep the interaction between the three to an absolute minimum.
+
+That is, make sure documents and templates contain only HTML and HTML that is
+ solely serving structural purposes. Move everything presentational into style sheets,
+ and everything behavioral into scripts. In addition, keep the contact area as small as
+ possible by linking as few style sheets and scripts as possible from documents and
+ templates.
+Separating structure from presentation from behavior is important for maintenance
+ reasons. It is almost always more expensive to change HTML documents and
+ templates than it is to update style sheets and scripts.

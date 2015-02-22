@@ -74,7 +74,7 @@ CSS
 - Probably the most responsive
 - Key to this layout is the way content moves about (basically also use the order css property to change order of boxes as viewport width changes)
 - Need more planning because layout changes are more dramatic
-- As always, when not breakpoint has been hit, the default styles are applied
+- As always, when no breakpoint has been hit, the default styles are applied
 
 i.e.
 HTML

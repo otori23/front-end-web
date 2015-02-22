@@ -7,6 +7,13 @@ Can go into greater detials on all these topics (i.e. their own courses)
 - art direction: picture element uses media queries to select which images to use
 - See google course above for details.
 - Responsive image media query based on dpr
+
+Example 1
+Apply styles based on device pixel ratio
+.logo {
+  background-image: url("logo.png");
+}
+
 @media (min-resolution: 2ddpx), 
 (-webkit-min-device-pixel-ratio: 2) {
   .logo {
@@ -14,6 +21,24 @@ Can go into greater detials on all these topics (i.e. their own courses)
     ...
   }
 }
+
+Example 2
+Set background image of a page using media queries (i.e. conditional images with media queries)
+
+.example {
+  background-image: url("phone.png");
+}
+
+@media (min-width: 500px) {
+  body {
+    background-image: url("nyc.png");
+  }
+
+  .example {
+    background-image: url("tablet.png");
+  }
+}
+
 
 MORE IMAGES
 - can use new css function: image-set(). This is new, but supported on chrome and safari, webkit require prefix
@@ -26,6 +51,8 @@ background-image: image-set(url("icon1x.jpg") 1x, url("icon2.jpg") 2x)
 - for markup, can use <picture> element, but this is not yet fully supported
 - or, use img and set the srcset attribute 
 - i.e. <img src="photo.png" srcset="photo.png 1x, photo@2x.png 2x..." >  
+
+
 2) Tables
 - Easily overflow viewport
 - Techniques for making the responsive include:

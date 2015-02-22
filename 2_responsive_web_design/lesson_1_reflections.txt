@@ -30,7 +30,7 @@ Chrome Canary is the developer version of Chrome. It looks and acts like the reg
 9) Chromium (http://www.chromium.org/getting-involved/dev-channel)
 Linux analog for Canary
 
-10) iOS WbKit debug proxy (https://github.com/google/ios-webkit-debug-proxy)
+10) iOS WebKit debug proxy (https://github.com/google/ios-webkit-debug-proxy)
 - iOS analog for Canary
 
 11) Next Lesson

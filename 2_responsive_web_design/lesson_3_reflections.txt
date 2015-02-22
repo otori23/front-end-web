@@ -22,7 +22,7 @@ body {
 - media query logic says: apply the style in over500.css when the screen is bigger than 500px.
 so, change background color of the page to blue when viewport is bigger than 500px.
 
-- other media type values include: handheld, projected or embossed. You ccan ignore these, they don't do any thing.
+- other media type values include: handheld, projected or embossed. You can ignore these, they don't do any thing.
 
 - stick with screen, and print (if users will print the page)
 
@@ -36,7 +36,7 @@ so, change background color of the page to blue when viewport is bigger than 500
 - use @import tag, i.e.
 @import url("no.css") only screen and (min-width: 500px);
 
-- don't use Aimport because thier performance is very expensive
+- don't use @import because thier performance is very expensive
 
 5) Linked css vs @media
 - Linked css: many small files, therefore many http requests
@@ -75,7 +75,7 @@ Apply 2nd and 3rd rule when their conditions are met
 
 7)  Most used media queries (min-width and max-width)
 - min-width: trigger when viewport width is bigger than some value; 
-i.e. smallest with that triggers style
+i.e. smallest width that triggers style
 
 - max-width: trigger when viewport width is less than some value
 
@@ -92,7 +92,7 @@ Menu icon also called hamburger icon
 9) Where do i put my break points
 - The million dollar question
 - Don't base decision on device
-- Base the decision on you content (don't choose breakpoints, find them using you content as a guide).
+- Base the decision on your content (don't choose breakpoints, find them using you content as a guide).
 
 10) Remember... Start small
 - Start with small screen
@@ -111,7 +111,7 @@ Menu icon also called hamburger icon
 - 2nd link element is for screen sizes bigger than 550px
 - etc
 - The basic idea is to dynamically change # of columns and sapce around columns as the viewport changes size.
-- smallest size: use onlu one columns
+- smallest size: use only one column
 - get bigger: use two columns
 - get bigger: excess space between columns, some use another column
 - get bigger: don't want the add anymore columns, so add all extra space to right and left margins of the page.  
