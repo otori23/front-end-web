@@ -17,10 +17,13 @@ Semantic tags tells a developer the meaning of the infomation in its content. Ex
 
 3) Concept Deliberation - Layout Principles
 - What is a grid based layout principle?
-A grid based layout use a two-dimensional system of rows and columns as a guide to organize content and space on a web page.
+A grid based layout use a two-dimensional system of rows and columns as a guide to organize content and space.
 
 - Google for other layout principles and explain the one that you
 thought was most interesting (other than grid based!).
+
+
+
 
 4) Concept Deliberation - Responsive Design
 - What does the term "Responsive Design" mean?
@@ -28,6 +31,14 @@ Responsive design aims to dynamically adapt the content and layout of a web page
 
 - What attributes or media queries do you need in your HTML and CSS to
 make a website render appropriately on an iPad?
+
+a) Set viewport size by adding the meta tag below in the head of the html document
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+b) Add the media query below, targeting the iPad screen size, to the style sheet
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Styles in here */
+}
 
 5) Concept Deliberation - Sepatation of Concerns
 - Why do you think it is important to separate structure (HTML) from
