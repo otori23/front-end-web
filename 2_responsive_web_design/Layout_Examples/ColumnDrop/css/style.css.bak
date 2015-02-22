@@ -1,0 +1,85 @@
+/*
+These are the default styles. No need to change these.
+*/
+
+/*
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.title {
+  font-size: 2.5em;
+  text-align: center;
+}
+*/
+.box {
+  
+}
+
+.dark_blue {
+  background-color: #2A457A;
+  /*color: #efefef; */
+}
+
+.light_blue {
+  background-color: #099DD9;
+}
+
+.green {
+  background-color: #0C8542;
+}
+
+/*
+.lime {
+  background-color: rgb(179, 210, 52);
+}
+
+.seafoam {
+  background-color: rgb(77, 190, 161);
+}
+
+.red {
+  background-color: #EC1D3B;
+}
+
+.orange {
+  background-color: #F79420;
+}
+*/
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 100%;
+  min-height: 150px;
+}
+
+@media screen and (min-width: 450px) {
+  .dark_blue {
+    width: 25%;
+  }
+
+  .light_blue{
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .dark_blue, .green {
+    width: 25%;
+  }
+
+  .light_blue{
+    width: 50%;
+  }
+}
