@@ -1,0 +1,7 @@
+1) Mozilla Developer Network has a great article on HTML and the DOM. 
+https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Introduction
+
+2) Web Platform.org also has some pretty complete tutorials on CSS.
+https://docs.webplatform.org/wiki/css
+
+Want to learn more about the critical rendering path? Check out Website Performance Optimization, taught by Cameron and Ilya Grigorik, a performance engineer at Google.
