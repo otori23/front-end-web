@@ -4,4 +4,66 @@ https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Introduction
 2) Web Platform.org also has some pretty complete tutorials on CSS.
 https://docs.webplatform.org/wiki/css
 
-Want to learn more about the critical rendering path? Check out Website Performance Optimization, taught by Cameron and Ilya Grigorik, a performance engineer at Google.
+3) Want to learn more about the critical rendering path? Check out Website Performance Optimization, taught by Cameron and Ilya Grigorik, a performance engineer at Google.
+
+4) Checkout README.md for the frontend-nanodegree-resume project
+https://github.com/otori23/frontend-nanodegree-resume
+
+5) The Resume HTML
+- Structured with a bunch of div tags which the javascript will be later referencing
+
+<div id="main">
+<div id="header">
+<div id="workExperience">
+<div id="projects">
+<div id="education">
+<div id="skills chart">
+
+Idea is instead of harding coding the content of the html page, the page initial exists as a template, and the content details will be filled in programmatically when a user request the page (i guess by client side javascript).
+
+Will be using the template strategy for this class
+
+6) HTML file's javascript
+- Link to javascript file in the head section like usual.
+- However, there are also script tags at the bottom of the body section
+- The js script in the body is what changes the html on the page
+
+7) Resume Page Overview
+Section 1: "Hello World!!!"
+Section 2: Empty resume sections
+Section 3: The JavaScript
+
+8) General representation of how resume will look in a browser
+
+Hello world!
+  [Header]
+    Work Experience
+    Projects
+    Education
+    Skills Chart
+  [footer]
+
+The javascript will check of any of your sections contain content and if not, 
+the js hides the section
+
+if(section.content === "") {
+  hideSection();
+}
+
+9) Some JS resources
+jQuery: http://jquery.com/
+MDN: https://developer.mozilla.org/en-US/
+
+10) JS console
+- See console tab in developer tools
+- when you see "undefined" just means the function you ran does not return anything
+
+11) jQuery syntax
+$("") - this syntax is only used for jQuery; it is how you create a jQuery Object
+
+12) append()
+Use jQuery append method to add new html as a child of an existing html element.
+i.e. $("#header").append("some text")
+
+Notes:
+Review CodeCademy course(s)

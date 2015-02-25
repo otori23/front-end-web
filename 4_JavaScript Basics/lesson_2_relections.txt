@@ -1,0 +1,2 @@
+1) JS numbers
+All numbers in JS are store as 64-bit floating point values
