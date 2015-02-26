@@ -1,2 +1,21 @@
 1) JS numbers
 All numbers in JS are store as 64-bit floating point values
+
+2) $('selector').append -> add content as child
+
+3) stringObj.replace(old, new)
+
+4) scope
+<script src="file1.js"></script>
+<script src="file2.js"></script>
+
+file2.js has access to file1.js variables and functions
+
+5) Project note
+- resumeBuilder.js has access to all the variables on helper.js
+- helper.js defines html text that we will dynamically add to the html document
+- the variables in helper.js have "%data%" placeholders which we will replace using the js sting method.
+
+i.e.
+var formattedName = HTMLheaderName.replace("%data%", name);
+$("#header").append(formattedName);
