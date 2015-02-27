@@ -19,3 +19,144 @@ file2.js has access to file1.js variables and functions
 i.e.
 var formattedName = HTMLheaderName.replace("%data%", name);
 $("#header").append(formattedName);
+
+6) String methods
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
+
+- .slice() = for substrings
+- []: use indexer for characters or use .charAt()
+- .UpperCase
+- .split (opposite of .join for arrays)
+
+and many more. See MDN documentation.
+
+7) Truthy (evaluate to true)
+true, non-zero number, "strings of length at least one", objects, arrays, functions
+
+8) Falsy (evaluate to false)
+false, 0, "" (i.e. empty string), null, undefined, NaN
+
+9) asana.com 
+Teamwork without email.
+
+10) Array
+- .length property to get # elems in array
+- newArray = _array.slice(0); A way to clone an array; like doing _array[:] in python
+- .join (opposite of .split for strings)
+
+11) Classes
+JavaScript does not include classes; although there are ways to mimic classes
+
+function Car() {}
+/*
+var Car = function() {}
+*/
+var car1 = new Car();
+
+
+12) Objects
+JavaScript does include Objects
+
+13) Object literal notaion
+var myObj = {
+  property1: value1,
+  ...
+  propertyN: valueN
+};
+
+14) Property names as strings
+
+var bio = {
+  "name": "James",
+  "age": 32,
+  "skills": skills // skills = ["", "" , ...] i.e. and array
+};
+
+later can say,
+$("#main").append(bio.name);
+
+15) Example of bio Object from lesson
+
+var bio = {
+  "name": "John Doe",
+  "role": "Web Developer",
+  "contacts": {
+    "mobile": "650-555-5555",
+    "email": "john@example.com",
+    "github": "johndoe",
+    "twitter": "@johndoe",
+    "location": "San Francisco"
+  },
+  "welcomeMessage": "lorem ipsum dolor sit amet etc etc etc.",
+  "skills": ["awesomeness", "delivering things", "cryogenic sleep", "saving the universe"],
+  "bioPic": "images/fry.jpg"
+};
+
+16) dot notation
+
+- access already defined object property
+console.log(bio.name);
+
+- edit already defined object property
+bio.name = "Jane Doette";
+
+- add new object property
+bio.country = "U.S.A";
+
+Dot notation is faster to write and clearer to read.
+
+17) bracket notation
+- access already defined object property
+console.log(bio["name"]);
+
+- edit already defined object property
+bio["name"] = "Jane Doette";
+
+- bio["country"] = "U.S.A";
+
+Square bracket notation allows access to properties containing special characters and selection of properties using variables.
+
+18) Other examples from class
+var work = {};
+work.position = "Course Developer";
+work.employer = "Udacity";
+work.years = 0.3;
+
+var education = {};
+education["name"] = "Nova Southeastern University";
+education["years"] = "2005-2013";
+education["city"] = "Fort Lauderdale, FL, US";
+
+$("#main").append(work["position"]);
+$("#main").append(education.name);
+
+19) What is JSON?
+
+JavaScript Object Notation. JSON is a popular and simple format for storing and transferring nested or hierarchal data. It's so popular that most other programming languages have libraries capable of parsing and writing JSON (like Python's JSON library). Internet GET and POST requests frequently pass data in JSON format. JSON allows for objects (or data of other types) to be easily encapsulated within other objects. See the MDN or JSON.org for more details.
+
+This is a fantastic deep dive from Jason Lengstorf about JSON and its ubiquitous use in the form of AJAX requests.
+
+Why should I lint my JSON?
+
+With a mix of nested curly braces, square brackets and commas, it's easy to make mistakes with JSON. And mistakes mean bugs. Seriously, I mess up JSONs all the time. You might even be able to spot a bug in one of my JSONs in a video in this course...
+
+If you're generating JSON by hand, you should copy and paste your code into a JSON linter like jsonlint.com to quickly and easily find syntax errors. A linter is a piece of software that analyzes code for syntax errors. Some text editors, like Sublime Text, will automatically lint (or highlight) most syntax errors. But a JSON linter won't miss any syntax errors and you can rest assured that your JSONs will be properly formatted.
+
+20) JSON example using object literal notation
+
+var education {
+    "schools": [
+      {
+        "name": "Exkerd College",
+        "city": "Saint Petersburg, FL, US",
+        "degree": "BA",
+        "major": ["CompSci", "French"]
+      },
+      {
+        "name": "Nove Southeastern University",
+        "city": "Fort Lauderdale, FL, US",
+        "degree": "Masters",
+        "major": ["CompSci"]
+      }
+    ]
+};   
