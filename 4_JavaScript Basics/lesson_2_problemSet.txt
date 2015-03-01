@@ -1,0 +1,53 @@
+1) What is the DOM?
+
+Browsers convert all of the HTML they receive into a JavaScript object called the Document Object Model (DOM).
+
+In fact, from the console, you can examine the DOM for any website; By examining the DOM, you can learn pretty much everything about a website.
+
+2) To find out the height of the classroom window (in pixels).
+
+// Selects the html element that is the classroom window
+// It's actually a JavaScript object called an Element with properties you can access.
+// Element API: https://developer.mozilla.org/en-US/docs/Web/API/Element
+// Web Objects API: https://developer.mozilla.org/en-US/docs/Web/API
+var elem = document.getElementsByClassName("reading-area")[0];  
+console.log(elem.clientHeight);
+
+3) How Resume Sections Get Hidden
+document.getElementById("education").style.display = "none";
+
+4) document
+document is the DOM.
+
+document refers to the web page in its current state. You may have heard of the DOM, which contains all of the information about a website's visible elements. We need to change the DOM if we want to add or remove page elements.
+
+5) getElementById("education")
+A DOM manipulation method that will grab a single page element object with the id given.
+
+In this example, we've grabbed the entire education section of the resume. 
+In the HTML, this is everything inside <div id="education">
+
+6) .style (https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style)
+Is used to change a CSS style of the selected page element.
+
+Here's a list of all the possible CSS properties you can change. 
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Properties_Reference
+
+7) .display = "none"
+
+Every page element has a display CSS property, which normally controls how that page element 
+interacts with others. If display is set to "none", however, then the element is removed 
+entirely from the page.
+
+8) Colors (Hex)
+http://www.color-hex.com/
+
+9) Character entity references
+http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Character_entity_references_in_HTML
+
+10) Regular Expressions
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+
+11) Dot vs Bracket Notation Solution
+
+Bracket notation always works. Dot notation requires properties that begin with a letter and do not include special characters.
