@@ -1,0 +1,26 @@
+1) Strict equality (===) vs Loose equality (==)
+
+When you use three equal signs, ===, no type conversion is done prior to the comparison. If the values are different types, for example, a String and a Number, they can't ever be equal. To return true, the values must be equal and the types must be the same.
+
+Loose equality, ==, checks to see if the two values are the same type and if not, converts to a common type before the conversion. If the types are already the same, there is no difference between the result of === and ==. When they aren't it can cause unexpected results.
+
+Same holds for !== and != .
+
+2) Iteration
+for/while: work as expected
+
+3) for/in
+for(item in [object | array]) {
+  ...
+}
+
+For array, item is index; so must use array[item] to access value at index
+
+4) JQuery :last selector
+The :last jQuery selector returns the final element in a list that matches whatever precedes it.
+
+So for work-entry:last, if there are 3 work-entry elements, it will only return the 3rd one.
+
+http://www.w3schools.com/jquery/sel_last.asp
+
+5) 
