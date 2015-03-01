@@ -23,4 +23,14 @@ So for work-entry:last, if there are 3 work-entry elements, it will only return 
 
 http://www.w3schools.com/jquery/sel_last.asp
 
-5) 
+5) Functions
+
+var myFunc = function(param1, param2) {
+  // code goes here
+}
+
+-or-
+
+function myFunc(param1, param2) {
+  // code goes here
+}
