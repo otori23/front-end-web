@@ -34,3 +34,22 @@ var myFunc = function(param1, param2) {
 function myFunc(param1, param2) {
   // code goes here
 }
+
+6) Variable Scope
+http://toddmotto.com/everything-you-wanted-to-know-about-javascript-scope/
+
+7) Click locations
+Can collect location on screen where user clicked on page with a jQuery event handler for the documents click event
+$(document).click(function(loc) {
+  //
+});
+
+8) Encapsulation
+- Everything in JS is an object (including functions)
+- define a display property on the projects object and have it point to a function
+projects.display = function() {
+  // display code goes here
+};
+
+9) Relationship between functions and objects:
+http://helephant.com/2008/08/19/functions-are-first-class-objects-in-javascript/
