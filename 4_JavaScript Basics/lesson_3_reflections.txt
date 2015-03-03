@@ -1,3 +1,6 @@
+0) Declare your application as HTML5
+<!DOCTYPE html>
+
 1) Strict equality (===) vs Loose equality (==)
 
 When you use three equal signs, ===, no type conversion is done prior to the comparison. If the values are different types, for example, a String and a Number, they can't ever be equal. To return true, the values must be equal and the types must be the same.
@@ -53,3 +56,70 @@ projects.display = function() {
 
 9) Relationship between functions and objects:
 http://helephant.com/2008/08/19/functions-are-first-class-objects-in-javascript/
+
+10) Short history of Javascript
+Java script was created in 1995
+https://www.w3.org/community/webed/wiki/A_Short_History_of_JavaScript
+
+11) Syntax
+JS includes many different syntaxes and techniques to accomplish thesame goals
+i.e.
+// object literal notation
+var bio = {
+  "name": "cameron pittman"
+};
+
+// dot notation
+bio.name = "cameron pittman";
+
+// bracket notation
+bio["name"] = "cameron pittman";
+
+12) Javascript anonymous functions
+http://en.wikipedia.org/wiki/Anonymous_function#JavaScript
+
+Anonymous functions are functions that don't have a name and are often returned by other functions and objects.
+
+Some JavaScript libraries ask for a callback function to be executed once they have have the results of a task. Anonymous functions are used in these cases because there is not a need to call the function by name outside the confines of the enclosing function.
+
+For example, the code below reads a JSON file from the server. After loading, it executes an anonymous function to print out the data.
+
+$.getJSON("test.json", function(data) {
+    console.log(data);
+});
+
+Anything that uses an anonymous function could also use a named function. The following code is also valid and is equivalent to what's listed above:
+
+var printData = function(data){
+  console.log(data)
+};
+
+$.getJSON("test.json", printData);
+
+13) Customize resume project (make more interactive)
+- Add map section: 
+a) resumeBuilder.js, add the line: $("#mapDiv").append(googleMap);
+
+b) Uncomment the last block of code in helper.js. 
+The code you need starts with window.addEventListener('load', initializeMap); 
+and goes until the end of the file.
+
+c) Uncomment the <script> tag for Google Maps API in the <head> of index.html.
+
+- Style with your own css
+
+- use D3 library (d3js.org) to add interactve graphics and charts that help people visualize your skills
+
+14) TO DO:
+- Encapsulate display function into their own objects. i.e. work, education, projects
+
+- Make the project your own
+a) add interactive graphics and charts
+
+b) Google maps JavaScript API
+https://developers.google.com/maps/documentation/javascript/tutorial
+
+c) D3: Data-Driven Documents
+http://d3js.org/
+
+d) Really thousands of JS lobraries out there.
