@@ -1,0 +1,10 @@
+Go back and explore
+
+1) HTML/CSS & Responsive Web design
+- Bootstrap framework
+
+2) JS & JQuery Basics
+- Google developers (https://developers.google.com/)
+especially: Monetizing, Web Fundamentals -> Monetization, Maps API
+
+- D3 (d3js.org)
