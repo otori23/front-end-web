@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+    <script type="text/javascript">
+	  function getRelationship(x,y) {
+		  var xIsNumber = typeof(x) === "number";
+		  var yIsNumber = typeof(y) === "number";
+		  var retMsg = "Can't compare relationships because ";
+		  if (!xIsNumber)
+		  {
+			  retMsg = retMsg + x;
+		  }
+		  
+		  if (!xIsNumber && !yIsNumber)
+		  {
+			  retMsg = retMsg + " and ";
+		  }
+
+		  if (!yIsNumber)
+		  {
+			  retMsg = retMsg + y;
+		  }
+
+		  return retMsg;
+	  }
+	  var rel = getRelationship("this");
+	  console.log(rel);
+	</script>
+ </body>
+</html>
