@@ -1,0 +1,60 @@
+1) jQuery.js is a Javascript library
+- which means it is not a language on its own
+
+2) jQuery exists because manipulating the DOM with vanilla JS is not easy;
+Also, allows client to focus on UX and not browser compatibility issues
+
+3) jQuery -> a function (also object) included in you site when you link to the jQuery library
+
+4) $ -> an alais for the jQuery function (also object) 
+- $ is just a javascript variable, you can reassign the value to something else
+- BUT DO NOT
+
+5) Print jQuery or $ to console and see how they are defined  
+
+6) mootools (mootools.net)
+Another javascript library
+
+7) So what is the jQuery object (i.e. $)?
+- $ -> jQuery Collection is like an array but with additional methods
+> $
+
+- Can pass in strings, functions, DOM Element to jQuery object
+> $(string), $(function), $(DOM Element) : log results to console to see what is returned
+- can call jQuery methods on whatever is returned
+
+- Can call methods on the jQuery object
+$.ajax() - > Abstarcts away annoying nuances of ajax
+
+8) The DOM
+- A data structure that can best be described as a tree
+
+9) Including jQuery in your project
+You have options
+- locally (i.e. your own server): <script src='js/jquery.min.js'></script>
+- from jQuery: <script src='//code.jquery.com/jquery-1.11.1.min.js'></script>
+- Content Delivery Networks(CDNs) like Google:
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+
+- CDNs are recommended
+- use the minified version in production code as it is way smaller that regular version ->
+faster page loads
+
+10) Select a collection of DOM elements
+$('tag')
+$('.class')
+$('#id')
+- $: jQuery object; input string: jQuery selector which are also valid css selectors
+
+- more likely you will be selecting DOM elements by classes
+
+11) DOM traversal methods
+$('#id').parent()
+	.parents() -> can pass in selector here to filter for more specific result
+	.children() -> immediate childern -> can pass selector
+	.find() -> all decendants -> must pass in a selector, typically use "*" for all decendants
+	.siblings() -> can pass in selector here to filter for more specific result
+
+- Read their documentation
+
+
