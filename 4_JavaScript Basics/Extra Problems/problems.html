@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+    <script type="text/javascript">
+	  // Problem 1
+	  function getRelationship(x,y) {
+		  var xIsNumber = (typeof(x) === "number") && (!isNaN(x));
+		  var yIsNumber = (typeof(y) === "number") && (!isNaN(y));
+		  var retMsg = "Can't compare relationships because ";
+		  if (!xIsNumber)
+		  {
+			  retMsg = retMsg + x;
+		  }
+		  
+		  if (!xIsNumber && !yIsNumber)
+		  {
+			  retMsg = retMsg + " and ";
+		  }
+
+		  if (!yIsNumber)
+		  {
+			  retMsg = retMsg + y;
+		  }
+
+		  if (!xIsNumber && !yIsNumber)
+		  {
+			  retMsg = retMsg + " are not numbers";
+		  }
+		  else
+		  {
+		      retMsg = retMsg + " is not a number";
+		  }
+
+		  if(!xIsNumber || !yIsNumber) return retMsg;
+
+		  if(x < y) retMsg = "<";
+		  else if (x === y) retMsg = "=";
+		  else retMsg = ">";
+
+		  return retMsg;
+	  }
+	  var rel = getRelationship(3, 15);
+	  console.log(rel);
+
+	  // Problem 2
+	  function alphabetizer(_names) {
+	    var result = [];
+	    for (var i = 0; i < _names.length; i++) {
+		  var firstLast = _names[i].split(" ");
+		  result.push(firstLast[1] + ", " + firstLast[0]);
+		}
+		result.sort();
+		return result;
+	  }
+
+	  var names = [
+	    "Neil Armstrong",
+		"Buzz Aldrin",
+		"Pete Conrad",
+		"Alan Bean",
+		"Alan Shepard",
+		"Edgar Mitchell",
+		"David Scott",
+		"James Irwin",
+		"John W Young",
+		"Charles Duke",
+		"Eugene Cernan",
+		"Harrison Schmitt"
+	  ];
+
+	  console.log(alphabetizer(names));
+
+	  // Problem 3
+	  // Iterate through the localizedRuleNames in ruleResults and 
+		// return an array of their strings.
+		function ruleList(results) {
+			// Your code goes here!
+			var res = [];
+			for(var prop in results.formattedResults.ruleResults) {
+				res.push(results.formattedResults.ruleResults[prop ].localizedRuleName);        
+			}
+			return res;
+		}
+
+		// Iterate through pageStats in the psiResults object and 
+		// return the total number of bytes to load the website.
+		function totalBytes(results) {
+			// Your code goes here!
+			var total = 0;
+			for(var prop in psinsights.pageStats) {
+				var delta = Number(psinsights.pageStats[prop]);
+				total += delta;
+			}
+			return total;
+		}
+
+		// Below, you'll find a sample PS Insights JSON
+		// and two console.log statements to help you test your code!
+
+		psinsights = {
+		 "kind": "pagespeedonline#result",
+		 "id": "/speed/pagespeed",
+		 "responseCode": 200,
+		 "title": "PageSpeed Home",
+		 "score": 90,
+		 "pageStats": {
+		  "numberResources": 22,
+		  "numberHosts": 7,
+		  "totalRequestBytes": "2761",
+		  "numberStaticResources": 16,
+		  "htmlResponseBytes": "91981",
+		  "cssResponseBytes": "37728",
+		  "imageResponseBytes": "13909",
+		  "javascriptResponseBytes": "247214",
+		  "otherResponseBytes": "8804",
+		  "numberJsResources": 6,
+		  "numberCssResources": 2
+		 },
+		 "formattedResults": {
+		  "locale": "en_US",
+		  "ruleResults": {
+			"AvoidBadRequests": {
+			  "localizedRuleName": "Avoid bad requests",
+			  "ruleImpact": 0.0
+			},
+			"MinifyJavaScript": {
+			  "localizedRuleName": "Minify JavaScript",
+			  "ruleImpact": 0.1417,
+			  "urlBlocks": [
+			  {
+				"header": {
+			   "format": "Minifying the following JavaScript resources could reduce their size by $1 ($2% reduction).",
+			   "args": [
+				{
+				 "type": "BYTES",
+				 "value": "1.3KiB"
+				},
+				{
+				 "type": "INT_LITERAL",
+				 "value": "0"
+				}
+			   ]
+				},
+				"urls": [
+				{
+				  "result": {
+				 "format": "Minifying $1 could save $2 ($3% reduction).",
+				 "args": [
+				  {
+				   "type": "URL",
+				   "value": "http://code.google.com/js/codesite_tail.pack.04102009.js"
+				  },
+				  {
+				   "type": "BYTES",
+				   "value": "717B"
+				  },
+				  {
+				   "type": "INT_LITERAL",
+				   "value": "1"
+				  }
+				 ]
+				}
+			   },
+			   {
+				"result": {
+				 "format": "Minifying $1 could save $2 ($3% reduction).",
+				 "args": [
+				  {
+				   "type": "URL",
+				   "value": "http://www.gmodules.com/ig/proxy?url\u003dhttp%3A%2F%2Fjqueryjs.googlecode.com%2Ffiles%2Fjquery-1.2.6.min.js"
+				  },
+				  {
+				   "type": "BYTES",
+				   "value": "258B"
+				  },
+				  {
+				   "type": "INT_LITERAL",
+				   "value": "0"
+				  }
+				 ]
+				}
+			   }
+			  ]
+			 }
+			]
+		   },
+		   "SpriteImages": {
+			"localizedRuleName": "Combine images into CSS sprites",
+			"ruleImpact": 0.0
+		   }
+		  }
+		 },
+		 "version": {
+		  "major": 1,
+		  "minor": 11
+		 }
+		};
+
+		// Try logging the outputs below to test your code!
+		console.log(ruleList(psinsights));
+		console.log(totalBytes(psinsights));
+	</script>
+ </body>
+</html>
