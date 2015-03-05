@@ -1,0 +1,65 @@
+1) Documentation for jQuery object
+- http://api.jquery.com/
+- Documentation is organized in the left hand navigation according actions you may want to perform
+ 
+2) jQuery thoughts
+- $ (aka the jQuery object) is an object of type function
+- Can invoke the function like $()
+- invoking the function returns a collection of dom elements that match the input selector
+- 
+
+
+3) Another way of thinking about jQuery
+- jQuery object has alias $
+- jQuery object is a collection (i.e. array/list) of one or more DOM elements
+- Create a jQuery object using the "class" constructor i.e 
+jQueryObject = jQuery('selector'); // same as jQueryObject = $('selector');
+- Can then call methods on the created jQuery object, i.e. jQueryObject.method()
+
+4) .css()
+- Changes the css in the sytle attribute of DOM element.
+- Maybe not such a good idea, as this breaks the abstraction of sturcture/style/behaviour
+- may be use .toggleClass() in combination with css files
+
+5) .attr()
+- Dynamically get/set attributes on DOM elements
+
+6) .html() .text() .val()
+get and set content of DOM elements
+
+7) .remove()
+- remove DOM elements
+
+8) .append() .prepend() .insertBefore() .insertAfter()
+- create and add new DOM elements (with one method call)
+- vanilla js would require several method calls
+
+9) jQuery method delegates
+When inside a jQuery object methods delegate, you can access the current DOM element being processed as:
+- $(this) - jQuery wrapper for vanilla JS DOM element
+- The element parameter passed into the delegate - vanilla JS DOM element
+
+10) Advantages of using jQuery
+- Fast Selection
+- Easy DOM Manipulation
+- Cross-Browser Compatibility
+
+11) JQuery and document.ready event (http://api.jquery.com/jquery/#jQuery3)
+A function passed into the jQuery object runs on document.ready, which occurs after the DOM has been loaded.
+
+$(function() {
+  // Document is ready
+});
+
+External JavaScript files in the <head> of a document are generally downloaded earlier than JavaScript files included in the <body>. JavaScript files are also executed immediately at their location in the document, which means they can't access any DOM elements that come after their <script> tag in the DOM. This leads to some interesting situations.
+
+12) Quiz
+Trying out $(function)
+
+For this quiz, can you modify a script in the <head> of index.html (called app.js) to
+change the placeholder image in Article #1 to picture of a puppy?
+
+here's a URL for a picture of a puppy: http://placepuppy.it/350/150 
+
+
+ 
