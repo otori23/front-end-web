@@ -2,8 +2,8 @@
 
 1. Download a quality text editor designed for developers. We recommend [Sublime Text](http://www.sublimetext.com/3), [Atom.io](https://atom.io/) or [Notepad++](http://notepad-plus-plus.org/).
 2. Create a new directory on your computer to hold the work for this project.
-3. Create an 'index.html' file within this directory.
-4. Within 'index.html' - write valid HTML containing the proper 'DOCTYPE', '<html>', '<head>' and '<body>' tags.
+3. Create an `index.html` file within this directory.
+4. Within `index.html` - write valid HTML containing the proper 'DOCTYPE', '<html>', '<head>' and '<body>' tags.
 5. Within your page's 'body', add a paragraph that includes the phrase, "Hello World!"
 6. Create a new directory, within your project directory, called 'css'.
 7. Create a new file, within the 'css' directory, named 'style.css'.
