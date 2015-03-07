@@ -1,0 +1,16 @@
+1) Concept Deliberation - JavaScript
+
+We use HTML to deliver content on web pages and CSS to style those web pages. Where does JavaScript fit in? What can JavaScript do that HTML/CSS cannot?
+
+JavaScript defines the behavior of your web pages. It allows you to dynamically edit the DOM that represents the web page.
+
+2) Concept Deliberation - Function Use
+
+JavaScript, much like many other programming languages, utilizez
+functions. What is the advantage to using functions over 'spaghetti code'?
+
+Functions allow a programmer to manage the complexities in their code, by organizing the code into smaller logical units.
+
+3) Application Programming Interfaces (API) are a great resource for any web developer. Explain in your own words what an API is, why it is important, and talk about any APIs you/ve explored or plan to use.
+
+An API is a set of requirements that govern how to interact with a software component.
