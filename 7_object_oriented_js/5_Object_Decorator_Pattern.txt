@@ -1,0 +1,29 @@
+1) Code Reuse
+- Practice of writing generalized code that can be relied upon to address a variety of generalized code
+
+2) JS memory
+- All variables are represented as objects
+- variables don't have types; objects have types
+
+3) Decorator Function
+- A function that takes an object as input and augments this object with new porperties/functionality
+- Common to use adjectives as name of decorator functions
+var carlike = function(obj, loc) {
+  obj.loc = loc;
+  return obj;
+};
+
+4) Binding
+Value assign to a variable
+
+5) ===
+
+var makeAnObject = function() {
+  return {example: 'property'};
+};
+var obj1 = makeAnObject();
+var obj2 = makeAnObject();
+log(obj1 === obj2); // False, obj1 and obj2 are NOT thesame object i.e. they have different identity
+
+6) Generally use the decorator pattern to add some functionality to an object that already has some 
+functionality in it.

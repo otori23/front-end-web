@@ -1,0 +1,38 @@
+1) Prototype Chains
+
+- Mechanism for making objects that resemble other objects
+- Makes one obejct behave as if it has all the properties of another object by delegating the failed
+look-ups on the 1st object to the 2nd object
+- On-going lookup-time delegation with prototype chains... as opposed to ....
+- One-time property copying, if you just cloned the object
+
+2) How interpreter looks up values bound to variables
+var gold = {a:1};
+log(gold.a); // 1
+log(gold.z); // undefined
+
+3) Object.create()
+- This method creates new object that has the on-going lookup time delegation feature
+i.e. 
+var rose = Object.create(gold) // gold = {a:1}, rose = {}
+- gold is fallback; failed lookups on rose get delegated to gold; if lookup fails in gold the undefined is bound to the variable (by the interpreter)
+
+4) The object prototype (i.e. the prototype object)
+- The root of the prototype chain for all javascript objects
+- Top-level object that every javascript object eventually delegates to
+- This is where all basic methods are provided for all objects
+-  i.e. { toString: {f},
+	  hasOwnProperty: {f},
+	  constructor: {f},
+	  ...
+	}
+- rose.toString() works properly because 'this' is bound to the rose object
+
+5) .constructor
+- Makes it easy to tell what function was used to create an object
+
+6) More on prototypes
+- If you don take any special steps, the objects you create will delegate to the object protoptye
+- But other prototype chains exist i.e. for Array objects
+- [] -> Array.prototype -> Object.prototype
+- Useful for code sharing and saving memory

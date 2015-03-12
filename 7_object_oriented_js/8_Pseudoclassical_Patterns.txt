@@ -1,0 +1,67 @@
+0) Prototypal Pattern
+var Car = function(loc) {
+  var obj = Object.create(Car.prototype); 	// line 1
+  obj.loc = loc;
+  return obj; 					// line 3
+};
+Car.prototype.move = function() {
+  this.loc++;
+};
+
+1) Pseudoclassical Pattern
+- Attempts to resemble the class systems from other languages by adding a thin layer of syntactic 
+convinence
+- Note line 1 and 3 will always be repeated in every prototypal class; so js system can add these automatically
+
+2) 'new' keyword
+- when new is used in front of a function invocation, the function will run in a special mode 
+(i.e. constructor mode)
+
+3) Constructor mode
+- The js interpreter will temporarily insert some lines of code into the function that will execute
+- Added lines resemble lines 1, 3 in your own prototypal classes, i.e.
+- The temporarily added lines don't actually show up in you code
+
+var Car = function(loc) {
+  << this = Object.create(Car.prototype); >> 	// like line 1
+  obj.loc = loc;
+  << return this; >> 				// like line 3
+};
+Car.prototype.move = function() {
+  this.loc++;
+};
+
+var amy = new Car(1);
+amy.move();
+var ben = new Car(9);
+ben.move();
+
+4) More in 'new'
+- Creates an object and binds it to this.
+- sets this to delegate to the constructor objects prototype property (just another object)
+- returns this
+
+5) Create patterns
+- split into two sections
+- 1st section: What is different about instances of the class; defined in body of constructor 
+function object
+var Car = function(loc) {
+  this.loc = loc;
+};
+
+- 2nd section: what is shared amongst instances of the class; defined in body of protptype object of the 
+constructor function object
+Car.prototype.move = function() {
+  this.loc++;
+};
+
+6) Functional pattern - reminder
+var Car = function(loc) {
+  obj = {loc: loc};
+  obj.move = function() {
+    obj.loc++;
+  };
+  return obj;
+};
+- no distiction made on what instances share or don't share
+

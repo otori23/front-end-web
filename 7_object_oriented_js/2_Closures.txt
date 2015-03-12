@@ -1,0 +1,31 @@
+1) Closures
+- Every function should have access to all the variables from all the scopes that surrounds it
+- A closure refers to any function that somehow remains available, after the function that created its (i.e. the closure) defining context has returned.
+
+2) Retaining Access to Functions
+- How do we retain access to a function after the scope in which that function was created exits?
+- Do one of the following:
+-- pass the function to setTimeout (a js function that takes a function as a param)
+-- return the function from its defining environment
+-- save the function to a global variable.
+
+3) Execution context
+- The context of a function will always be created as a child of the context it was defined within
+- Even when the function that created that context has finished running (i.e. exited or returned)
+
+4) More on execution contexts
+- It seems like execution contexts don't get "cleaned up" even after the executing functions exit.
+
+5) To keep track of execution contexts:
+- start with global context
+- maintain key/value pairs for variable/function definitions
+- when a function is invoked, create a new execution context inside the context where the invoked function 
+was originally defined
+
+6) How to use closures
+- Anytime you see a function with an input parameter that is static (i.e. never changes)
+i.e. you don't expect the parameter to take on a new value everytime you call the function
+- This is an opportunity to refactor your code so that you store that value in a variable from
+an outer scope
+- Because of the way closures work, the inner function will always have access to the outer scope variable,
+even after the outer function returns.

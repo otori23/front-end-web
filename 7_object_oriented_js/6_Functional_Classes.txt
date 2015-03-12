@@ -1,0 +1,75 @@
+1) Class
+- Powerful form of functions that can be use to manufacture fleets of similar objects
+- Any construct that is capable of producing a fleet of similar objects
+
+2) Decorator Code vs. Classes
+- The class builds the object that it's going to augment. The decorator accepts the object that it's going to augment as an input.
+
+3) Construtors
+- Functions that produce the fleets of similar objects
+- Name function with capitalized Noun
+
+i.e.
+var Car = function(loc) {
+  var obj = {};
+  ...
+  return obj
+};
+
+- The returned object is called an instance of the class
+- This is the functional class pattern
+
+4) Functional Class Pattern - Reducing duplicity
+- Its basic form results in duplicated methods
+
+var Car = function(loc) {
+  var obj = {loc: loc};
+  obj.move = function() {
+    obj.loc++;
+  };
+  return obj;
+};
+
+- The obj.move function is a diffrent object for every instance of Car
+
+- To avoid duplication, use Functional shared pattern
+
+- refactor as:
+
+var Car = function(loc) {
+  var obj = {loc: loc};
+  obj.move = move;
+  return obj;
+};
+
+var move = function() {
+  this.loc++;
+};
+
+- Now interpreter will visit only one move function.
+
+5) Functional shared pattern
+- clean things up more
+
+var Car = function(loc) {
+  var obj = {loc: loc};
+  extend(obj, Car.methods);  // extend not native js, but included in many js librarys. it is a decorator
+			     // it will augment obj with all the properties in Car.method
+  return obj;
+};
+
+// methods is a property on the function object Cars
+// remember functions are just specialized objects; 
+// They can be invoked and store properties like all other objects
+Car.methods = {
+  move: function() {
+    this.loc++;
+  }
+};
+
+var amy = Car(1);
+amy.move();
+var ben = Car(9);
+ben.move();
+
+

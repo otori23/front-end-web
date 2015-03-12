@@ -1,0 +1,37 @@
+0) Three class patterns
+- Functional (also shared functional variant), Prototypal, Pseudoclassical
+- No right or wrong; instead, techniques and options
+- Understand advantages/disadvantages of the different techniques to help inform the decision we make, on which pattern to use, on a case by case basis
+
+1) Sub-classing
+- Techniuqe for code sharing
+- Pseudoclassical pattern is more widely document than the others
+
+2) Sub-classing using Functional pattern
+
+// The super class: containing common code
+// Also a class in its own right
+var Car = function() {
+  var obj = {loc: loc};
+  obj.move = function() {
+    obj.loc++;
+  };
+  return obj;
+};
+
+// subclass of Car containing specific properties for vans
+var Van = function(loc) {
+  var obj = Car(loc);
+  obj.grab = function { /* ... */ };
+  return obj;
+};
+
+// subclass of Car containing specific properties for cop cars
+var Cop = function(loc) {
+  var obj = Car(loc);
+  obj.call = function { /* ... */ };
+  return obj;
+};
+
+3) Pseudoclassical Subclasses
+next lesson

@@ -1,0 +1,87 @@
+1) 'this' keyword
+
+- A way to dynamically refer to the current object. It can be cofusing because it doesn't always return the
+object you are refering to.
+
+2) Parameters
+
+- The words you see between parentheses in function definition
+- js uses positional parameters (as opposed to named parameters, think R)
+
+3) Detour, what is 'this' NOT bound to
+- The function object 'this; appears within
+var fn = function(a, b) {
+  log(this);
+};
+
+- a new instance of the function this appears within
+
+- an object that hppens to have that function as a property
+var ob2 = {method: fn};  // I thought this was it, apparently not!!!!
+
+- the object created by the literal 'this' appears within
+var obj = {
+  fn: function(a, b) {
+    log(this);
+  }
+};
+
+- an executon context or scope of that function call
+(remember js never gives you a way referencing execution contexts explicitly)
+
+4) How do you figure out what the paramter this is bound to?
+- id 'this' gets bound to the correct object automatically
+
+-The object that a function is looked up upon when that function is invoked.
+i.e. obj.fn(a, b) -> obj is bound the 'this'
+i.e. the object to the left of the dot
+
+5) Global object <global>
+- JS binds this to the global object (what is this???) in the situation below
+var fn = function (one, two) {
+  log(this, one, two);
+};
+
+fn(g, b)
+
+- JS binds 'undefined' to positional parameter given no values
+
+- The dot is the mechanisim that we use to bind a value to 'this' 
+- if the dot is not present, then this is bound to some default value (in this case <global>)
+
+6) JS function object .call method
+- We can specify what 'this' is bound to if the dot operator is not used
+- fn(g, b);		//'this' = <global>, g = {g}, b = {b}
+- fn.call(r, g, b)	// 'this' = {r}, g = {g}, b = {b}
+- r.method.call(y,g,b)	// 'this' = {y}, g = {g}, b = {b} // .call overrides the dot
+
+7) How does 'this' get bound when in a function that is passes as a call back?
+
+- setTimeout(fn, 1000) -> setTimeout calls fn one second later
+- Remember to determine what 'this' is bound to only look at line where the function is called
+- if there is a dot there then it is the object to the left
+- if no dot the <global>
+
+i.e. 
+setTimeout(r.method, 1000);
+
+var setTimeout = function(cb, ms) {
+  waitSomehow(ms);
+  cb();					<--- only this line matters, 'this' = <global>
+}
+
+8) Loosing parameter bindings
+- You have no control over how your callback will be invoked
+- So, it is possible to loose the binding for 'this' when it is used in a callback
+- Can also lose binding of other positional parameter
+- a way around this issue it to do something like:
+
+setTimeout(function() {
+		r.method(g, b);
+	   }, 1000);
+
+9) Keyword 'new'
+- new r.method(a, b);
+- affects the binding for 'this'
+- positional parameters are unaffected by the keyword 'new'
+- 'this' is bound to a brand new object that is created automatically in the background. 

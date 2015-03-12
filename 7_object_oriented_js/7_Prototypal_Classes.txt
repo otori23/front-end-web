@@ -1,0 +1,78 @@
+1) Prototypal Pattern (as opposed to Functional shared pattern)
+- Can acheive same result from previous, "Functional", lessone with prototype chains
+- Store all shared methods in prototype object, then instances delegate to the shared prototype object.
+- Can not set an object's prototype object literal notation; need to use Object.create(<<param>>)
+- <<param>> specifies the prototype i.e Object.create(Car.methods)
+
+var Car = function(loc) {
+  var obj = Object.create(Car.methods);
+  obj.loc = loc;
+  return obj;
+};
+
+Car.methods = {
+  move: function() {
+    this.loc++;
+  }
+};
+
+- Now Car will delegate to Car.methods.
+- Failed property lookups on Car instances will delegate to Car.methods
+- Big win here is that we don't have to copy properties from one object to another (i.e. use extend())
+
+2) .prototype Property
+- Method container object available to every function object (only function objects??? YES!!!)
+- Since the pattern above is so common; js has built in an object to contain the shared methods.
+i.e. will replace Car.methods above.
+- so .prototype is an object already created for you by js
+
+var Car = function(loc) {
+  var obj = Object.create(Car.prototype);
+  obj.loc = loc;
+  return obj;
+};
+
+Car.prototype.move = function() {
+  this.loc++;
+};
+
+- .prototype is just an object that stores the shared method 
+
+3) Prototype Chain
+- The Car object (a function) does not delegage its failed lookups to Car.prototype
+- The object created by the Car function does delegate failed lookups to Car.prototype
+- There is nothing special about the name "prototype"; it is just an object that servers as a 
+container for shared methods of the objects created by the Car function
+- the Car.prototype object is used as a delegate only because we specified this behaviour in the line
+Object.create(Car.prototype);
+- We could have stuck with Car.methods if we liked. i.e. Car.methods does exactly same thing as Car.prototype
+
+- i.e
+var Example = function() {
+  return Object.create(Car.prototype);
+};
+
+Example returns objects that are setup to delegate to Car.prototype (same as Car function)
+
+4) .prototype ambiguity
+- meaning 1: obj1's prototype is obj2 (failed lookups on obj1 should delegate to obj2)
+- meaning 2: obj1's prototype is obj2 (obj2 === obj1.prototype aka Car and Car.prototype)
+- keep in mind that failed lookups on Car DO NOT delegate to Car.prototype. There is another object
+that handles failed lookups on function objects which is provided by js
+
+5) constructor property of prototype object
+- Every prototype object has a .constructor property
+- console.log(Car.prototype.constructor);
+- .constructor points back to the function object that the prototype object is associated with;
+Car in this case (prototype.constructor === {Car})
+- Can use to figure our which constructor function build a certain object
+
+So,
+console.log(Car.prototype.constructor); // Car
+var amy = Car(1);
+console.log(amy.constructor); // Car, i.e. amy will delegate to Car.prototype can be foudn anywhere in the 
+left operand's prototype chain
+
+6) instanceof
+- Checks to see if the right operands .prototype object 
+- console.log(amy instanceof Car); // True

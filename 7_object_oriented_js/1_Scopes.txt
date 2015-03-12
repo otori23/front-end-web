@@ -1,0 +1,56 @@
+Scope: can be used in several different contexts
+
+1) Lexical Scope
+- Defines regions in your source code where you can refer to a variable by name without getting access errors
+- Rules for this version of scoping can be understood without running your code
+- In simple program with no functions, there is one scope (i.e., the global scope)
+- every variable in such a program is stored in the gobal scope
+- In some javascript environments, global scope is shared across different files as a way for different parts of the program to interact with each other
+- after defining a variable in a lexical scope you may make reference to that variable from anywhere in that lexical scope.
+- global variables are accessible from anywhere in your program
+
+
+2) Function definition
+var newSaga = function() {
+
+};
+- The function definition starts from the letter 'f' to the second curly brace '}'.
+- A new lexical scope is created everytime you type out a function definition.
+- { ... }, the area between the curly braces enclose area of the code where different access rules apply
+i.e. the new lexical scope
+- Can access variables in the surrounding lexical scope from the new lexical scope
+- Also, can obviously access variables defined in the new scope
+- a function can access the variable that is itself (i.e. the newSaga variable can be accessed inside the newSaga function). As it is in the surrounding lexical scope
+
+3) undeclared variables
+- Javascript allows you to assign to variables you have never declared
+var newSaga = function() {
+  foil = afoil();
+  ...
+};
+
+- The foil variable will be placed in the global scope (not to the scope in which the assignment happened)
+- This is a bad practice, so avoid this.
+
+4) if/whiles blocks i.e. { ... }
+- blocks on if/whiles or other looping constructs DO NOT create new scopes
+- Only blocks on function definitions create new scopes
+
+5) blocks { }
+- Allow us to think about our code in smaller logical units
+
+6) Execution contexts (also known as in-memory scopes)
+- Different usage of the word scope
+- When a program runs, it builds up a storage system for storing variables and thier values
+- These in-memory scoping structures are called execution contexts
+- Are key,value pair data constructs
+- Similar to how js objects are constructed, but they are not thesame thing (in fact, very different)
+
+7) Lexical scope vs Execution context
+- Execution context: built as the code runs (i.e at run time)
+- Lexical scope: built as code is typed (i.e. at design time)
+- Execution context rules, govern which variables a program has access to at different during its execution
+- Lexical scope is like a class and execution context is like instance of this class???
+
+- Lexical scope just characters of code you find in a file somehwere
+- Execution context, in-memory key/value stores

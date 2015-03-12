@@ -1,0 +1,46 @@
+1) Pseudoclassical subclasses
+// Section 1: unique
+var Car = function(loc) {
+  this.loc = loc;
+};
+
+// Section 2: shared
+Car.prototype.move = function() {
+};
+
+// link parts of Van and Car that a unique for instances
+var Van = function(loc) {
+  Car.call(this, loc); // allows the Car function to run with same context as Van function ie. same 'this'
+};
+
+// link parts of Van and Car that are same for instances
+Van.prototype = Object.create(Car.prototype); // Van.prototype obj delegates to Car.prototype
+
+// The default prototype which we overwrote in previous line came with a .constructor property
+// We need to add this back to our version of the protptype object
+Van.prototype.constructor = Van;
+
+// Things only for Van
+Van.prototype.grab = function() { /* ... */ };
+
+2) .call
+- Allows you to run a function in against a particular context
+
+3) Object.prototype
+- The root of prototype delegation chain
+
+4) Object.create
+- A relatively new language construct
+- Before it existed, you would do something like:
+Van.prototype = new Car(); // this pattern is broken, but widely used
+
+- This can be problematic. this no parameters were passed to the Car function, so could have prolems if
+the Car parameter are supposed to be used in a meaningful way.
+
+i.e. 
+Var Car = function(loc) {
+  this.loc = loc.valueOf(); // throw error here because loc is undefined
+};
+
+- Therefore use Object.create.
+
