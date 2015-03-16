@@ -1,0 +1,279 @@
+1) HTML5 Canvas element
+- 2D surface that takes instructions and immediately renders them
+i.e.
+- <canvas width="456" height="257" style="psition: absolute; left: 411.5555px; top: 0px;">
+  </canvas>
+
+- canvas has a set of functions that allow you to draw shapes images text and patterns
+
+2) Using the canvas
+- access it from you javascript code
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+  </head>
+  
+  <body>
+    <canvas id="c" width="200" height="200"></canvas>
+    <script>
+      var c = document.querySelector("#c");
+      var ctx = c.getContext("2d");
+  
+      var image = new image();
+
+      image.onload = function() {
+        console.log("Loaded image");
+        ctx.drawImage(image, 0, 0, c.width, c.height);
+        var savedImage = c.toDataURL();
+        window.open(savedImage);
+      }
+      
+      image.src = "fry_fixed.jpg";
+    </script>
+  </body>
+</html>
+
+- Note how we got a handle to a "2d" context. Can also get one for a "3d" context
+
+- Call methods on the context to draw things
+
+3) Canvas coordinate system
+
+(0, 0) -> x
+
+|
+V
+
+y
+
+4) Loading Images in Code
+- images are loaded (image.src = ...) asynchronously, so need define a call back (image.onload)
+
+5) Saving images
+- var savedImage = c.toDataURL();
+- Creates a text string that represents the photo (i.e. the viewport of the canvas)
+- Can output a in differnet formats; but just usng defaults for now
+- Trying to do same thing as right clicking and saving the image in the browser
+
+- Look in console, if this line does not work, then need to figure out how to save the
+image another way. (directly from the browser works like in previous line).
+
+- Host files on server (local or remote)
+
+6) Local HTTP servers
+
+6_1) Using Python SimpleHTTPServer
+
+The simplest way is to use SimpleHTTPServer if you already have Python installed.
+
+Python comes already installed on most Mac OS X and Linux computers. In a terminal window, change to the directory that has your HTML files and run the following command:
+
+python -m SimpleHTTPServer
+
+After it starts, you can navigate to http://0.0.0.0:8000/index.html
+
+6_2) Using MAMP / MAMP Pro
+
+MAMP is an integrated server environment containing executables for running a web server, a database, and several programming languages. MAMP stands for Mac OS X, Apache, MySQL, and PHP/Perl/Python. Though it was originally developed for the Mac, there are versions that run on Windows.
+
+After installing MAMP, open it and start the server.
+
+Go to settings and set the directory to where you have saved your HTML files.
+
+Navigate to http://localhost:8888/MAMP/index.html   
+
+7) Drawing rectangles
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+  </head>
+  
+  <body>
+    <canvas id="c" width="500" height="500"></canvas>
+    <script>
+      var c = document.querySelector("#c");
+      var ctx = c.getContext("2d");
+  
+      ctx.fillRect(100, 100, 100, 100);
+
+      ctx.strokeRectangle(50, 50, 50, 50);
+    </script>
+  </body>
+</html>
+
+8) Clearing teh canvas with rectangles
+
+If you have a canvas c and given some code to draw a rectangle in a given color, you might write something like
+
+var c = document.querySelector("#c");
+var ctx = c.getContext("2d");
+
+ctx.fillStyle = "blue";
+
+// Start at (0,0) and draw a 50px x 50px blue rectangle.
+ctx.fillRect(0,0,50,50);
+
+// Start at (0,0) and clear a 25px x 25px rectangle.
+ctx.clearRect(0,0,25,25);
+
+If you want to erase the entire canvas, you could call clearRect with the dimensions of canvas as follows:
+
+ctx.clearRect(0, 0, c.width, c.height);
+
+A slightly shorter way to clear a full canvas is to change either the height or the width on the canvas:
+
+c.width = c.width;
+
+Doing so saves some keystrokes but may not be as readable to others who are viewing your code.
+
+Use clearRect when you want to erase a portion of the canvas or object.
+
+9) Draing Paths
+- learn more @: http://www.w3.org/TR/2dcontext/#building-paths
+
+- The code below will draw a triangle
+
+ctx.beginPath(); 	// start
+ctx.moveTo(10, 10);	// move pen to some location; make NO mark on page
+ctx.lineTo(50, 50);	// mark on page
+ctx.lineTo(50, 10);	// mark on page
+ctx.lineTo(10, 10);	// mark on page
+//ctx.fill();		// use stroke or fill to make shape/path visible
+//ctx.stroke();
+
+10) Quiz on Drawing Shapes (Stroke Rectangle enclosing filled triangle)
+ctx.strokeRect(50, 50, 100, 100);
+ctx.beginPath();
+ctx.moveTo(75, 75);
+ctx.lineTo(125, 125);
+ctx.lineTo(125, 75);
+ctx.fill();
+
+11) Moving Objects in a canvas
+
+So far, we’ve been drawing everything using exact coordinates. This is fine for a couple shapes but breaks down if you need to draw a bunch of objects.
+
+Canvas2D allows you to translate (move), rotate, or scale objects.
+
+a) Scaling
+
+scale(x,y) multiplies the x and y values by a given factor so
+
+ctx.scale(2,3);
+
+will make all values twice as large on the x axis and three times as large on the y axis.
+
+b) Translation
+
+translate(x,y) moves all subsequent draw commands by x number of pixels on horizontally and y pixels vertically.
+
+ctx.translate(20,40); moves all elements drawn after it 20 pixels to the rights and 40 pixels down.
+
+c) Rotation
+
+ctx.rotate(angleRadians) rotates an object a certain number of radians (generally) about its center. You probably may have learned about radians in school but here's a handy formula to convert a value from degrees to radians.
+
+radians = degrees * (Math.PI/180)
+
+Don't ask us why everything in Computer Graphics uses radians. We have no idea. :)
+
+Order of operations
+
+You should generally scale objects first, rotate them next, and then finally translate last. There are times when you'd want to rotate around an arbitrary point instead of an object's center, that's out of scope for this lesson.
+
+It’s important to note that whatever transformations apply for all subsequent objects until you reverse them.
+
+12) Sample Canvas Code
+
+var c = getCanvas();
+var ctx = c.getContext('2d');
+
+ctx.save();
+ctx.fillStyle = 'blue';
+ctx.translate(10,10);
+ctx.fillRect(0,0,10,10);
+ctx.restore();
+
+
+ctx.rotate(Math.PI/4);
+ctx.translate(50,0);
+ctx.fillStyle = 'green';
+ctx.fillRect(0,0, 10,10);
+
+13) Saving and restoring canvas state
+
+Every canvas objects contains a stack of drawing states. Stacks are data structures that only let you push new items at one end. When you retrieve an item, it's the last item that was pushed or Last In-First Out(LIFO).
+
+Let's see how this would work in code. Let's say you wanted to draw a couple rectangles in different colors. For this small example, we could get away with reassigning the fillStyle each time instead of using save and restore.
+
+var c = document.querySelector("#c");
+var ctx = c.getContext("2d");
+
+ctx.fillStyle = "blue";
+ctx.fillRect(0,0,50,50);
+
+ctx.fillStyle = "green"
+ctx.fillRect(100,100,10,10);
+
+ctx.fillStyle = "blue";
+ctx.fillRect(200,10,20,20);
+This is better.
+
+var c = document.querySelector("#c");
+var ctx = c.getContext("2d");
+
+ctx.fillStyle = "blue";
+ctx.fillRect(0,0,50,50);
+
+// Save state with blue fill
+ctx.save();
+ctx.fillStyle = "green";
+ctx.fillRect(100,100,10,10);
+// Restore to blue fill
+ctx.restore();
+
+ctx.fillRect(200,10,20,20);
+The canvas state can store:
+
+The current transformation matrix (rotation, scaling, translation)
+strokeStyle
+fillStyle
+font
+globalAlpha
+lineWidth
+lineCap
+lineJoin
+miterLimit
+shadowOffsetX
+shadowOffsetY
+shadowBlur
+shadowColor
+globalCompositeOperation
+textAlign
+textBaseline
+The current clipping region
+
+14) Colors
+- Named colors
+http://en.wikipedia.org/wiki/Web_colors
+
+- Remember colors only apply to shapes you draw AFTER you set the color on the canvas
+
+15) Drawing Text
+- .fillText (draw text with fill color)
+- .strokeText (draw text with stroke color)
+- more: http://diveintohtml5.info/canvas.html#text
+
+16) Quiz to Recreate Meme Text
+ctx.font = "36pt Impact";
+ctx.textAlign = "center";
+
+ctx.fillStyle = "white";
+ctx.fillText("CANVAS MEMSE!", c.width / 2, 40);
+
+ctx.strokeStyle = "black";
+ctx.lineWidth = 3;
+ctx.strokeText("CANVAS MEMES!", c.width / 2, 40);
+
