@@ -1,0 +1,243 @@
+1) Sound and the Canvas
+- The canvas is a visual only medium that does not provide sound
+
+2) Silent film vignette
+- recreate actions normally done with video editing software on canvas
+- looked at some tutorials
+- see instructor notes (COME BACK TO THIS)
+
+3) What is a pixel
+- Every color is a conbination of red; green; blue; (alpha)
+- May also have an alpha channel that stores how solid or transparent the final color will be
+
+4) Filters and Effects
+- image editing software: photoshop
+- image editing apps: instagram, snapchat
+- these things allow you to  apply visual effects to images
+- use js to edit the image locally; no need for 
+
+- They exerimented with the NightVision effects code: pinta pulgin
+https://github.com/PintaProject/NightVisionEffect/blob/master/NightVisionAddin/NightVisionEffect.cs#L74
+
+5) Effects
+- make an image black and white by averaging the red, green, and blue values
+- invert color on an image by assigning the pixels to the compliments of thier current values
+- or maybe turn down the lights and turn on night vision mode
+- we will not use an external library; but that are software packages and applications that make it easy
+- external libraries will make advanced photo editing easy inside the canvas
+
+6) ImageData object
+- is the image backing the canvas element
+- properties width [px], height [px], data (array)
+- data array contains rgba values for each pixel
+- data array type -> Uint8ClampedArray
+
+7) Data array
+- what does this look like
+- this would make sense
+[[r0,g0,b0,a0], ......,[r_n,g_n,b_n,a_n]] -> BUT NO
+- actually all the values are just in one list
+[r0,g0,b0,.....r_n,g_n,b_n]
+- retrieve or modify image data by calling one of these functions:
+createImageData, getImageData, putImageData
+
+- createImageData: blank imageData that you can modify
+- getImageData: retrive data from canvas  
+- putImageData: store data to canvas
+
+8) Quiz: Working with Image Data
+a) Create a Canvas2DRenderingContext
+b) Call getImageData to retrieve the pixels in the canvas
+c) Change every 10th pixel to a solid green color.
+Hint: Colors values range from 0 - 255
+
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <canvas width="400" height="400"></canvas>
+
+    <script type="text/javascript">
+      var canvas = document.querySelector("canvas");
+      var ctx = canvas.getContext("2d");
+      // Get Image Data object
+      var data = ctx.getImageData(0,0,400, 400);
+
+      function paintGreen(imageData) {
+        var numPixels = imageData.data.length / 4;
+        for (var i = 0; i < numPixels; i++) {
+          if (i % 10 === 0) {
+            imageData.data[i * 4 + 1] = 255;
+            imageData.data[1 * 4 + 3] = 255;
+          }
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+      paintGreen(data);
+    </script>
+  </body>
+</html>
+
+Our canvas context is blank so the starting value for all pixels is 0. 
+If you were editing a pre-existing image, you might have to edit the red and blue values as well.
+
+9) Quiz: Making pixels grayscale
+- Write a function to convert an image to grayscale.
+
+- There are actually several grayscale conversion algorithms
+
+- Instructor used an algorithm similar to one in the link from Tanner Helland
+(http://www.tannerhelland.com/3643/grayscale-image-algorithm-vb6/).
+ 
+- Check this post titled "Human Vision and Color Perception" 
+(http://micro.magnet.fsu.edu/primer/lightandcolor/humanvisionintro.html)
+for more information about how the human eye works.
+
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <canvas width="640" height="426"></canvas>
+
+    <script type="text/javascript">
+      var canvas = document.querySelector("canvas");
+      var ctx = canvas.getContext("2d");
+
+      var image = new Image();
+      image.onload = function() {
+        ctx.drawImage(image, 0, 0);
+        makeGrayScale();
+      };
+
+      image.scr = "yourimage.jpg";
+
+      var makePixelGrayScale = function(r, g, b, a) {
+        var y = (0.3 * r) + (0.59 * g) + (0.11 * b); // more optimized formula for computing grayscale
+        return {r: y, g: y, b: y, a: y};
+      };
+
+      function makeGrayScale() {
+        var r, g, b, a;
+        var imageData = ctx.getImageData(0, 0, 640, 426);
+        var numPixels = imageData.data.lenth / 4;
+
+        for (var i = 0; i < numPixels; i++) {
+          r = imageDat.data[i * 4 + 0];
+          g = imageDat.data[i * 4 + 1];
+          b = imageDat.data[i * 4 + 2];
+          a = imageDat.data[i * 4 + 3];
+          pixel = makePixelGrayScale(r, g, b, a);
+          imageData.data[i * 4 + 0] = pixel.r;
+          imageData.data[i * 4 + 1] = pixel.g;
+          imageData.data[i * 4 + 2] = pixel.b;
+          imageData.data[i * 4 + 3] = pixel.a;
+        }
+        ctx.putImageData(imageData, 0, 0);
+      };
+    </script>
+  </body>
+</html>
+
+10) Starter code that inverts the pixels in an image
+
+<!DOCTYPE html>
+<html>
+  <head></head>
+
+  <body>
+    <canvas width="960" height="540"></canvas>
+
+    <script type="text/javascript">
+      var c = var canvas = document.querySelector("canvas");
+      var ctx = c.getContext('2d');
+
+      function doIt() {
+        var imageData = ctx.getImageData(0,0, 960, 540);
+        var length = imageData.data.length / 4;
+        for (var i = 0; i < length; i++){
+          imageData.data[i * 4 + 0] = 255 - imageData.data[i * 4 + 0];   //Red
+          imageData.data[i * 4 + 1] = 255 - imageData.data[i * 4 + 1];   //Green
+          imageData.data[i * 4 + 2] = 255 - imageData.data[i * 4 + 2];   //Blue
+        }
+        // Comment this line to see original image
+        ctx.putImageData(imageData, 0, 0);
+      }
+
+      var image = new Image();
+      image.onload = function() {
+        ctx.drawImage(image, 0, 0);
+        doIt();
+      };
+      image.src = 'images/image-1200.png';
+    </script>
+  </body>
+</html>
+
+11) Playing videos with Canvas
+
+- More interesting effects when source materials is a set of moving pictures
+- Same effects done on single images can be done in real time while showing a movie
+
+- Html page containing video that we want to use with the canvas
+
+<!DOCTYPE html>
+<html>
+  <head></head>
+
+  <body>
+    <video id="v" controls loop src="HOTRODS.mp4"></canvas>
+    <canvas id="c"></canvas>
+
+    <script type="text/javascript">
+      var canvas = document.querySelector("canvas");
+      var ctx = canvas/getContext("2d");
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var v = document.querySelector("#v");
+        var canvas = document.queryselector("#c");
+        var ctx = canvas.getContext('2d');
+
+	v.addEventListener('loadedmetadata', function () {
+          canvas.width = this.videoWidth;
+          canvas.height = this.videoHeight;
+        });
+
+	var draw = function() {
+	  canvas.getContext('2d').drawImage(v, 0, 0);
+          requestAnimationFrame(draw);
+	};
+
+	v.addEventListener('play', function () {
+	  if (v.paused || v.ended) return;
+ 	    draw();
+	});
+      });
+    </script>
+  </body>
+</html>
+
+
+12) setInterval() or setTimeout() 
+- these seem to perform poorly for animations based on web search results
+- they execute no matter wnat, so if you drawing is real big and your interval is real small
+- CRASH!!!!
+
+13) Refreshing canvas frame with .requestAminationFrame()
+
+- requestAnimationFrame() only sends a request when the last frame is alredy finished drawing
+or the window in actively being viewed.
+
+
+- Paul Irish's post about requestAnimationFrame is an evergreen primer for when and how to use it. 
+(http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/)
+
+- Kirupa and Mozilla's MDN are great resources as well.
+(http://www.kirupa.com/html5/animating_with_requestAnimationFrame.htm)
+(https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
+
+14) HTML5 Games
+- Here is a great video about developing a HTML5 game. 
+(http://www.html5gamedevelopment.com/html5-game-tutorials/2013-12-developing-html5-games-1hr-video-presentation)
+
+- You can also check out /r/gamedev for more resources.
+(https://www.reddit.com/r/gamedev)
