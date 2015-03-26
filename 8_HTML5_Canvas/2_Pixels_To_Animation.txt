@@ -23,7 +23,7 @@ https://github.com/PintaProject/NightVisionEffect/blob/master/NightVisionAddin/N
 - make an image black and white by averaging the red, green, and blue values
 - invert color on an image by assigning the pixels to the compliments of thier current values
 - or maybe turn down the lights and turn on night vision mode
-- we will not use an external library; but that are software packages and applications that make it easy
+- we will not use an external library; but there are software packages and applications that make it easy
 - external libraries will make advanced photo editing easy inside the canvas
 
 6) ImageData object
@@ -122,10 +122,10 @@ for more information about how the human eye works.
         var numPixels = imageData.data.lenth / 4;
 
         for (var i = 0; i < numPixels; i++) {
-          r = imageDat.data[i * 4 + 0];
-          g = imageDat.data[i * 4 + 1];
-          b = imageDat.data[i * 4 + 2];
-          a = imageDat.data[i * 4 + 3];
+          r = imageData.data[i * 4 + 0];
+          g = imageData.data[i * 4 + 1];
+          b = imageData.data[i * 4 + 2];
+          a = imageData.data[i * 4 + 3];
           pixel = makePixelGrayScale(r, g, b, a);
           imageData.data[i * 4 + 0] = pixel.r;
           imageData.data[i * 4 + 1] = pixel.g;
@@ -190,7 +190,7 @@ for more information about how the human eye works.
 
     <script type="text/javascript">
       var canvas = document.querySelector("canvas");
-      var ctx = canvas/getContext("2d");
+      var ctx = canvas.getContext("2d");
 
       document.addEventListener('DOMContentLoaded', function() {
         var v = document.querySelector("#v");

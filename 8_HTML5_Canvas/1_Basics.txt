@@ -1,7 +1,7 @@
 1) HTML5 Canvas element
 - 2D surface that takes instructions and immediately renders them
 i.e.
-- <canvas width="456" height="257" style="psition: absolute; left: 411.5555px; top: 0px;">
+- <canvas width="456" height="257" style="position: absolute; left: 411.5555px; top: 0px;">
   </canvas>
 
 - canvas has a set of functions that allow you to draw shapes images text and patterns
@@ -103,7 +103,7 @@ Navigate to http://localhost:8888/MAMP/index.html
   </body>
 </html>
 
-8) Clearing teh canvas with rectangles
+8) Clearing the canvas with rectangles
 
 If you have a canvas c and given some code to draw a rectangle in a given color, you might write something like
 
@@ -271,7 +271,7 @@ ctx.font = "36pt Impact";
 ctx.textAlign = "center";
 
 ctx.fillStyle = "white";
-ctx.fillText("CANVAS MEMSE!", c.width / 2, 40);
+ctx.fillText("CANVAS MEMES!", c.width / 2, 40);
 
 ctx.strokeStyle = "black";
 ctx.lineWidth = 3;

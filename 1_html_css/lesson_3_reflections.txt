@@ -57,6 +57,11 @@ A modal window is any type of window that is a child (secondary window) to a par
 10) Semantics (noun)
 The branch of linguistics and logic concerned with meaning.
  
+11) Bootply
+- Like an abstraction on top of the bootstrap frame work
+- http://www.bootply.com/
+- sticky left menu bar - www.bootply.com/90936
+
 Lesson Notes:
 - Dive more into the Bootstrap framework documentation
 - Bootstrap documentation will become one of your closest friends
