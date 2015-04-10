@@ -1,0 +1,130 @@
+1) Introduction
+- 2D tile based rendering engine: backbone of all old school graphics engines
+- in HTML5 this is the canvas element
+
+2) What is canvas?
+- new HTML5 element 
+- exposes apis allowing you to draw graphs, images and text to portions of the page
+- has two attributes specific to it: width and height
+- these attributes specify size of drawing surface on your page
+- canvas is essentially a large memory blob of pixel data; aka a bitmap
+- it closes resembles the memory layout that web developers have been using for years to geenrate 2D games
+
+3) Your first canvas
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+
+  <body>
+    <canvas id="my_canvas"></canvas>
+
+    <script>
+      var canvas = null;
+      var context = null;
+      var img = null;
+
+      var setup = function() {
+        // Create a canvas element using document.getElementById,
+        // then set the width and height properties to 1200 and 
+        // 720, respectively.
+
+        canvas = document.getElementById("my_canvas");
+        context = canvas.getContext('2d');
+        canvas.width = 1200;  // window.innerWidth;
+        canvas.height = 720;  // window.innerHeight;
+
+	// Create a new image with src of "ralphyrobot.png"
+	// and onload of onImageLoad
+        img = new Image();
+        img.onload = onImageLoad;
+        img.src = "/media/img/gamedev/ralphyrobot.png";
+      };
+
+      var onImageLoad = function() {
+	// use the console.log function to print a statement to the browser
+	// console. This will print once the image has been downloaded
+        console.log("downloaded");
+        context.drawImage(img, 192, 192);
+      };
+
+      setup();
+    </script>
+  </body>
+</html>
+
+- in the code above the canvas dimension are hard coded 1200 x 720
+- if you want the size to grow as browser window is resized, ...
+- use window.innerWidth and window.innerHeight properties
+- the canvas will occupy the whole screen
+
+4) Loading images
+- games just conituously render images to the canvas
+- in order to draw an image to the canvas you first have to load it
+- steps
+-- declare a new Image() object
+-- declare its 'onload' method
+-- set Image.src= 'url'
+
+- as soon as the Image.src property is set, js will kick off a load function
+- therefore, remember to set the callback function 1st, before setting .src
+
+- for feedback on how you image is loaded check out the network tab of chrome's developer tools
+- this tab will list whether or not the image has been loaded and how long it took
+
+5) Drawing images (https://docs.webplatform.org/wiki/Main_Page)
+- use the canvas.drawImage api
+- canvas.drawImage(image, x, y) -> x, y is top-left of bounding box
+
+6) Canvas coordinate system
+
+(0, 0) -> x
+
+|
+V
+
+y
+
+7) Image formats
+- jpeg: developed a while ago as a joint effort between largest industry contributors
+- png: 
+
+- jpeg gives better size/compression than png
+- png gives you ability to apply transparency; jpeg does not
+- i.e. in png you can use transparent pixels (i.e. specify alpha)
+
+8) General rules of thumb about images on the internet
+- if image does not require transparency, use jpeg
+- else, use png
+
+9) web-p
+- new image format for the internet
+- better size/compression ratios that jpeg
+- also, supports transparency (i.e. alpha)
+
+10) Storytime - Dangerous Dave and Copyright Infringement
+- in the early 1990s specialty hardware was used to get free graphics
+- e.g. likes of nes, genesis, gameboy
+- the hardware let these devices draw tons of frames per seconds (tiles)
+- PCs at the time did not have similar hardware and ran at 33hz
+- one day, John Carmark made a demo called "Dangerous Dave and Copyright Infringement"
+- demo show super mario bros 3 running @ full 30 fps on desktop hardware
+- Carmark showed demo to John Romero -> id Software was born
+
+11) id Software
+- This studio created the first person shooter genre
+- With titles such as:
+-- Wolfenstien
+-- Doom
+-- Quake
+- Carmark figured out an optimization that allowed for the performance gains on PC hardware
+- the early PC harware was not too good at copying pixels from on location to another in memory
+- but they were good at copying rows of memory from different registers
+- basically Carmack minimized the amount of copying that needed to be done to simulate scrolling across screen
+- i.e. no need to redraw the whole frame, just the little sliver that changed 
+
+12) Dirty Rect
+- concept of just redrawing only the part of your canvas that changed
+- still used today in tons and tons of games 
+

@@ -1,0 +1,138 @@
+1) Introduction
+- once we have ability to manipulate the canvas, ...
+- we need to figure out how to do it the right way
+- as the number of images in your environment grows, managing them (i.e. placing them on screen on the right place
+at the right time becomes very difficult).
+- an Atlas is an abstraction that will help you manage this complexity
+
+2) Dirty Rectangles
+- c2.com/cgi/wiki?DirtyRectangles
+
+3) Browser Connects
+- there is an upper limit on # of concurrent requests a browser can make to thesame server (domain)
+- the browser sets this limit. it is browser dependent ~ 2 - 8. Say 6.
+- when the limit is reached browser blocks subsequent requests until a connection becomes available
+
+4) Texture Altasing
+- takes x ms to request one 400x400 px image
+- however takes 17x to ro request 10 40x40 images
+- so to improve html application performance, group many small images together into one large image
+- reduce # of http request
+- process is know as texture atlasing
+
+5) Atlas
+- a large image that contains many smaller images
+- each of the smaller images can be referenced independently
+
+6) Atlases and Spritesheets
+- technology that makes up the web is nor really new
+- just old technologies with new names (i.e. just re-breand something old)
+- today in the html worl spritesheets and atlases are synonymous
+- but this is wrong...
+- back in the day of 2D games atlases defined many sorts of charts in a single image
+- spritesheet was a term reserved just for animated objects 
+(i.e. particles flying around on screen or character swiping his sword)
+
+7) GRITS
+- https://github.com/fredsa/gritsgame
+- the game that this course is building
+
+8) Bin packing problem (excerpt from wiki pedia)
+
+In the bin packing problem, objects of different volumes must be packed into a finite number of bins or containers each of volume V in a way that minimizes the number of bins used. In computational complexity theory, it is a combinatorial NP-hard problem.
+
+There are many variations of this problem, such as 2D packing, linear packing, packing by weight, packing by cost, and so on. They have many applications, such as filling up containers, loading trucks with weight capacity constraints, creating file backups in media and technology mapping in Field-programmable gate array semiconductor chip design.
+
+The bin packing problem can also be seen as a special case of the cutting stock problem. When the number of bins is restricted to 1 and each item is characterised by both a volume and a value, the problem of maximising the value of items that can fit in the bin is known as the knapsack problem.
+
+9) Texture packer
+- creating a texture atlas = very tricky engineering task
+- texture packing problem = bin packing problem (canonical form) = NP hard
+- problem is so challenging, he uses a variant as programming interview question
+- GRITS uses off the shelf product called Texture Packer to create its altas
+- Texture packer outputs altas for input collection of textures
+- also, outputs data file that maps individual source images to their final location in the atlas
+- this file is a json file
+
+10) Parsing Texturepacker Output
+- need to parse the json output of texture packer 
+- Look at code in quiz of unit 7
+
+11) JSON file format
+- looks something like:
+
+...
+"chart name":
+{
+  "frame": {...},
+  "rotated": boolean,
+  "trimmed": boolean,
+  "spriteSourceSize": {...},
+  "sourceSize": {...}
+}
+
+"grenade_launcher_impact_0012.png":
+{
+  "frame": {"x":2, "y":2, "w":142, "h":140},
+  "rotated": false,
+  "trimmed": true,
+  "spriteSourceSize": {"x":58, "y":57, "w":142, "h":140},
+  "sourceSize": {"w":256, "h":256}
+}
+
+"grenade_launcher_impact_0013.png":
+{
+  "frame": {"x":972, "y":1314, "w":92, "h":76},
+  "rotated": false,
+  "trimmed": true,
+  "spriteSourceSize": {"x":87, "y":93, "w":92, "h":76},
+  "sourceSize": {"w":256, "h":256}
+}
+...
+
+12) Parsing Texture Packer Output
+- load an parse json file in order to render all sprites on the screen properly
+- only concerned with two things...
+- name of original loose asset before it was packed into atlas (i.e. chart name)
+- data in the frame parameter
+
+13) Frame parameter data
+- x, y, are top/left corner of the chart inside of the atlas
+- w, h, are size of chart in atlas
+- will use these values to draw char to the canvas
+
+14) DrawImage api
+- can use drawImage to draw only a subsection of an image
+- advanced version of drawImage api gives your more options
+- drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
+- sx, sy, sw, sh: source x, y, w, h respectively -> attributes of image in the atlas
+- dx, dy, dw, dh: destination x, y, w, h respectively -> attributes of image on the canvas
+- drawImage is smart enough to scale image is sw != dw and/or sh != dh
+- we won't do much scaling in the GRITS game
+
+15) Rendering Texturepacker Output
+- keep in mind no longer referencing loose files
+- files, to draw on canvas, are in an atlas
+- to draw an image, need to map from atlas to canvas
+
+16) drawSprite function
+- drawSprite(spritename, posX, posY)
+- spritename: name of loose asset
+- posX, posY: top left position of asset on the canvas
+
+- drawSprite function needs to find were spritename exists in/on the atlas(es)
+- keep in mind there could be more than one (i.e several) atlases
+- var gSpriteSheets = {}; // global map of imageName -> Sprite sheet object
+- mapping is created in load method of SpriteSheetClass
+
+- want to iterate thru all the spriteSheets in gSpriteSheets
+- check whether the given sprite name exists in sprites array
+- sprites array is array of sprite objects; these are construncted in the defSprite method
+- once the drawSprite function figures out what atlas the sprite is in, 
+- it can call the __drawSpriteInternal function with the proper arguments
+
+17) __drawSpriteInternal(spt, sheet, posX, posY)
+- spt: the sprite object
+- sheet: the sprite sheet object (i.e. the altas the sprite is in)
+- posX, posY: where to draw the image on the canvas
+- use drawImage api to draw sprite to canvas

@@ -1,0 +1,112 @@
+0) Instructors
+Shaun Bennet - Course architect @ Udacity
+Cole Mcanlus - Developer Advocate @ Google (Games expert)
+Peter ... - Program manager @ Google (HTML5 expert)
+
+
+PART I - Reduce memory usage with sprite sheets
+http://www.codeandweb.com/what-is-a-sprite-sheet
+
+1) What is a sprite sheet?
+- game scences are composed of several different graphical objects
+- e.g. flowers, trees, clouds, pixel guy, birds, etc
+- call all these MOVEABLE graphical objects, sprites
+
+2) One sprite
+- represented as a rectangular image with a certain w & h [px]
+- e.g. 140[px] x 140 [px] for pixel guy
+- each pixel, in the sprite, requires memory to store information about its properties
+- e.g. Memeory (for a px) = color + width + height
+- color: RBGA (red, green, blue, alpha) = 32 bits = 4 bytes
+- each color channel requires 8 bits; there are 4 channels, therefore total = 32 bits
+- so total memory consumption = 4 bytes [1 px] X (140x140) [total number of pixels] ~ 78 kB
+
+
+3) Graphics hardware
+- may impose restrictions on the sizes you can use for your sprites
+- e.g. w & h must be powers of 2 and/or sprites must be square (w == h)
+- if hardware imposes both contstraint above, then you pad your sprite with additional unused pixels
+- therefore pixel guys w/h becomes 256 x 256 pixels
+- the additional pixels not part of the original 140 x 140 [px] are just padding
+- now pixel guys memory usage is > 3 times what it was
+- now you may have many, many sprites that make up your game 
+- memory for all the sprites seem to grow exponentially
+
+4) Smarter way to use memory
+- pack more sprites into the unused spaces now used for padding
+- the result is called a sprite sheet (many sprites stiched together as one sheet)
+- now only the one sprite sheet has to meet the graphic hardware's constraint
+- memory usage becomes much lower than it would be if you had used individual sprites
+
+5) Still more optimization
+- can reduce (squeeze out transparent portions of the sprite)
+- can reduce color depth to 16-bit (down from 32 bit) i.e. each channel now uses 4 bits instead of 8 bits 
+- so, you lose some colors, but gain with smaller memeory usage
+- the quality of the color reduction can be improved by applying dithering
+
+6) Dithering
+- an attempt by a computer program to approximate a color from a mixture of other colors when the required color is not available.
+
+7) Memory usage
+- reduced up to 50%
+
+
+PART II - Enhance game performance with sprite sheets
+http://www.codeandweb.com/what-is-a-sprite-sheet-performance
+
+1) Actors/Components
+
+Memory (i.e. RAM) <-> Game Logic (i.e. you code) -> Graphics engine (OpenGL, canvas, svg) -> Computer screen
+
+2) OpenGL
+- the artist painting your game screen at the frame buffer
+- i.e. the component that sets the color of the pixels on your screen
+- the 'coloring' i shappening at a certain rate, == fps
+
+3) Using individual sprites
+- the drawing process will proceed as follows
+- the game logic will retrieve the one sprite from memory and tell OpenGL to draw it
+- the game logic will retrieve from memory information about what part of the sprite to draw, then pass info to OpenGL
+- the game logic will retrieve from memory where on the screen the drawn portion should go, then pass info to OpenGL
+
+- NOW, and only now does openGL start to draw.
+- while openGL is drawing the game logic will wait until OpenGL finishes before the game logic kicks off the handshaking process all over again for the next sprite to draw
+
+- and on and on for all the sprites in your game
+- the faster this process happens, the higher frame rates you can achieve
+
+- note that there is alot of communication overhead going on between all the actors in the process
+
+4) Better solution
+- use a sprite sheet
+- we need an additional module in the game called a sprite batch or sprite atlas
+
+Memory -> Atlas -> Game -> OpenGL -> Screen
+
+5) Atlas
+- the atlas interacts with memory to ...
+- collect all the data required to draw the sprites, i.e.:
+-- (a) spritesheet: our reference to the sprite sheet
+
+-- (b) source coordinate list: a list of source coordinates which contain the parts of the sheet to be copied from
+(information about how to index/ get position of a particular sprite on a sprite sheet)
+
+-- (c) destination coordinate list: a list of destination coordinates where the sprites have to be placed on the scene
+(information about where to draw a particuar sprite on the screen)
+
+(see spritesheet_#.jpeg)
+
+6) Simplfied communication/handshaking between actors
+- game access memory for sprite and metadata info ONCE
+- game passes info to OpenGL ONCE  
+- OpenGL can now draw the scene without further interruption 
+- and the game can attend to other tasks like 
+- handling players input and calculating collisions and objects movement
+
+7) Sprite sheet goodness
+- reduce memory consumption
+- speed up drawing process
+- keep frame rate high
+
+PART III
+http://www.codeandweb.com/what-is-a-sprite-sheet-part3
