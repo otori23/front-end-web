@@ -133,6 +133,166 @@ The bin packing problem can also be seen as a special case of the cutting stock 
 
 17) __drawSpriteInternal(spt, sheet, posX, posY)
 - spt: the sprite object
-- sheet: the sprite sheet object (i.e. the altas the sprite is in)
+- sheet: the sprite sheet object (i.e. the atlas the sprite is in)
 - posX, posY: where to draw the image on the canvas
 - use drawImage api to draw sprite to canvas
+
+18) Frame Trimming
+- texture packer (TP) has a trim option
+- selecting the trim option will remove as much unused space as possible in the original image that was input
+- so, basically texture packer will find to true boundry for each image passed to it,
+- then use the trimmed version of the images to create a sprite sheet
+- the unsed pixesl are mainly the transparent pixels
+- when you use this option the format of the output file from TP will change a some
+- previously (in the output JSON) the frame parameter w & h matched the sourceSize paramter w & h
+- frame w/h i.e. size in atlas, matched the w/h in source image file "sourceSize", and parameter "trimmed" == false
+
+...
+// notice trimmed == false, and frame w/h matches sourceSize w/h
+"landmine_impact_large.png":
+{
+  "frame": {"x":120, "y":144, "w":128, "h":128},
+  "rotated": false,
+  "trimmed": false,
+  "spriteSourceSize": {"x":0, "y":0, "w":128, "h":128},
+  "sourceSize": {"w":128, "h":128}
+}
+
+// notice trimmed == true, and frame w/h DOES not matches sourceSize w/h
+"landmine_impact_small.png":
+{
+  "frame": {"x":852, "y":1640, "w":84, "h":84},  // w/h represents true boundry for used pixels in input texture
+  "rotated": false,
+  "trimmed": true,
+  "spriteSourceSize": {"x":21, "y":22, "w":84, "h":84},
+  "sourceSize": {"w":128, "h":128}
+}
+...
+
+19) Parsing Trimmed Textures
+- if images have been trimmed by TP, game logic needs to process trimmed JSON output is special way
+- see file trimmed_img.jpeg
+- note that, in the file above, if you want the used pixels in the trimmed image to show up in the same location
+as the used pixels in the source image, the you have to do some translation in x/y location of top-left corner
+of the trimmed image
+- so need to refernece the timmed data against the source data to figure out what the offset is to draw the sprite in 
+the correct location
+- with this in mind, update parseAtlasDefinition function (in sprtesheet.js), 
+- so that the sprite draws in the right location
+
+20)  More on Trimming
+- TP will only do a smart trim from egdes of an image to the center
+- so if there is an images with moslty unused pixels, but some used pixels are in the top-left corner,
+- then no trimming will happen
+- therefore, do not need any information from sprite's frame parameter to create new cx, and cy
+- if trimmed, new cx, cy is defined as
+ 
+cx = sprite.spriteSourceSize.x - (sprite.sourceSize.w * 0.5);
+cy = sprite.spriteSourceSize.y - (sprite.sourceSize.h * 0.5);
+
+- NOT SURE difference between spriteSourceSize and sourceSize
+- look at trimmed_img.jpeg and try to make sense of above calculation
+
+21) Storytime - Web Developers and Tools
+- Tools are life force of your dvelopment cycle (think your tool chain)
+- start with compliers programmers use -> to art creation tools for the artists -> even notepad and text editors 
+for the designers
+- 30 years worth of tools exist at this point. So, high probablity of finding something already existing that you can use
+
+22) Drawing Map
+- there are the sprites the user are controlling and moving around
+- there is also the environment in which the sprites are navigating; i.e. the environment map or the background
+- the map data resides in one large atlas
+- use drawImage to draw portions of atlas to canvas
+
+23) Tiled
+- a tool for generating background environments for game (i.e. the game map)
+- with inputs, Tiled outputs a file representing the game's map
+- this file contains some instruction about how the atlas should be rendered to draw the entire map 
+
+- I guess the atlas was created by TP ???
+
+- prior to running the game, an artist will take the atlas data for game map and use as input to Tiled tool
+- output is a JSON file that will tell the game how to use the atlas to draw the map
+
+24) Tile output
+- tells us a few things,
+- what atlases to load
+- how the layers of the game map are organized
+- game logic needs to parse the JSON properly in order to render the map
+
+25) Loading map data
+- perform Xml Http Request (XHR) to load map data into the game
+
+- xhrGet function below just encapsulates interaction with native js XMLHttpRequest() 
+
+function xhrGet(reqUri,callback) {
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("GET", reqUri, true);
+	xhr.onload = callback;
+
+	xhr.send();
+}
+
+use this function like:
+
+...
+load: function (map) {
+  xhrGet(map, function(e) { this.fullyLoaded = true; });
+},
+...
+
+- the fullyLoaded flag is an indication to code external to the class that the TILEDmap class is ready to go
+
+26) Tiled map data
+- "tilewidth": tile size map expects
+-  : # of vertical and horizontal tiles used
+- "tilesets": what atlases the map uses
+- "layers": information about defined layers for map
+- layers.Object.data: very large array of interger values that represents each tile placed on the layer
+- distinction made between "tile layer" and "object layer"
+
+27) Deep Dive Into Map Data
+- deeper look into data array
+- each layer is a large 2D grid of tile data
+- this data is listed in json file as 1D integer array
+- i.e. raster scan order - 2D table rows are listed out in order in a linear array
+- zero value in array means no tile in that x/y position inside of this layer
+- no zero value represents a tile index for a given atlas
+- remember each atlas has a ..tilesets.firstgid property
+- need more information about how to interpret .tilesets.firstgid
+- first nonzero entry of data array must have .tilesets.firstgid == 1 ???
+- each atlas inside of the tiled file will have an increasing firstgid
+- Tiled has its own herusitcs about the firstgid of each subsequent atlas that is loaded
+ 
+28) Parsing Tiled Output
+- can be complex
+- steps are:
+
+- load map json and extract properties needed to compute map w and h in pixels
+w = # of X tiles * size of one X tile in px
+h = # of Y tiles * size of one Y tile in px
+
+- load all tile set data from the file 
+for each tile set, 
+  create a new image
+  set a callback function for once it is loaded
+  then set its src value to the tile sets image attribute
+
+use a counter variable to keep track of how many images have been loaded
+set fullyLoaded to true only when all images have been loaded
+
+- Keep track of each tile set that is loaded from the map
+use an array to store the newly created tileset object
+
+- Now we need to find the image an coordinate position of a specific tile in a tile set from our data array
+
+- draw tiles
+look in json file .layers[i].data is where informations exists for tiles we want to draw
+loop through each layer
+for each layer loop through the tile ids contained in its data array
+remember if the tile id == 0, means don't draw anything at that location
+if id is not zero, use the getTilePacket method and tile id to grab the tile information
+calculate position on canvas for tile
+draw the tile
