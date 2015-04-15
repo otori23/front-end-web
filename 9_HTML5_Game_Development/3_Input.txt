@@ -1,0 +1,120 @@
+0) Capturing user input
+
+- GRITS has two primary forms of input
+- 1st is the keyboard
+- use the w-a-s-d keys to move the robot around
+- 2nd is mouse input
+- use mouse to shoot. shot is in the direction mouse is pointed
+- robot body does not move until shot is taken, so player can move and soot at thesame time
+- if no mouse, use arrow keys to do shooting
+- can combine arrow keys for finer control of shot direction
+
+1) Unfair Gameplay
+
+- fair game play has always been a requirement of multi-player games
+- has not always been this way
+- can reduce screen resolution for faster frame rates / or have faster internet connection
+- in GRITS have more degree of freedom shooting with mouse than if using arrow keys
+- need to actively avoid this unfairness
+- by locking the mouse positions to thesame directions you get from the arrow keys
+
+2) Event Listeners
+
+- document.getElementById('pLubbz').addEventListener('mousemove', onMouseMove);
+- when mouse moves over DOM node with id = 'pLubbz' execute the onMouseMove function
+
+3) Problems with Keyboard Input
+
+- tempting to respond to the user event inside of the event handler
+- this is generally considered bad practice
+- remember game loop: update objects -> render objects
+- user envents can happen at anytime (i.e. say after the update of objects but before render)
+- this causes some rendered object to show outdated data
+- want a loop that looks like: get user events -> update objects -> render objects
+
+- so, when you recieve user event, the event handler logs the event (e.g. say in a queue or even priority queue)
+- when the game loop is about to start it 1st queries the event queue for an event the does the rest of the loop
+- see event_handling.jpeg
+
+4) Keymapping
+- technique game developers use to allow players  to customize their experience in playing the game
+- i.e. if players does not like moving around using w-a-s-d,
+- they can shift to using teh arrow keys instead
+- see file, key_mapping.jpeg: GRITS controls has a number of differnet input methods to keep track of
+- note there are two different shooting methods
+- in the future may have a need to re-organize what keys lead to what actions in the game
+
+- game code has to be able to variable modify what key maps to what action 
+
+5) Keymapped Input
+- in code below, note that the game engine does not query the key directly
+- keys are absracted with strings that represent game events
+
+// BAD
+gameEngine.update()
+{
+  if(gInputEngine.state(KEY.W))
+    move_dir.y -= 1;
+}
+
+// GOOD
+gameEngine.update()
+{
+  if(gInputEngine.state('move-up'))
+    move_dir.y -= 1;
+}
+
+//client/scripts/core/clientgameengine.js
+gameEngine.init = function()
+{
+  gInputEngine.bind(gInputEngine.KEY.W, 'move-up');
+  gInputEngine.bind(gInputEngine.KEY.S, 'move-down');
+}
+
+6) The problem with teleportation
+- just take this section on faith for now ...
+- all of the game entities are simulated using physics bodies
+- this means we lack the ability to simply move our players to a desired location
+- this type of teleportation can cause problems with your physics environment
+- teleported objects ignore physics calculations until after their teleportation has been resolved
+
+- if you telported a play to a postion that intersects with a wall, 
+- the player could potentially get stuck there 
+- and then confuse the physics engine on what to do next
+- so instead of using teleportation, instead update the players velocity so that the physics engine 
+moves the player to the desired location on the next update loop
+
+7) Physics
+
+- all of our players (multi-player game) are represented by an mpPhysBody variable
+- the player object is retrieved from the a method in the physics engine
+
+mpPhysBody = PhysicsEngine.newBody();
+
+- remember can't set the physics body position directly due to teleportation issues
+- so instead we take advantage of the fact that the physics engine will update all of the physics bodies 
+that it owns every frame
+
+- physics bodies allows you to define a velocity vector on them
+- when the physics engine updates, it adjust the position of the physics body by the vector,
+- thereby, moving it correctly 
+
+- so in GRITS supply a velocity vector that will move the body to the position we want it to be in
+- thereby avoiding any teleportation issues
+
+8) Mouse firing
+- to fire projectile from good robot to bad robot
+- find directional vector that represents line from robot location to mouse cursor in game space
+- to do this, subract mouse position from robot position
+- normalize this vector and use it to define the velocity path for the projectile
+
+9) Keyboard firing
+- similar to code of mouse firing but using keyboard events
+
+10) Quantize
+- restrict mouse to have same dexterity as keyboard firing
+- take mouse input and snap it to one of the 8 directions that keyboard can fire in
+- turn firing velocity vector into a lookup index representing direction
+- there are 8 possibe directions 
+- basically find angle between x/y components of velocity vector
+- then turn angle into an integer in the range 0-7.
