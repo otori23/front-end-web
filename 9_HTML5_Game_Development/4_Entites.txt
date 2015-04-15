@@ -25,3 +25,92 @@
 
 3) Factory pattern
 - use factory object to automate the creation of entities
+- pass string representing type into factory object, and it creates the correct object
+
+4) Use factory to create entities
+- using switch statements do not scale well; a maintenece nightmare
+- adding new entities requires code change
+- just asking for probelms
+
+
+- in js can create a new object using a handle to its definition
+//exports.Class = WeaponInstanceClass;
+gGameEngine.factory['WeaponInstance'] = WeaponInstanceClass;
+
+
+- later access the use string to access the class constructor to create class
+
+- in GRITS, map development is done through a program called Tiled
+- which allows content creators (arts & designers) to place objects in the world and set their type via a string
+- the type is represented as a string in the exported json file
+- json file is a list of all the objects on the map
+- as game logic examines all these objects, it needs to pull out their type string and call the correct constructor
+
+5) Data-Driven Design
+- allows non-enginers (artists & designers) change flow execution and assests in game without talking to engineers
+- works by providing some simplistic file outside of text code that the non-engineers can change (quickly iterate on)
+- i.e. text file, xml, json
+- most game these days are built on a data-driven desing framework
+
+6) Update all entities
+- GameEngine now needs to:
+- create entities with factory (just and object within GameEngine i.e. factory: {})
+- keep track of created entities (in an array entities: [])
+- later game engine can iterate through entity list and update each
+- GameEngine Code snapshot
+
+GameEngineClass = Class.extend({
+  entities: [],
+  factory: {},
+
+  spawnEntity: function(typename) {
+    var ent = new (this.factory[typename])();
+    this.entities.push(ent);
+    return ent;
+  },
+  
+  update: function() {
+    // Run through the entities array/list and call each elements update method
+  }
+});
+
+7) Update One Enitity
+- the entity class is the base class for all entities: Entity.js
+- it stores all common logic
+- sub classes can override methods to implement specific logic, i.e. override how to update()
+- sub classes: PlayerClass.js, LandMineClass.js, QuadDamageClass.js
+- when and entity updates it should call update in the entity's parent class
+
+7b) Entity class chain
+
+- Class <- EntityClass <- LandMineClass, PlayerClass, ...
+- Class is base in the chain
+- seems to be using decorator pattern to implement classes
+- i.e. EntityClass decorates Class, and LandMineClass decorates EntityClass
+
+8) Physics
+- http://docs.closure-library.googlecode.com/git/class_goog_math_Vec2.html
+- http://box2d-js.sourceforge.net/#howto
+- http://box2d.org/
+
+9) Killing Entities
+- at this poing game engine has taken care of spawning and updating entities
+- next figure out how to remove entities that are dead/should no longer exist
+- therefore should no longer be processed by game engine
+
+- add flag to entity class indicating whether or not it has been killed
+- dead objects will not update or render while the class is set
+- so game engine only calls update on entities with flag indicating the entity is still alive
+
+10) Order of operation
+- in what order do entities get updated
+- i.e. tank, bullet, soldiers, etc
+- no right answer, just be consistent across updates and users (for multi-user game)
+
+currSpriteName : null,
+
+11) Implementing Z-Ordering
+- some objects need to be rendered on-top of others
+- i.e. explosions allows render on top and other objects belows it
+- add z-index property to EntityClass (i.e. all entities will have this properties)
+- draw entities with lower z-indexes 1st. So, they will appear below entites with bigger z-indicies
