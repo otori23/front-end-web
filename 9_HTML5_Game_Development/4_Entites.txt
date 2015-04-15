@@ -1,0 +1,27 @@
+0) Story so far
+- have ability to draw things on screen
+- have ability to move them around
+- give thought, work, and automation to an enviroment
+- leads to concept on an entity
+
+1) What is an entity ?
+- pretty much every game architecture out there has some encompasing object
+- object has logic assosciated with it
+- object may or may not have a visual representation
+- object may or may not be represented on the server
+- this is a basic object that every game has
+- call this object an entity
+
+- is it a base class for the game components/entites? I think YES.
+ 
+- class that contains some unique logic that makes this entity different from all the other ones in the world
+- what type of properties should all entities have ?
+- the ability to think or have some custom processing associated with an entity is critical to its definition
+
+2) Creating an Entity 
+- javascript eval
+- works like python eval
+- turns input string into executable code
+
+3) Factory pattern
+- use factory object to automate the creation of entities
