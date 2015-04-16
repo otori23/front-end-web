@@ -1,0 +1,85 @@
+0) Pro HTML5 Games (Expert's Voice in Web Development)
+by Aditya Ravi Shankar  (Author)
+
+Series: Expert's Voice in Web Development
+Paperback: 364 pages
+Publisher: Apress; 1 edition (December 10, 2012)
+Language: English
+ISBN-10: 143024710X
+ISBN-13: 978-1430247104
+Product Dimensions: 7.5 x 0.8 x 9.2 inches
+Shipping Weight: 1.4 pounds (View shipping rates and policies)
+Average Customer Review: 4.9 out of 5 stars  See all reviews (12 customer reviews)
+Amazon Best Sellers Rank: #690,261 in Books (See Top 100 in Books)
+
+Build your next game on a bigger scale with Pro HTML5 Games. This book teaches you the essentials of advanced game programming in HTML5. You’ll learn techniques that you can transfer to any area of HTML5 game development to make your own professional HTML5 games!
+
+Led by an expert game programmer, you’ll build two complete games in HTML5: a strategy puzzle game based on the Box2d physics engine and in the style of Angry Birds and a real-time strategy (RTS) game complete with units, buildings, path-finding, artificial intelligence, and multiplayer support. In the process, you’ll learn how to do the following:
+
+Create realistic physics in your game by incorporating the Box2d physics engine
+Design large worlds with lots of characters and let users interact with them
+Use sprite sheets, panning, parallax scrolling, and sound effects to build a more polished game
+Incorporate pathfinding and steering to help characters navigate through your world
+Create challenging levels with intelligent enemies by using decision trees, state machines, and scripted events
+Add multiplayer in your games using Node.js and the WebSocket API
+This book will help you take your HTML5/JavaScript programming experience to the next level. It gives you the knowledge and skills you need to develop more complex, bolder games and become an HTML5 games pro.
+
+What you’ll learn
+Creating realistic physics in your game by incorporating the Box2d physics engine
+Designing large worlds with lots of characters and let users interact with them
+Using sprite sheets, panning, parallax scrolling, and sound effects to build a more polished game
+Incorporating pathfinding and steering to help characters navigate through your world
+Creating challenging levels with intelligent enemies by using decision trees, state machines, and scripted events
+Adding multiplayer in your games using Node.js and the WebSocket API
+Who this book is for
+Pro HTML5 Games is meant for programmers who already have some HTML and JavaScript programming experience and who now want to learn to harness the power of HTML5 to build amazing-looking games but don’t know where to begin.
+
+Readers who have experience making games in other languages such as Flash and would like to move to HTML5 will also find a lot of useful information in this book.
+
+If you do not feel confident about your game programming skills, don’t worry. This book covers all the essentials needed to build these games so you can follow along and learn to design large, professional games in HTML5. The book will also point to resources and reference material for supplemental learning in case you are having trouble keeping up.
+
+With dedicated chapters on HTML5 basics, the Box2D engine, pathfinding and steering, combat and effective enemy AI, and multiplayer using Node.JS with WebSockets, you should get a lot from this book no matter how much game programming experience you have.
+
+Table of Contents
+HTML5 and JavaScript Essentials
+Creating a Basic Game World
+Physics Engine Basics
+Integrating the Physics Engine
+Creating the RTS Game World
+Adding Entities to Our World
+Intelligent Unit Movement
+Adding More Game Elements
+CreaAdding Weapons and Combat
+Wrapping Up the Single-Player Campaign
+Multiplayer with WebSockets
+Multiplayer Gameplay
+
+1) Core HTML5 Canvas: Graphics, Animation, and Game Development (Core Series) Paperback – May 14, 2012
+by David Geary (Author)
+
+Series: Core Series
+Paperback: 752 pages
+Publisher: Prentice Hall; 1 edition (May 14, 2012)
+Language: English
+ISBN-10: 0132761610
+ISBN-13: 978-0132761611
+Product Dimensions: 6.9 x 1.1 x 9 inches
+Shipping Weight: 2.2 pounds (View shipping rates and policies)
+Average Customer Review: 4.6 out of 5 stars  See all reviews (59 customer reviews)
+Amazon Best Sellers Rank: #508,099 in Books (See Top 100 in Books)
+
+2) The Web Game Developer's Cookbook: Using JavaScript and HTML5 to Develop Games (Game Design) Paperback – March 31, 2013
+
+Series: Game Design
+Paperback: 368 pages
+Publisher: Addison-Wesley Professional; 1 edition (March 31, 2013)
+Language: English
+ISBN-10: 0321898389
+ISBN-13: 978-0321898388
+Product Dimensions: 7 x 0.7 x 9 inches
+Shipping Weight: 1.3 pounds (View shipping rates and policies)
+Average Customer Review: 4.2 out of 5 stars  See all reviews (13 customer reviews)
+Amazon Best Sellers Rank: #776,626 in Books (See Top 100 in Books)
+
+3) search your gmail for:
+Pro HTML5 Games
