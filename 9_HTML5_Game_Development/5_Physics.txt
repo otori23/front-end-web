@@ -1,0 +1,79 @@
+0) Inroduction
+- use physics to make gmae more realistic
+- add collisions
+
+1) Pixel Perfect Collision
+- say you had two objects in your game world
+- object one is 72x72 [px] and object 50x50 [px]
+- detecting pixel perfect collisions means you have to compare all pixels in one object
+to all pixels in the other to determine if there is a collision
+- so in this case you would have to do 72x72x50x50 = 12,960,001... comparisons
+- very inefficient use of cpu - for just two objects mind you
+
+- instead of computing the intersection of every pixel, in both objects, use an approximation
+- approximate objects with a bounding box
+- AABB - axis aligned boudning box
+
+2) AABB collision
+- only need to consider 4 values in collision calculation
+- min (x, y) - i.e. top-left corner
+- max (x, y) - i.e. bottom-right corner
+
+2b) Colliding intervals
+- see Sedgewick's algorithm for fidning intersecting intervals
+- think it is based on tree-based symbol table 
+
+- solution: Instead of figuring out what intersecting rectangles look like, think about what rectangles that DON'T intersect look like. The left side of A is to the right of the right side of B. OR, the right side of A is entirely to the left of the left side of B. Same logic for top and bottoms. That's all. 
+
+function is_intersection(rect_a, rect_b):
+    separate = rect_a.right < rect_b.left or
+        rect_a.left > rect_b.right or
+        rect_a.top > rect_b.bottom or
+        rect_a.bottom < rect_b.top
+
+    return not separate
+
+3) Collision Location
+- collision locations is represented by a rectangular area
+- any point on this area can be considered point of collision
+- can use any of the corners or entire area to be collision location
+- whatever you want
+
+4) Misses
+- your game loop processes information in discrete time steps.
+- so, it could miss a collision of objects if say these objects were on a collission course
+but the game loop does not update fast enough, so the objects have moved past each other 
+before the game loop has a chance to detect the collision
+- can maybe use bigger bounding boxes to correct for this
+- but this is not a fool proof solution; other anomalies may exist
+- many, many, other anomalies may exist
+- you can deal with all these things yourself ... or ...
+- you may want to use a framework that sorted out all these potential issues
+- enter the physics engine
+
+5) The wish list
+- what do we want from our physics engine
+- crete physics objects for our game entities
+- update the physics engine each frame
+- respond to collision events
+- poll updated position information for each physics object each frame
+(can use the physics engine's calculations to feed position information into our rendering engine for drawing the next frame)
+
+6) Box2d (http://www.box2dflash.org/docs/2.0.2/manual)
+- physics engine used in GRITs
+- it is open source
+- originally written in c++, then ported to action script
+- used in hundreds of games - including angry birds
+- actionscript version has recently been ported to javascript 
+- Box2d manual was written for actionscript version but the concepts translate
+- to use Box2d load it in your js environment as
+<script src="./box2d.min.js"></script>
+
+7) Storytime - We Use Box2D
+- Box2D is awesome library
+- free to use 
+- authors do ask that you give them credit if you use their work
+ 
+
+
+
