@@ -73,7 +73,84 @@ before the game loop has a chance to detect the collision
 - Box2D is awesome library
 - free to use 
 - authors do ask that you give them credit if you use their work
- 
 
+8) The World
+- write the PhysicsEngineClass -> this manages the interaction between your code and Box2D
+- the core of the PhysicsEngineClass revolves around the Box2D 'World' object
+- PhysicsEngineClass is composed of World object
+- the core of Box2D simulation revolves around the World object
 
+8b) World Construction
+- takes as input
+- a gravity vector... but since GRITS is a top/down game so no gravity vector is needed [= (0, 0)]
+- a boolean which tells Box2D if an object is allowed to sleep in the World
+- in GRITS we don't want to allow objects to sleep, so we set this to false
+- The Box2D World object is used as the main handle for the rest Box2D api
+
+9) Counterintuitive Physics
+- update function for the World object is called step
+- i.e. this.world.Step(...);
+
+9b) World.Step parameters
+- a framerate at which to update physics
+-- the frame rate frequency that the physics engine uses to track its calculations
+-- think of this value as the amount we want the physics engine to move the physics world forward each computational frame
+-- want this value to match what the visual world update loop is doing (60 fps)
+-- assume game is runnig at 60 fps
+-- so we want the world update loop called 60 times a sec
+-- meaning the time slice value a world "step" is 1/60 secs
+
+- the number of velocity iterations to calculate
+-- # of iterations the physics engine should spend solving collisions and velocities to esnsure proper placement
+
+- the number of position iterations to calculate
+-- same as above
+
+9c) Solving for collisions
+- can be very difficult to ensure that objects are not interpenetrating
+- this is a cumbersome process that can't be solve in a single pass
+- e.g. solving one interpenetration can create antother interpenetration etc, then physics engine can trying again to solve
+the problem
+
+9d) Back to # velocity / # position
+- these parameters indicate the # of passes the physics engine should use to try to solve interpenetration problem
+- before moving on
+- probably implemented as inner loop inside of the game loop
+- the higher the # the more precise the collision information
+- the lower the # the less precise the collision infoormation, but less for work for cpu
+
+9e) Clear forces
+- call the 'ClearForces' method of the world object to remove any forces at every physics update
+i.e. this.world.ClearForces();
+- this policy is specifically for GRITS as it is a top/down game
+- if you didn't clear forces, and you apply a force to an object at time step (i.e. apply a velocity)
+- this object will keep moving with same velocity at the next time step, because nothing is slowing it down
+- so we actually have to clear forces to get it to stop moving on the next frame
+
+10) Physics Bodies
+- Now that we have a world, our next step is to add bodies to the world
+- step one, create a BodyDef object (will use this later to create the specific body)
+- will set properties on BodyDef; e.g. is it dynamic (this that move and react to physics) or static (walls, trees, etc)
+- use the bodydef as input to world objects create body function to actually create the body you want i.e.
+var body = this.world.CreateBody(bodyDef);
+- now use the FixtureDef object to set the physics properties of the physics body
+- basically you are determining how the world and the object interact
+- physics properties: density, friction, restitution, mass, ect 
+- next step is to define the shape of the object; critical as it says alot about how this object interacts with world
+- Box2D supports the shapes: polygons, circles, boxes,
+
+- most physics engines support a suite of hull definitions 
+- but they give huge performance wins to simplistics hulls. e.g., spheres, circles, boxes and cubes
+- Polygons are always an option but expect to take a performance hit for this flexibility 
+
+- FixtureDef supports a set of api methods
+-- FixtureDef.SetAsBox - sets shape as a box
+-- call .CreateFixture on the body object with the FixtureDef as input
+-- this attaches fixture information to the body
+
+11) Destroying Physics Bodies
+- call DestroyBody method on the world object
+- pass in object to destroy as a parameter
+
+12) Entities and Physics
 
