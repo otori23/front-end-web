@@ -1,0 +1,55 @@
+0) Introduction
+- look at how to use the audio apis for the web to make your games stand out
+
+1) Sound and WebAudio
+- sound travels as a wave through the air
+- it is an analog signal
+- convert to digital form so that computer can use it
+- computer can apply several transforms to the digital form of the sound
+- i.e. change volume or apply an echo effect
+- think of all the transforms as a graph of processing nodes (sound_0.jpeg)
+- can traverse the graph in several different ways to combine unit transforms in more complex transforms
+- web audio is a node graph contained in something called an audio context
+- the audio context is run natively in high performance code specifically designed for audio processing
+
+1b) http://webaudioplayground.appspot.com/
+- great web app for playing with sound and effects
+- built by Chris Wilson
+- great way to visualize how web audio works
+- add source nodes, procession nodes, there is an output node (the speaker)
+- instructor shows how to create slap back effect
+- code available on GitHub
+- https://github.com/cwilso/WebAudio
+- app is hosted on google's appEngine
+
+2) Planning for your game
+- What sound effects do we need for GRITs ?
+- play basic sound clips
+- adjust the volume based on game state
+- i.e. can adjust volume os sounds based on distance from player on screen
+- so if something happens far away from player sound is not so loud
+- but if it happens close to player, sound is pretty loud
+- this provides a much more realistic environment than you could achieve with the audio element
+- can add pretty complex sound effects to your game
+- GRITs will use basic volume controls
+- But, you need to decide what level of sound complexity is right for your game
+
+3) Getting Sounds into Your Game
+- can pay a sound designer
+- but if your are a startup maybe you can't afford one
+- can get sounds for free - but be aware of licensing restricitons: creative commons, attribution, etc
+- sounds from different source/designers may not sound cohesive inside of your game
+- so, you probably need to take you sounds inside of a post processing tool
+- instructors fav: Gold Wave
+- Gold Wave is free
+- can cut, trim, your sounds to make it sound like everything was created in one environment
+- just keep in mind it can be tricky to get great content into your game
+
+4) Sound Manager
+- GRITs does not need all the features of web audio
+- so create an abstraction layer to hide complexity; process graph looks like
+- sound -> gain -> out
+- so create a sound manager class
+
+
+??? WHAT IS THE DIFFERENCE BETWEEN STRATEGY IN THIS LESSON AND HTML5 AUDIO ELEMENT ????
