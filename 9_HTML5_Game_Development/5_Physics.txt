@@ -151,6 +151,35 @@ var body = this.world.CreateBody(bodyDef);
 11) Destroying Physics Bodies
 - call DestroyBody method on the world object
 - pass in object to destroy as a parameter
-
+	
 12) Entities and Physics
+- in GRITs we will allow any entity definition to have a physics object
+- entities are not required to have a physics object
+- if an entity wants a physics body, it creates a handle to it and keeps the handle
+- i.e. say as ivar (composition)
+
+13) Updating Entities
+- Once object is created in world, the physics engine will simulate each frame,
+- updating the position and velocities of all physics body
+- on each frame GRITs entities needs to query the physics bodies to get their relevant info
+
+14) Continuous Motion
+- in Box2D api SetPostion will teleport you with no regard for physics
+- SetLinearVelocity of physics body instead
+- remember we cleared forces at the end of every update cylce, so...
+- is a body want to stay in morion it must SetLinearVelocity on every cycle
+
+15) Game Engine Integration
+- story so far ...
+- we can create a physics engine (i.e. world)
+- update it
+- add/delete physics objects
+- game entities can add their own physics bodies adn update them over time
+
+15b) Now, need to drive simulation from game engine object
+- in game engine...
+- define update rate for physics engine
+- initialize physics engine
+- in game engine update, call physics engine update
+
 
