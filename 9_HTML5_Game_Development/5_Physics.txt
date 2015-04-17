@@ -182,4 +182,46 @@ var body = this.world.CreateBody(bodyDef);
 - initialize physics engine
 - in game engine update, call physics engine update
 
+16) Collision Handling
+- physics engine updates positions/velocity of objects
+- but, currently, no information/action about collision
+- goal is to allow each entity to respond to a collision independent of other entities
 
+16b) Box2D Collision callback
+- Box2D funtion that allows us to define a collision callback
+- input to function is two physics bodies that are touching
+- so Box2D know when two objects are touching and will invoke your callback with the touching objects
+- you need to regsiter your callback with Box2D 
+
+17) Contact Listener
+- Box2D exposes several events that represent different stages of collision
+- BeginContact: occurs when things are touching but the collision calculation is not done yet
+- EndContact: occurs when the contact analysis is over
+- PostSolve: called once the phsyics collisions have occured
+- will define event handlers in physics engine class
+
+18) Entities and Collisions
+- need a way to map a physics body to an entity
+- physics bodies in Box2D contain a userData property
+- set this property to whatever the owning enttity of the body is
+- when a call back is invoked by the physics engine, 
+- then the physics body can then access is owning entity
+- thereby enabling game specific logic to run
+
+19) Entities and Collisions Pt. 2
+- update any entity file that create a physics body
+
+20) Specifying the contact listener
+- physics engine invokes collision handler; inputing the 2 touching bodies and impluse
+- collision handler is in game engine
+- game engine delegates event handlers to the entities (obtained from physics bodies)
+- so each individual entity responds to collisions in their own way
+
+21) Projectile onTouch
+- the onTouch envent handler in the Projectile entity class
+- this class uses a physics body therefore the implementation of onTouch
+- the onTouch function checks the imput are valid (i.e. in domain)
+- spawn some impact visual etc
+- do flip book animation
+- reduce health of an object 
+- mark entity for death etc
