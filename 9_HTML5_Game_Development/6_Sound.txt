@@ -48,8 +48,181 @@
 4) Sound Manager
 - GRITs does not need all the features of web audio
 - so create an abstraction layer to hide complexity; process graph looks like
-- sound -> gain -> out
+- sound -> gain -> out (grits_sound_pipeline.jpeg)
 - so create a sound manager class
 
+5) Initialize Sound Manager 
+- check for compatibility and create the web audio context
+- web audio is not fully supported in all browsers
+- supported in webkit browsers only (I guess at the time the course was created)
 
+5b) More on Web audio
+
+- Web audio api: http://www.html5rocks.com/en/tutorials/webaudio/intro/
+
+// note try/catch in js
+// throw expression - to throw and exception
+try {
+  this._context = new webkitAudioContext();
+}
+catch(e) {
+  alert('Web Audio API is not supported in this browser');
+}
+
+this._mainNode = this._context.createGainNode(0);
+this._mainNode.connect(this._context.destination);
+
+6) Load Sound Effects
+- once loaded they are ready to play
+- audio loading is similar to loading images
+- done asychronously via xhr
+
+// note that return type of request is arraybuffer (i.e. not text)
+// the array buffer is later decoded in the call back usig the audioContext.decodeAudioData method
+
+var clip = {s:new Sound(),b:null,l:false};
+this.clips[path] = clip;
+clip.s.path = path;
+
+var reuqest = new XMLHttpRequest();
+request.open('GET', path, true);
+request.responseType = 'arraybuffer';
+request.onload = function() {
+  gSM._context.decodeAudioData(request.response,
+  function(buffer)
+  {
+    clip.b = buffer;
+    clip.l = true;
+    callbackFcn(clip.s);
+  }
+  function(data)
+  {
+    Logger.log("failed");
+  });
+}
+
+request.send();
+return clip.s;
+
+
+7) Play Sounds
+
+playSound: function(path, settings)
+{
+  if(!gSM.enabled)
+    return false;
+
+  var looping = false;
+  var volume = 0.2;
+  if(settings)
+  {
+    if(settings.looping)
+      looping = settings.looping;
+    if(settings.volume)
+      volume = settings.volume;
+  }
+
+  var sd = this.clips[path];
+  if(sd == null)
+    return false;
+  if(sd.l == false) return false
+
+  //create a sound source
+  var currentClip = gSM._context.createBufferSource();
+
+  // tell the source which sound to play
+  currentClip.buffer = sd.b;
+  currentClip.gain.value = volume;
+  currentClip.connect(gsM._mainNode);
+  currentClip.loop = looping; 
+
+  // play the source node
+  currentClip.noteOn(0);
+  return true;
+}
+
+
+8) Stopping Sounds
+
+- basically disconnect the main node from the graph (i.e. the sound node in grits_sound_pipeline.jpeg)
+- create a new sound node and connet it to our output
+- the new node won't be connect to any sound source,
+
+stopAll: function()
+{
+  this._mainNode.disconnect();
+  this._mainNode = this._context.createGainNode(0);
+  this._mainNode.connect(this._context.destination);
+}
+
+9) Muting Sounds
+
+- want ability to mute/unmute
+- set gain node to proper value depending on whether you want to mute/unmute
+
+togglemute: function() {
+  if(this._mainNode.gain.value > 0) // not muted
+    this._mainNode.gain.value = 0;
+  else
+    this._mainNode.fain.value = 1; 
+}
+
+10) Attaching Sounds to Entities
+
+Sound = Class.extend({
+  
+  init: function() {
+  },
+  
+  // loop is a boolean value
+  play: function(loop) {
+    gSM.playSound(this.path, {looping:loop, volume:1});
+  }
+
+});
+
+function playSoundInstance(soundpath)
+{
+  var sound = gSm.loadAsync(sound, function(sObj) {sObj.play(false);});
+}
+
+- I guess entity will have a reference to a sound object associated with it
+- then the playSoundInstance can be used to play the sound when needed
+
+11) Playing Sounds in the World
+- adjust volume of sound based on proximity to robot
+- far away sounds -> low volume
+- close sounds -> high volume
+- GRITs uses a simple distance calculation based on the view's rect size
+- with a certain radius 100%; from r to 2r scale from 100% to 0%; @ > 2r 0% 
+
+// method is in GameEngine
+playWorldSound: function(soundURL, x, y) {
+  if(this.gPlayer0 === null) return;
+  var gMap = gGameEngine.gMap;
+
+  // fade out volume based upon distance to me
+  var viewSize = Math.max(gMap.viewRect.w, gMap.viewRect.h) * 0.5;
+  var oCenter = this.gPlayer0.pos;
+  var dx = Math.abs(oCenter.x - x);
+  var dy = Math.abs(oCenter.y - y);
+  var distToObserver = Math.sqrt(dx * dx + dy * dy);
+  var normDist = distToObserver / viewSize;
+  var volume = 1.0 - normDist;
+
+  var sound = gSM.loadAsync(soundURL, function (sObj) {
+    gSm.playSound(sObj.path, {
+      looping: false,
+      volume: volume
+    });
+  });
+}
+
+12) Conclusion
+- sound is a really import part of any project especially game
+- the right/wrong sound environment can make/brake a game
+- sound design is often one of the most expensive parts of production
+- it is long tedious work; and it is tied closely to the design of the game
+- since it is expensive, sound design is often left to the end; to do in one shot.
+ 
 ??? WHAT IS THE DIFFERENCE BETWEEN STRATEGY IN THIS LESSON AND HTML5 AUDIO ELEMENT ????
