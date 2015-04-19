@@ -1,0 +1,42 @@
+0) Intro
+- loading assest into games is dark art of high performance programming
+- get it right and your game loads quick -> happy users
+- get it wrong -> long load times -> unhappy customers
+- want some type of anutomated/semi-automated framework for loading assets
+- some type of asset loading manager
+
+1) Past Loading
+- say you need to load an assest multiple times
+- get it from source (disk or web or whatever) once
+- then on subsequent requests get resource from disk
+- all file i/o in js is asynchronous (e.g. think loading image)
+- other languages typically do file i/o in a blocking (i.e. sychronous) fashion
+
+2) Asset Manager
+- what does an asset manager need>
+- a cached asset management
+- async callbacks on load
+- batched asset loading
+
+3) Caching Images
+
+var gCachedAssets = {};
+
+function loadAsset(assetName, callbackFcn) {
+  if(gCachedAssets[assetName] == null) {
+    var img = new Image();
+    img.onload = function() {
+      callbackFcn(img);
+    };
+    img.src = assetName;
+    gCachedAssets[assetName] = img;
+  }
+  else { // asset is already loaded
+    callbackFcn(gCachedAssets[assetName]);
+  }
+}
+
+4) Batches
+- using the method above will trigger one callback per loaded file
+- we want only one callback invoked when ALL the files have loaded
+- 
