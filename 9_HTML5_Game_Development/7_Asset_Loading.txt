@@ -39,4 +39,122 @@ function loadAsset(assetName, callbackFcn) {
 4) Batches
 - using the method above will trigger one callback per loaded file
 - we want only one callback invoked when ALL the files have loaded
-- 
+
+5) Loading javascript files
+- can load javascript files, just like we do with image files
+- can add the files in to DOM
+
+function loadAssest(assetList, callbackFcn) {
+  // All the information we need to keep track of
+  // for this batch.
+
+  var loadBatch = {
+    count: 0,
+    total: assetList.count,
+    cb: callbackFcn
+  };
+
+  for(var i = 0; i < assetList.length: i++) {
+    if(gCachedAssets[assetName] === null) {
+      var assetType = getAssetTypeFormExtension(assetName);
+
+      if(assetType === 0) {
+        var img = new Image();
+        img.onload = function () {
+          onLoadedCallback(img, loadBatch);
+        };
+        img.src = assetName;
+      
+      	gCachedAssests[assetName] = img;
+      }
+      else if(assetType === 1) { // Asset is Javascript
+        var fileref = document.createElement('script');
+        fileref.setAttribute("type", "text/javascript");
+        fileref.addEventListener("load", function(e) {
+          onLoadedCallback(fileref, loadBatch);
+          }, false);
+        fileref.setAttribute("src", filename);
+        document.getElementsByTagName("head")[0].appendChild(fileref);
+        gCachedAssets[assetName] = fileref;
+      }
+    }
+    else { //asset is already loaded
+      onLoadedCallback(gCachedAssests[assetList[i]], loadBatch);
+    }
+  }
+}
+
+function onLoadedCallback(asset, batch) {
+  // If the entire batch has been loaded,
+  // call the callback.
+  batch.count++;
+  if(batch.count === batch.total) {
+    batch.cb(asset);
+  }
+}
+
+// We've provided you a handy function for determining the
+// asset type from the file extension.
+// Images return 0, javascript return 1 and evertyhing else returns -1.
+function getAssetTypeFromExtension(assetName) {
+  if(fname.indexOf('.jpg') != -1 || fname.indexOf('.jpeg') != -1)
+  {
+    // It's an image!
+    return 0;
+  }
+
+  if(fname.indexOf('.js') != -1 || fname.indexOf('.json') != -1)
+  {
+    // It's javascript
+    return 1;
+  }
+
+  // Uh Oh
+  return -1;  
+}
+ 
+6) Storytime and Loading
+- remember GRITs uses an asynchronous loading mechanism for its resources
+- e.g. images, sound, js, etc
+- this was we can still render content to screen as assets load
+
+7) Loading Grits (loading_pipeline.jpeg)
+
+7a) PHASE 1: menus (HTML/CSS)
+- menu is 1st set of screen user sees, and needs to be loaded immediately
+- all menu assets are defined and positioned in HTML
+- browser will do the loading - as it does wil any ole html
+- we don't need to do anything explicit
+
+7b) PHASE 2: js
+- when the use presses button to join the game
+- need to explicity load all the scripting data used by the game
+- need to issue commands to assest loader to fetch the data and wait unitl it is loaded
+
+AssetLoader.loasAsset(inputScripts, function() {
+  window.alert("We have successfully loaded!");
+  // or rather kick-off loading of assests
+});
+
+7c) PHASE 3: Assests
+- e.g. images, maps, ...
+- kick of loading of assest in callback of script loading
+- show game playing screen after all assest load
+
+8) Cretive Loading
+- keep in mind that some data sources 
+- hide loading from user by dispalying some sort of spalsh screen
+- game examples: devil may cry, metriod prime, jack and daxter
+- jack and daxter - infinite terrain, trip your player if asset had not loaded yet, then it would
+take the player 3-4 secs to get up, by then assest was loaded.
+
+- be creative use somke and mirrors to accomplish any sort of illusions/effects you wish
+
+
+High resolution graphics?? meaning of high res??
+
+9) Conclusion
+- as a game developer you will constantly be fighting againt load time
+- always trying to get more data into less memory over time
+- don't be a fool, write an asset loading tool
+
