@@ -1,0 +1,85 @@
+1) Javascript syntax
+- same as always
+
+2) JSON
+- same as always
+- a very lightweight data exchange format
+- based on javascript object syntax
+- diffence between javascript and JSON
+- JSON is simple the string that we parse to create a javascript object
+
+3) Inspecting JSON
+- use JSON.parse method
+
+4) XMLHTTPRequest
+- allows js in browser to make a request to a server
+- use to get any remote resource, json, js, img, txt, etc
+- can specify a callback to handle response
+
+4a) Steps
+- Create a new XMLHttpRequest() object
+- xhr.open("GET", "URL", async); // async is a boolean value set = true for async request
+- xhr.onload = function () { ... }
+- xhr.send(); // actually kicks off the request
+
+5) Example of loading json
+
+var xhr = new XMLHttpRequest();
+
+xhr.open("GET", "weapon.json", true);
+xhr.onload = function () {
+  parsedJSON = JSON.parse(this.responseText);
+};
+
+xhr.send();
+
+6) Loading Sound
+- should set the response type property of the request to 'arraybuffer'
+- doing this is necessary to work with any kind of binary dat, like sound files
+- rather than text data 
+
+7) Example of loading sound
+
+var request = new XMLHttpRequest();
+request.open("GET", "bg_menu.ogg", true);
+request.responseType = "arraybuffer";
+
+request.onload = function() { ... }
+request.send();
+
+// function.caller property -> what function called this function
+function f() { g(); } -> g.caller = f; f.caller = null (i.e. called from global environment)
+
+8) The DOM
+- same as before
+
+var notify = document.getElementById("notify");
+if(notify === null) {
+  notify = document.createElement("p");
+  notify.textContent = "... ";
+  notify.id = "notify";
+
+  var body = document.getElementById("body");
+  body.appendChild(notify);
+}
+
+9) Interfacing with the DOM
+var body = document.getElementById("body");
+
+var div = document.createElement("div");
+div.id = "gameContent";
+
+var canvas = document.createElement("canvas");
+canvas.id = "gameCanvas";
+
+body.appendChild(div);
+div.appendChild(canvas);
+
+9) Ineritance
+- GRITs implements this with Class.extend
+- see sample code for how this is implemented
+
+ChainGun = Weapon.extend({});
+Entity = Class.extend({});
+Teleporter = Entity.extend({});
+EnergyCanister = Entity.extend({});
