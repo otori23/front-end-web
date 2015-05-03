@@ -1,0 +1,43 @@
+0) Instructors
+- Ilya Grigorik: developer advocate and web developer @ Google 
+- Cameron Pittman: course developer @ Udacity
+- understand how browser works in order to build a fast a great experience
+
+1) Critical Rendering Path (CRP)
+- sequence of steps the browser goes through to render a web page
+- if you understand CRP, can reliably render pages in < second
+- see crp.jpeg
+
+2) PageSpeed Insights
+- https://developers.google.com/speed/pagespeed/insights/
+- can run your page through google's PageSpeed Insights
+- tool analyzes and generates suggestions on how to make your page load faster
+
+3) Goal setting
+- http://www.mindtools.com/pages/article/newHTE_87.htm
+
+4) Useful links
+- portfolio repo
+(https://github.com/udacity/frontend-nanodegree-mobile-portfolio)
+
+- course materials
+(https://www.udacity.com/wiki/ud884)
+
+5) Final project overview
+- end up with a page speed score of 90 or higher
+
+6) Why should I profile the site on my phone?
+
+Chances are, you are developing your site on a fast laptop or a desktop machine. Mobile phones on the other hand are much more resource constrained: slower CPUs, less RAM and GPU memory, higher connection latencies, and so on. As a result, you should always try to profile and debug your site on mobile hardware to get a better and closer picture of how your users will experience your site on their handset.
+
+7) What is Chrome Canary and why should I use it?
+
+Chrome Canary is the developer version of Chrome. It looks and acts like the regular Chrome browser, but it includes new and experimental features that haven't been released yet. We recommend analyzing websites with Canary to take advantage of the latest tech. However, be warned that Canary isn't guaranteed to be stable, so expect crashes and occasional bugs.
+
+8) Tech requirements and dev tools
+- prefer mobile debugging on android device with chrome canary
+- but I don't have android device
+- can use iOS debug proxy, though a little harder to setup
+
+9) Developer tools
+- will be mainly using the Timeline tab
