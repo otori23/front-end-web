@@ -1,0 +1,55 @@
+0) Critical Rendering Path
+- https://developers.google.com/web/fundamentals/performance/critical-rendering-path/
+- steps broswers goes through to convert html/css/js into pixels on the screen
+- optimize this process to make pages render faster = happy users
+
+1) Summary CRP
+- see crp.jpeg
+- grab html and build DOM
+- grab css and build CSSOM
+- combine DOM and CSSOM to create render tree
+- layout the page (i.e. figure out where everything goes on the page)
+- then, finally, paint pixels on the actual screen
+- js is an important component of performance model - will add this detail later
+
+2) Converting HTML to the DOM
+- crp well defined set of steps browser follows to turn html into the DOM
+- HTML specification contians rules for how to process received data from html request
+- Characters -> Tokens -> Nodes -> DOM
+
+- DOM is a tree structure that captures the content and properties of the html and relationships between the nodes
+- the browser constructs the DOM incrementally
+- we can take advantage of this to speed up the rendering of our pages
+- in fact, this is something the google search pages do really really well
+
+2a) HTML -> DOM references
+- check out the demo page in this example
+(http://udacity-crp.herokuapp.com/cssom.html)
+
+- what is the Document Object Model?
+(http://www.w3.org/TR/DOM-Level-2-Core/introduction.html)
+
+- how the Document Object Model is constructed
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model#document-object-model-dom)
+
+- the HTML5 Specification
+(http://www.w3.org/TR/html5/)
+
+2b) HTML -> DOM summary 
+<html><head><meta name="viewport" content="width=device-width"><link href="style.css" ...
+
+- Characters (in html) -> Tokens -> Nodes -> DOM
+- html text contained within angle brackets has special meaning and is said to be a tag
+- browser has a tokenizer process/thread running
+- tokenizer emits tokens as it enconters start and end tags (i.e. <> and </>)
+- another process in the browser consumes these tokens and converts them to node objects
+
+[StartTag: HTML] [StartTag: head] [Tag: meta] [Tag: link] [EndTag: head]
+[StartTag: body] [StartTag: p] [Hello,] [StartTag: span] [web performance]
+[EndTag: span] ...
+
+- see dom.jpeg
+
+2c) Fast Google Search Responses
+- the browser does not have to wait for all the html to arrive before processing begins
+- also, the server does not have to wait for the search results before sending html to browser on client
