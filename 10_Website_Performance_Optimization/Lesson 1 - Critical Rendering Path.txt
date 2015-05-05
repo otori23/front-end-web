@@ -48,8 +48,50 @@
 [StartTag: body] [StartTag: p] [Hello,] [StartTag: span] [web performance]
 [EndTag: span] ...
 
-- see dom.jpeg
+- see dom.jpeg (top flow is for client; bottom flow is for server)
 
-2c) Fast Google Search Responses
+2) Fast Google Search Responses
 - the browser does not have to wait for all the html to arrive before processing begins
 - also, the server does not have to wait for the search results before sending html to browser on client
+
+2a) Google search: Incremental html delivery
+- when you send a seatch request to google, the server does something really clever
+- before server knows what the search results are, it sends back the header of the (response) page
+- header is thesame for all users
+- this allows the client browser to processing response and begin constructing the DOM incrementally
+- the browser can even render the header
+- when the search results are ready, the rest of the html arrives
+- browser use this html to update the DOM -> then render it too
+
+- see incrementalHtml.jpeg
+- see httpWaterFallChart.jpeg (how to read???)
+
+2b) Other Resouces
+- see Flushing the Document Early to learn more.
+(http://www.stevesouders.com/blog/2009/05/18/flushing-the-document-early/)
+
+- also, check out Chunk Scatter, a fantastic tool for visualizing chunked HTTP responses.
+- may explain how to read Timeline charts in developer tools
+(http://blog.cowchimp.com/chunk-scatter-http-chunked-response-analysis-tool/)
+
+2c) How Google developers measure and optimize the performance of their pages
+- chrome developer tools and mobile debuging
+
+3) Exploring Timeline Traces
+- Timeline in developer tools is giving us a low level view of what the browser is doing as it builds a page
+- can record a trace on the timeline for requests from and responses to browser
+- see the "Records" portion of the Timeline
+- this pane shows each step in CRP
+- many different events shown on Timeline; can be overwhelming at first
+
+3a) To learn more about the Timeline panel in Chrome Developer Tools
+- Performance profiling with the Timeline
+(https://developer.chrome.com/devtools/docs/timeline)
+
+- Timeline event reference
+(https://developer.chrome.com/devtools/docs/timeline#timeline-event-reference)
+
+3b) CNN's Timeline Trace
+- Ctrl+Shift+I: open the DevTools.
+- Ctrl+Shift+R: reload the page and capture the timeline.
+

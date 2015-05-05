@@ -1,5 +1,7 @@
 0) Instructors
-- Ilya Grigorik: developer advocate and web developer @ Google 
+- Ilya Grigorik: developer advocate and web developer @ Google
+- Ilya has a book 
+(http://chimera.labs.oreilly.com/books/1230000000545) 
 - Cameron Pittman: course developer @ Udacity
 - understand how browser works in order to build a fast a great experience
 
@@ -41,3 +43,4 @@ Chrome Canary is the developer version of Chrome. It looks and acts like the reg
 
 9) Developer tools
 - will be mainly using the Timeline tab
+
