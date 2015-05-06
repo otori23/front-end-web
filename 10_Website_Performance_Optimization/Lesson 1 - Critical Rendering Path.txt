@@ -162,8 +162,29 @@ p { ... }
 - see faster.jpeg
 
 6) Recalculating CSS Styles in DevTools
+- can save a Timeline trace
+- right click on trace and select save
+- can also load trace in a similar way
 
+6a) Examine css events in trace
+- can see the 1st css request going out; part of 1st parse HTML (see request for style.css)
+- happens after 1st chunk of html is recieved
+- this is where browser fount link tag and initiated http request for style.css
+- wait to get css bytes...
+- then later see the Recalculate style event
+- this is where we convert the css response into the css object model
+- look at summary pane to see how lone it took to complete this step
+- before you re-write all you css rules; measure this time and see how long building 
+your cssom takes
+- i.e. measure 1st, then optimize if needed
 
+7) The Render Tree
+- captures both the page content and the styles
+- it is a combination of the information in the HTML dom and the CSS dom
+- html dom: contents; css dom: styles
+- captures only visible content 
+- non-visible content does not make its way into the render tree
+- remember css properties of nodes in css dom, cascade down
 
 
 
