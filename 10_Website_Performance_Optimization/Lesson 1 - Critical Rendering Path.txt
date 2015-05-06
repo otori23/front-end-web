@@ -3,6 +3,9 @@
 - steps broswers goes through to convert html/css/js into pixels on the screen
 - optimize this process to make pages render faster = happy users
 
+- need to understand how browser consumes html/css/js in rder to understand how to optimize browser performance
+- i.e. the redering pipeline or CRP as he puts it
+
 1) Summary CRP
 - see crp.jpeg
 - grab html and build DOM
@@ -94,4 +97,82 @@
 3b) CNN's Timeline Trace
 - Ctrl+Shift+I: open the DevTools.
 - Ctrl+Shift+R: reload the page and capture the timeline.
+- use drawer icon in developer tools tool bar to open window with [Console, Search, Emulation, Rendering] options
+- ESC key works too to toogle show/hide 
+- in Emulation tab, can select a device to emulate
+- can use 'dock' icon to rearrange screen (i.e. device on left; dev tools on right)
+- can drill into more details of Records (i.e. request/response events) by selecting a particular record
+- can filter events
 
+4) Converting CSS to the CSSOM
+- DOM capture content of page, but...
+- need a description of HOW to display the page
+- Enter the CSS objeject model
+- CSS has its own specification on valid tokens
+- CSSOM is built by browser much in same way as the DOM
+- Characters (in css) -> Tokens -> Nodes -> DOM
+
+4a) Sample CSS
+body { gond-size: 16px} p {font-weight: bold} span {color: read}
+p span {display: none} img {float: right}
+
+- see cssom.jpeg
+
+4b) CSSOM
+- note data in CSSOM, p span an dimg are children of body
+- this is because all visible content are childern of body, according to CSS specitication
+- also, note, p span, indicates a span node is added as a child of the p node
+- a CSSOM node inherits the styling rules off all its ancestors
+- see cssom.jpeg
+- similar to, but no same as DOM construction because CSS rules cascade down
+
+4c) Inctemental processing
+- for html, the browser does not need to have the whole DOM tree constructed before it starts rendering the page
+- HOWEVER, for css the browser needs the entire CSSOM constructed before it can use teh CSSOM
+- no partial css tree
+
+4d) Partial CSS tree
+- css allows user to redefine style prperties of elements, e.g.
+
+p { ... }
+...
+p { ... }
+
+- so, a partial css dom tree would not include the overriden style for p in the snippet above
+- you would end up using the wrong style
+- browser BLOcKS rendering until it receives and processes all of the css
+
+- see cssom_partial.jpeg 
+
+- CSS IS RENDER BLOCKING
+
+4e) CSSOM references
+- Learn more about how CSS Object Model is constructed
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model#css-object-model-cssom)
+
+- Learn more about why and how CSS blocks rendering
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css)
+
+5) Which style is faster to evaluate
+- The more general selector is actually easier to evaluate.
+- the more specific rul is more expensive because browser has to traverse more nodes in CSS DOM tree
+- more specific css rules probably not your performance bottle neck
+- HOWEVER, measure first, then optimize later
+
+- see faster.jpeg
+
+6) Recalculating CSS Styles in DevTools
+
+
+
+
+
+
+
+HOW TO RENDER FASTER
+- use partial HTML DOM
+- use more general css rules - actually, DOES NOT impact performance that much
+
+NOTES/INVESTIGATE
+- How to take Timeline traces in chrome developer tools
+- Understand rules on how the CSSOM is built; see references in (4e)
