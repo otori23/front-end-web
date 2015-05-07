@@ -254,13 +254,95 @@ https://developers.google.com/web/fundamentals/performance/critical-rendering-pa
 (https://developers.google.com/web/fundamentals/layouts/rwd-fundamentals/)
 
 
+9) Analyzing Layout in DevTools
+- browser has to re-reun layout step when dimensions of layout viewport changes
+- i.e. rotate your phone, resize browser
+- so expect to see a separate Layout entries in Records of Timeline chart;
+- can a layout be a bottleneck for performance -- YES
+- how to optimize # of Layout events?
+- batch you update requests
+
+9a) Triggering Layouts
+- note: layout can be triggered by device orientation change on mobile, 
+- a window resize, 
+- or any other action that modifies the content of the DOM - e.g. 
+- adding or removing content from the DOM tree, toggling CSSOM properties on a node, and so on!
+
+10) Time to Paint the Page!
+- after layying out the page, the next step for browser is to paint the pixels
+- the simpler styles are easier on the browser, i.e., faster to paint
+- some pixels are more expensive to paint than others; depends on effects you are applying
+- i.e. transparency, shadows, etc
+
+10a) NY times example
+- http://mobile.nytimes.com/
+- in Timeline trace, filter Records for Paint events
+- can select time range of interest
+- detail view at bottom shows pie chart dissecting time used up by each step browser takes to create page
+- this pie chart update dynamically as you select time intervals
+
+11)  Summarize the CRP
+
+<!DOCTYPE HTML>
+
+<head>
+  <link rel="stylesheet" href="css/style.css" type="text/css"></link>
+  <script src="js/app.js"></script>
+</head>
+
+<body>
+...
+</body>
+
+- What are steps to render?
+
+i) Begin constructing the DOM by parsing HTML
+<<REMEMBER: DOM construction can be incremental; response does not arrive all at once>>
+
+ii) Request CSS & JS resources
+<<REMEMBER: request for CSS is synchronous; i.e. need all CSS before we can do anything with it>>
+
+iii) Parse CSS and construct CSSOM tree
+<<CANNOT execute JS until CSSOM is constructed; once constructed JS engine is unblocked>>
+
+iv) Execute JS
+<<Executed when JS engine is unblocked by creation of CSSOM; JS script is executed immediately>>
+
+v) Merge DOM and CSSOM into the Render Tree
+<<Once JS has finished executing, browser can go back to finish DOM creation, then create render tree>>
+
+vi) Run layout, paint  
 
 
+12) Analyzing the Entire CRP in DevTools
+- you can't optimize what you can't measure
+- if css is inline. you won't see any request for css files in Timeline trace
+- Recalculate style events: browwer builds render tree and computes all the styles for visible content
+
+12a) http://udacity-crp.herokuapp.com/cssom-inline.html
+- inline css, some text and an image
+- end -to- end view of CRP
+- Send Request event: initial request
+- Receive Response event: response headers
+- Receive Data event: response data
+- Finish Loading event: browser has the entire html response data bytes
+- Parse HTML event: browser is building html/css DOMs
+- while building dom, browser may generate addition requests of resources in the html file
+- Parse HTML -> Recalcuate style: building render tree
+- Layout event: compute location and size of render tree elements
+- Paint event: render/draw page on screen 
+13) CRP Wrap Up
+- now that you know the crp next step is to use this knowledge to find opportunities for optimization
 
 
 HOW TO RENDER FASTER
 - use partial HTML DOM
 - use more general css rules - actually, DOES NOT impact performance that much
+- minimize layout events by batching update requests
+- minimize effects you try to acheive - i.e. tnasparency, shadows, etc
+
+- RULE: measure then optimize
+
 
 NOTES/INVESTIGATE
 - How to take Timeline traces in chrome developer tools
