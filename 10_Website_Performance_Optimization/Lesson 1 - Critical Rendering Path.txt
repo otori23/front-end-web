@@ -169,11 +169,11 @@ p { ... }
 6a) Examine css events in trace
 - can see the 1st css request going out; part of 1st parse HTML (see request for style.css)
 - happens after 1st chunk of html is recieved
-- this is where browser fount link tag and initiated http request for style.css
+- this is where browser found link tag and initiated http request for style.css
 - wait to get css bytes...
 - then later see the Recalculate style event
 - this is where we convert the css response into the css object model
-- look at summary pane to see how lone it took to complete this step
+- look at summary panel to see how long it took to complete this step
 - before you re-write all you css rules; measure this time and see how long building 
 your cssom takes
 - i.e. measure 1st, then optimize if needed
@@ -184,7 +184,75 @@ your cssom takes
 - html dom: contents; css dom: styles
 - captures only visible content 
 - non-visible content does not make its way into the render tree
-- remember css properties of nodes in css dom, cascade down
+- remember css properties of nodes in css dom, CASCADE DOWN
+- demo page: http://udacity-crp.herokuapp.com/cssom.html
+
+7a) How to build - see renderTree.jpeg
+
+- start with root of html dom and check css dom for a matching rule
+- in class example, p node at html dom root matches p tag at css dom root
+- css proerty  {font-size: 16 px, font-weight: bold }
+- next html dom node to consider is the Hello node
+- this is just a text node, so it gets copied over to render tree
+- next is span node; has display property none, so NOT copied to render tree
+- also skip adding all the children of this span node; because css properties CASCADE DOWN
+- i.e. web performance text node also has css property {display: none}
+- finaly copy over student text node from html dom to render tree
+- resulting render tree captures content and style
+
+7b) Generalized html/css dom -> render tree - see renderTree2.jpeg
+
+- html and head nodes don't have visual representation so the are not copied to dom tree
+- start with body and copy all decendants that have a visual representation into render tree
+- also, copy their styles
+
+7c) Which screen elements are visible?
+- see visible.jpg
+- as you build render tree, i.e. get rid of html, head, meta ...
+- the 1st rule, div { color: red } applies to the div and its child p; so text Hello will be red
+- the 2nd rule, p { color: black } applies to all p nodes regardless of parent
+- so now Hello will be black; also world will be black
+- the 3rd rule, div p {display: none} allows use to prune the div -> p -> Hello nodes from render tree
+
+7c) Render tree reference
+https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction
+
+
+8) Layout - see layout.jpeg
+
+- browser still needs to figure out where and how all the elements are positioned on the page
+- note because the width properties are defined as [%], when the screen resizes,
+- the size of teh boxes change, but their relative proportions stay the same
+
+8a) How does browser consume render tree to geenrate layout
+- in layout.jpeg, start at top with body node
+- width= 100 % means, body node should take up 100 % of view port size
+- there is a meta tag on the example page
+- think of viewport as the canvas on which the browser is painting content to
+
+8b) <meta name="viewport" content="width=device-width">
+- telling browser that width of view port should be equal to the device width
+- i.e. viewport is the canvas on which the browser is painting content to
+- if device width = 320 px then viewport = 320 px
+- if you dont provide this meta tag, browser will use default viewport size of 980 px
+- this is optimized for large screens
+- in example: body = 320 px
+- div is a child of body so its width = 160 px
+- similarly p = 80 px
+
+
+8c) random note about widths
+- <em> and <span> are inline elements 
+- unless they are converted to display: block or display: inline-block, 
+- their widths will be determined by the text they contain
+
+8d) references
+- learn more about render-tree construction, layout, and paint
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction)
+
+- learn more about layout viewport and the basics of responsive web design
+(https://developers.google.com/web/fundamentals/layouts/rwd-fundamentals/)
+
 
 
 
