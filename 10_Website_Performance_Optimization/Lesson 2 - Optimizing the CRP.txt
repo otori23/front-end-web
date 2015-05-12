@@ -1,0 +1,176 @@
+0) Resources
+
+- Learn more about resource minification
+(https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer#minification-preprocessing--context-specific-optimizations)
+
+- Learn more about text compression with GZip
+(https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer#text-compression-with-gzip)
+
+- Learn more about HTTP caching
+(https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching)
+
+1) DOM & CSSOM
+- these steps are typically the worst offenders
+- they are what really makes you browser renpder a page slowly
+
+1a) How to make faster
+- server sends html to client as quickly as possible
+- small file sizes for html
+
+1b) Steps
+- Minify: use minification to remove extra white space and comments
+- Compress: 
+- Cached: by browser
+
+2) Unblocking CSS - Why wait on styles you don't need
+- to optimize cssom construction
+- remove unneccessary styles, minify, compress, cache
+- also need to consider render blocking css
+- remember the browser needs to get all the page's css and build the cssom before building render tree
+- you don't want to paint an unstyled page, thus the render blocking css
+
+2a) More resources
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css)
+
+3) Unblocking CSS with Media Queries
+
+- CSS allows us to scope styles to particular conditions
+
+<link href="style.css" rel="stylesheet">
+
+body { font-size: 16px } // Always applies
+
+@media screen and (orientation: landscape) { // In Landscape: float menu to the right
+  .menu { float: right }
+}
+
+@media print { // On print of page: resize body to use smaller font size
+  body {font-size: 12px }
+}
+
+- media queries are important for responsive web design, but...
+- how do they help with optimizing crp (unblocking css)
+
+3a) How media queries help with optimizing css?
+- say a browser is rendering a page using the css above 
+- ordinarily, browser blocks rendering until it parses all the styles
+- should browser block rendering on print rule?
+- if you are not printing, then probably not
+- so, it makes sensce to split your css into mulitple files - based on conditions need to apply rule in file
+- so, now linking to two files in html
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style-print.css">
+
+- by default the browser assumes that each style sheet is render blocking
+- however, can tell the browser when the style sheet should be applied by using the "media" attribute on the link tag
+
+<link rel="stylesheet" href="style-print.css" media="print">
+
+- when the browser sees this style sheet, it knows that it only needs to apply it for printing
+- so don't block rendering when loading on the phone
+- browser still downloads both style sheets, but rendering is not blocked on style-print.css
+
+3b) See Resource for more details
+- Render blocking CSS
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css)
+
+- Responsive web design
+(https://developers.google.com/web/fundamentals/layouts/rwd-fundamentals/)
+
+3c) PageSpeed Insights
+- related reccomendation say: reduce number of critical css files critical
+
+3d) Render Blocking Quiz: which style sheets are render blocking on phone
+- see renderBlockingCSS.jpeg
+
+4) JavaScript and the CRP - Optimizing JS
+- still want to minify, compress, and cache
+- PageSpeed Insights may still complain about parser blocking scripts
+
+4a) Parser blocking scripts - meaning and how to optimize
+- folder, hello_world contains sample web pabe with inline js
+- the js in the sample page manipulates the DOM and CSSOM
+- can do more to optimize this js
+- but optimizing js can be itw own course
+- in this exaample can optimize how the code is included on the page
+ 
+5) Quiz: How will the text be rendered?
+
+<p>
+  Awesome page
+  <script>
+    document.write(" with JavaScript ");
+  </script>
+  is awesome
+</p>
+
+- first document parser creates a p node and adds a text fragment
+- then it encounters the script tag, 
+- at which point it pauses DOM construction
+- waits for js enginge to execute the script
+- script appends with js " with JavaScript ", then exits
+- now, resume DOM construction
+- document parser appends "is awesome"
+
+Final Result: Awesome page with JavaScript is awesome
+
+5a) Document.write()
+Writes a string of text to a document stream opened by document.open().
+
+Note: as document.write writes to the document stream, 
+calling document.write on a closed (loaded) document automatically calls document.open 
+which will clear the document.
+
+6)  External JavaScript Dependencies - how js affects performance
+- note sequence of steps
+- when script tag was encountered, 
+- had to pause DOM construction and let js run before we could continue
+- DOM -> JS -> DOM
+
+- We say, js is PARSER BLOCKING: i.e. DOM construciton is parsed when script tag is encountered
+
+6a) External JS files
+
+- say we had this instead:
+
+<p>
+  Awesome page
+  <script src="write.js"></script>
+  is awesome
+</p>
+
+write.js:
+
+document.write(" with JavaScript ");
+
+- when parser sees script tag, it has to go fetch the file from its remote location
+- this fetch could take a while,
+- and the browser is blocked and can't continue DOM construction
+- in turn, this slows down the CRP
+
+- So inlining is always quicker
+- but may want to use external files for shared js
+
+6b) Resources
+Adding Interactivity with JavaScript 
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript)
+
+7) More on JavaScript Dependencies
+
+- how does parser handle the documnet below
+
+<style src="style.css" />   // -> p { color: black }
+<p>
+  Awesome page
+  <script>
+    var e = document.getElementsByTagName("p")[0];
+    e.style.color = "red";
+  </script>
+  is awesome
+</p>
+
+- note, the css says color all p text as black
+- js says, color the 1st p text as red
+- css style sheet could arrive after the js has executed; setting the text to red
+- 

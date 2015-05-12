@@ -331,6 +331,7 @@ vi) Run layout, paint
 - Parse HTML -> Recalcuate style: building render tree
 - Layout event: compute location and size of render tree elements
 - Paint event: render/draw page on screen 
+
 13) CRP Wrap Up
 - now that you know the crp next step is to use this knowledge to find opportunities for optimization
 
