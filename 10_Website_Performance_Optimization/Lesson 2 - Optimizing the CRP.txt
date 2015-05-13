@@ -189,7 +189,11 @@ Adding Interactivity with JavaScript
 
 7b) CSS is bottle neck
 - css blocks rendering and js execution
+- can inline CSS so that js and dom creation is blocked on request for css
 - OPTIMIZING CSS IS SO IMPORTANT
+
+7c) Resources
+https://developers.google.com/web/fundamentals/performance/critical-rendering-path/
 
 8) Async Javascript
 - some scripts DO NOT modify the DOM or CSSOM (e.g. analytics) 
@@ -231,3 +235,70 @@ Adding Interactivity with JavaScript
 - Blocking: <script src="anExteralScript.js"></script>
 - Inline: <script>document.write("this is an inline script")</script>
 - Async: <script async src="anExternalScript.js"></script>
+
+
+10) General Strategies
+- there seem to be many performace rules, how do I keep them straight?
+- 3 general categories/clarification
+
+10a) Categories/Bucket
+- minimize the # bytes you send down the wire (a below)
+- reduce # of critical resources i.e. css and js files; css for printing or js for analytics should not block rendering or blocking (b and c below)
+- shorten crp length
+
+10b) Minify, Compress, Cache
+- HTML, CSS, Javascript
+
+10c) Minimize use or render blocking resources (CSS)
+- use media queries on <link> to unblock rendering 
+- Inline CSS
+
+10d) Minimize use of parser blocking resources (JS)
+- defer js execution 
+- use async attribute on <script>
+
+11) crp_flow_1.jpeg
+- what does it mean to - shorten crp length?
+- title figure
+- CRP resources: 1
+- CRP KB: 5
+- CRP length: 1 (# of roundtrips?) 
+
+11a) PageSpeed Insights and file size
+- PS insigths may copmplain about file size
+- if file size is too big, then need more roundtrips to get file
+- will increase length of crp
+
+12) crp_flow_2.jpeg
+- browser sends initial request
+- response arrives
+- DOM creation starts
+- discover css
+- make a request for css
+- halt DOM creation
+- get css response
+- build CSSOM
+- now finish building DOM
+
+- The page render can happen
+
+- see crp_metrics_1.jpeg
+
+
+
+
+
+
+Resources on General Strategies
+- learn more about optimizing the Critical Rendering Path
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path)
+
+- review the Critical Rendering Path performance patterns
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp#performance-patterns)
+
+- check out the PageSpeed mobile analysis documentation on guidance for how to deliver a page that can be rendered in one second or less. 
+(https://developers.google.com/speed/docs/insights/mobile)
+
+- to learn more about TCP Slow Start, check out Ilya's book, High Performance Browser Networking.
+(http://chimera.labs.oreilly.com/books/1230000000545)
+
