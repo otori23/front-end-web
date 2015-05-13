@@ -172,5 +172,62 @@ Adding Interactivity with JavaScript
 
 - note, the css says color all p text as black
 - js says, color the 1st p text as red
-- css style sheet could arrive after the js has executed; setting the text to red
-- 
+
+7a) How browser processes - see process.jpeg
+
+- browser requests html
+- as soon as it gets the response
+- it starts building the DOM
+- discovers css and sends a request for it
+- parser continues and finds script tag
+- at this point, the praser has to block... why?
+- parser does not know what script will do
+- script may want to access css properties
+- so, script execution is blocked until css arrives and cssom is built
+- then js runs
+- and parser finishes building the DOM
+
+7b) CSS is bottle neck
+- css blocks rendering and js execution
+- OPTIMIZING CSS IS SO IMPORTANT
+
+8) Async Javascript
+- some scripts DO NOT modify the DOM or CSSOM (e.g. analytics) 
+- so, they should not block rendering
+- how do we flag these types of scripts to the browser
+
+8a) window.onload
+- one strategy: load the script after the page is loaded
+- so, when browser fires onload event, you execute the script then
+
+8b) use async attribute on script tag 
+- tells browser not to block DOM construction when browser encounters script tag
+- i.e. 
+<head>
+  ...
+  <script src="analytics.js" async></script>
+</head>
+
+- also, browser does not block on CSSOM construction; 
+- i.e. if CSSOM is NOT ready, script still runs
+
+8c) async attribute
+- js does not block CRP
+
+8d) inline scripts
+- will always block on the CSSOM
+- with one exception
+- if you put your inline js above the css
+- then this js will execute without
+
+8e) Resources
+- learn more about window.onload event on Mozilla Developer Network
+(https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onload)
+
+- learn more about parser blocking vs. asynchronous JavaScript  
+(https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript#parser-blocking-vs-asynchronous-javascript)
+
+9) JavaScript approaches
+- Blocking: <script src="anExteralScript.js"></script>
+- Inline: <script>document.write("this is an inline script")</script>
+- Async: <script async src="anExternalScript.js"></script>
