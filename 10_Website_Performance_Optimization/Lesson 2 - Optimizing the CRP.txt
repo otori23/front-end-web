@@ -243,19 +243,22 @@ https://developers.google.com/web/fundamentals/performance/critical-rendering-pa
 
 10a) Categories/Bucket
 - minimize the # bytes you send down the wire (a below)
-- reduce # of critical resources i.e. css and js files; css for printing or js for analytics should not block rendering or blocking (b and c below)
+
+- reduce # of critical resources i.e. css and js files; css for printing or js for analytics should not block rendering or 
+blocking (b and c below)
 - shorten crp length
 
 10b) Minify, Compress, Cache
 - HTML, CSS, Javascript
 
-10c) Minimize use or render blocking resources (CSS)
+10c) Minimize use of render blocking resources (CSS)
 - use media queries on <link> to unblock rendering 
-- Inline CSS
+- Inline CSS: no need for separate request
 
 10d) Minimize use of parser blocking resources (JS)
 - defer js execution 
 - use async attribute on <script>
+- Inline JS: no need for separate request
 
 11) crp_flow_1.jpeg
 - what does it mean to - shorten crp length?
@@ -284,6 +287,79 @@ https://developers.google.com/web/fundamentals/performance/critical-rendering-pa
 
 - see crp_metrics_1.jpeg
 
+13) CRP Metrics Discussion
+- no one golden rule; use the three categories as benchmark
+- reduce # of critical resources will reduce the number of bytes
+- compress, minify, caching will also reduce the number of bytes
+
+13a) Page with css and js - crp_flow_3.jpeg
+- Analyze the crp
+- number of critical resources: 3 (html, css, and js)
+- total critical KB: 11 KB
+- minimum critical path length (round trips): 2 (1 html + css and js files are downloaded in parallel)
+- approximate time to first render: if connection is 1 sec/reound trip
+- then 2 secs for page to load
+
+13b) Optimization strategies for crp_flow_3.jpeg
+- inline css and js: no need for separate requests
+- if you know the contents of css and js consider using media/asyn attributes on link/script tags
+
+13c) What would you look for in css and js files???
+- css: make sure the styles are actually required to render the page
+- css: if sytles are not being used, add media attribute to unblock rendering
+
+- js: if script is not manipulating DOM or CSSOM
+- js: add async attribute to unblock parsing; i.e. DOM construction  
+- js: with async tag, js file is no longer a critical resource
+
+13d) What is a Critical Resources
+- CRITICAL resources, BLOCK the CRP
+- so, img is NOT a critical resource
+- async js is NOT a critical resource
+- css that does not pass media query is NOT a critical resource
+
+14) The Preload Scanner - preload.jpeg
+- in preload.js, note that timing.js is not requested until after parser blocking app.js has finished running
+- the request for timing.js may take a while to complete, AND...
+- timing.js itself is parser blocking
+
+14a) Pre-load timing.js
+- browser has special process called the perload scanner
+- preload scanner peaks ahead in the document to discover CRITICAL resources and requests them while parser is blocked
+- can "preload" timing.js while parser was initially blocked on getting style.css and app.js
+
+14b) Resources
+To learn more about the preload scanner, check out "How the Browser Pre-loader Makes Pages Load Faster".
+(http://andydavies.me/blog/2013/10/22/how-the-browser-pre-loader-makes-pages-load-faster/) 
+
+15)  Draw a CRP Diagram - Easy
+- CRP analysis gives you a good estimate of how ling it will take the page to render
+- CRP diagram allows you to identify bottlenecks
+- with some practice can visually inspect html and figure out what CRP is
+
+15a) Quiz
+- draw CRP and add metrics (# critical resources, # of critical bytes, critical path length)
+- post result in forums: http://discussions.udacity.com/#ud884
+
+16) Summary - Optimizing CRP
+- reduce # of critical bytes
+- reduce # of critical resources
+- reduce critical path length
+
+- basically makle the critical path length as small and as short as possible
+
+16a) The Final Project Overview
+- run your page through pagespeed insights to get recommendations on what to optimize
+- use what you have learned to implement pagespeed insights recommmendations
+
+- GitHub repo: https://github.com/udacity/frontend-nanodegree-mobile-portfolio
+- Cameron's profile: http://cameronwp.github.io/udportfolio/
+
+- see Final_Project.jpeg
+
+
+
+
 
 
 
@@ -302,3 +378,5 @@ Resources on General Strategies
 - to learn more about TCP Slow Start, check out Ilya's book, High Performance Browser Networking.
 (http://chimera.labs.oreilly.com/books/1230000000545)
 
+QUESTIONS
+what about getting images? <img src="......" />, does this not trigger a request?
