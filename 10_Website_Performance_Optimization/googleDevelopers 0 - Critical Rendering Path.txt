@@ -1,0 +1,28 @@
+1) The Critical Rendering Path
+
+- Our goal is to prioritize and display the content that relates to the primary action the user wants to take on a page.
+
+- Further, understanding the critical rendering path will also serve as a foundation for building well performing interactive applications. 
+
+- It turns out, the process for processing interactive updates is the same, just done in a continuous loop and ideally at 60 frames per second!
+
+2) Constructing the Object Model
+
+- Before the browser can render the page it needs to construct the DOM and CSSOM trees. As a result, we need to ensure that we deliver both the HTML and CSS to the browser as quickly as possible.
+- TL;DR: too long; didn't read
+
+
+3) Chrome Developer Tools
+
+- Chrome DevTools documentation, or if you're new to DevTools
+(https://developer.chrome.com/devtools)
+
+- Codeschool's Discover DevTools course.
+(http://discover-devtools.codeschool.com/)
+
+4) Default Styles
+Every browser provides a default set of styles also known as “user agent styles” – that’s what we see when we don’t provide any of our own – and our styles simply override these defaults (e.g. default IE styles). If you have ever inspected your “computed styles” in Chrome DevTools and wondered where all the styles are coming from, now you know!
+
+5) Recalculate style event
+- Entry in RECORDS panel 
+- shows browser's CSSOM tree construction activities

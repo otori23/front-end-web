@@ -3,8 +3,8 @@
 - steps broswers goes through to convert html/css/js into pixels on the screen
 - optimize this process to make pages render faster = happy users
 
-- need to understand how browser consumes html/css/js in rder to understand how to optimize browser performance
-- i.e. the redering pipeline or CRP as he puts it
+- need to understand how browser consumes html/css/js in order to understand how to optimize browser performance
+- i.e. the rendering pipeline or CRP as he puts it
 
 1) Summary CRP
 - see crp.jpeg
@@ -18,7 +18,8 @@
 2) Converting HTML to the DOM
 - crp well defined set of steps browser follows to turn html into the DOM
 - HTML specification contians rules for how to process received data from html request
-- Characters -> Tokens -> Nodes -> DOM
+
+- Bytes -> Characters -> Tokens -> Nodes -> DOM
 
 - DOM is a tree structure that captures the content and properties of the html and relationships between the nodes
 - the browser constructs the DOM incrementally
@@ -42,7 +43,7 @@
 <html><head><meta name="viewport" content="width=device-width"><link href="style.css" ...
 
 - Characters (in html) -> Tokens -> Nodes -> DOM
-- html text contained within angle brackets has special meaning and is said to be a tag
+- html text contained within angle brackets have special meaning and is said to be a tag
 - browser has a tokenizer process/thread running
 - tokenizer emits tokens as it enconters start and end tags (i.e. <> and </>)
 - another process in the browser consumes these tokens and converts them to node objects
