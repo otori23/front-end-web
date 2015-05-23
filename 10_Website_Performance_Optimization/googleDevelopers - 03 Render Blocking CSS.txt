@@ -1,0 +1,59 @@
+TL;DR
+- By default, CSS is treated as a render blocking resource.
+- Media types and media queries allow us to mark some CSS resources as non-render blocking.
+- All CSS resources, regardless of blocking or non-blocking behavior, are downloaded by the browser.
+
+
+0) Story so far
+- we now know how the browser turns our web page into a display on the screen
+- DOM -> CSSOM -> Render Tree -> Layout -> Paint
+- we want to structure our web content to optimize the browser's time
+
+1) Render Blocking
+- both HTML and CSS are render blocking resources
+- HTML is obvious because without the DOM there is nothing to render
+- CSS is not so obivious why this blocks rendering
+
+1a) More on render blocking
+Note that “render blocking” only refers to whether the browser will have to hold the initial rendering of the page on that resource. In either case, the CSS asset is still downloaded by the browser, albeit with a lower priority for non-blocking resources.
+
+1b) Parser blocking (i.e. blocking DOM creating) is also render blocking
+
+2) CSS render blocking
+- by default CSS is treated as a render blocking resource, which means that the browser will hold rendering of any processed content until the CSSOM is constructed. Make sure to keep your CSS lean, deliver it as quickly as possible, and use media types and queries to unblock rendering.
+
+- browser blocks rendering until css is available to avoid “Flash of Unstyled Content” (FOUC).
+
+- CSS is a render blocking resource (by default), get it down to the client as soon and as quickly as possible to optimize the time to first render
+
+3) Use media queries with CSS to unblock rendering
+
+3a) Media Queries
+A media query consists of a media type and zero or more expressions that check for the conditions of particular media features
+
+3b) Usage
+
+<link href="style.css" rel="stylesheet">: Blocks, this css is used always
+
+<link href="print.css" rel="stylesheet" media="print">: No Blocks, css is only used when printing
+
+<link href="other.css" rel="stylesheet" media="(min-width: 40em)">: No Blocks, css is only used for certains screen sizes
+
+When declaring your stylesheet assets, pay close attention to the media type and queries, as they will have big performance impact on the critical rendering path!
+
+4) More examples
+
+Let’s consider some hands-on examples:
+
+<link href="style.css"    rel="stylesheet">
+<link href="style.css"    rel="stylesheet" media="all">
+<link href="portrait.css" rel="stylesheet" media="orientation:portrait">
+<link href="print.css"    rel="stylesheet" media="print">
+
+The first declaration is render blocking and matches in all conditions.
+
+The second declaration is also render blocking: “all” is the default type and if you don’t specify any type, it’s implicitly set to “all”. Hence, the first and second declarations are actually equivalent.
+
+The third declaration has a dynamic media query which will be evaluated when the page is being loaded. Depending on the orientation of the device when the page is being loaded, portrait.css may or may not be render blocking.
+
+The last declaration is only applied when the page is being printed, hence it is not render blocking when the page is first loaded in the browser.

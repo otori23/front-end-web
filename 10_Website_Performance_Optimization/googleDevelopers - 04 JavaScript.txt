@@ -1,0 +1,43 @@
+TL;DR
+- JavaScript can query and modify DOM and CSSOM.
+- JavaScript execution blocks on CSSOM. ALWAYS
+- JavaScript blocks DOM construction unless explicitly declared as async.
+
+1) JavaScript
+
+JavaScript allows us to modify just about every aspect of the page: content, styling, and its behavior to user interactions. However, JavaScript can also block DOM construction and delay when the page is rendered. Make your JavaScript async and eliminate any unnecessary JavaScript from the critical rendering path to deliver optimal performance.
+
+In short, JavaScript introduces a lot of new dependencies between the DOM, CSSOM, and JavaScript execution and can lead to significant delays in how quickly the browser can process and render our page on the screen:
+
+- The location of the script in the document is significant.
+- DOM construction is paused when a script tag is encountered and until the script has finished executing.
+- JavaScript can query and modify the DOM and CSSOM.
+- JavaScript execution is delayed until the CSSOM is ready.
+
+When we talk about “optimizing the critical rendering path,” to a large degree we’re talking about understanding and optimizing the dependency graph between HTML, CSS, and JavaScript.
+
+In short, JavaScript introduces a lot of new dependencies between the DOM, CSSOM, and JavaScript execution and can lead to significant delays in how quickly the browser can process and render our page on the screen:
+
+- The location of the script in the document is significant.
+- DOM construction is paused when a script tag is encountered and until the script has finished executing.
+- JavaScript can query and modify the DOM and CSSOM.
+- JavaScript execution is delayed until the CSSOM is ready.
+
+When we talk about “optimizing the critical rendering path,” to a large degree we’re talking about understanding and optimizing the dependency graph between HTML, CSS, and JavaScript.
+
+2) inline JS
+- always parser blocking
+- apparently can add special js code to work around this
+
+3) External JS
+- browser has to fetch js from remote source (network, disk, etc)
+- then wait for CSSOM
+- then run
+- not optimal wrt CRP
+
+4) async attribute
+- applied to script tag for external JS
+- means continue to construct DOM and run JS when it arrives
+
+- However JS ALWAYS blocks on CSSOM no matter what???? Look into this
+read: https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/

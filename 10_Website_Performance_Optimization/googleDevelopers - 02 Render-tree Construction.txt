@@ -1,0 +1,80 @@
+TL;DR
+
+- The DOM and CSSOM trees are combined to form the render tree.
+- Render tree contains only the nodes required to render the page.
+- Layout computes the exact position and size of each object.
+- Paint is the last step that takes in the final render tree and renders the pixels to the screen.
+
+
+0) TimeLine
+
+- The render tree construction and position and size calculation are captured with the “Layout” event in the Timeline.
+
+
+1) Render-tree, Layout, Paint
+
+- The DOM and CSSOM trees are combined to form the render tree.
+- Render tree contains only the nodes required to render the page.
+- Layout computes the exact position and size of each object.
+- Paint is the last step that takes in the final render tree and renders the pixels to the screen.
+
+2) Render-tree
+
+The first step is for the browser to combine the DOM and CSSOM into a “render tree” that captures all the visible DOM content on the page, plus all the CSSOM style information for each node.
+
+3) Steps to construct the Render-tree
+
+To construct the render tree, the browser roughly does the following:
+
+- Starting at the root of the DOM tree, traverse each visible node.
+	- Some nodes are not visible at all (e.g. script tags, meta tags, and so on), and are omitted 		since they are not reflected in the rendered output.
+
+	- Some nodes are hidden via CSS and are also omitted from the render tree - e.g. the span node in 	example above is missing from the render tree because we have an explicit rule that sets 	“display: none” property on it.
+- For each visible node find the appropriate matching CSSOM rules and apply them.
+- Emit visible nodes with content and their computed styles.
+
+3a) Summary
+
+- Render-tree = start with visible nodes in DOM
+- for each node in DOM use a key to search for style properties in CSSOM
+- CSSOM is like tree-based symbol table where key = DOM node; value = CSS properties
+- resulting render-tree is like tree based symbol table; key = visible DOM nodes; value = css properties
+
+3b) Render step out put
+The final output is a render that contains both the content and the style information of all the visible content on the screen - we’re getting close! With the render tree in place, we can proceed to the “layout” stage.
+
+4) CSS styles: visibility: hidden vs display: none
+
+As a brief aside, note that 'visibility: hidden' is different from 'display: none'. The former makes the element invisible, but the element is still occupies space in the layout (i.e. it's rendered as an empty box), whereas the latter (display: none) removes the element entirely from the render tree such that the element is invisible and is not part of layout.
+
+5) Layout or Reflow step
+- happens after render tree construction
+- for each node in render tree,
+- figure out exact position and size (shape/geometry) within the viewport of the device
+- the browser begins at the root of the render tree and traverses it to compute the geometry of each object on the page
+
+5a) Layout process output = "box model"
+- box model” precisely captures the exact position and size of each element within the viewport 
+- all of the relative measures are converted to absolute pixels positions on the screen, and so on
+
+6) Painting or Rastering
+Finally, now that we know which nodes are visible, their computed styles, and geometry, we can finally pass this information to our final stage which will convert each node in the render tree to actual pixels on the screen
+
+7) Time to construct render-tee, layout, and paint
+- Each of these steps requires a non-trivial amount of work by the browser, which also means that it can often take quite a bit of time.
+
+- The time required to perform render tree construction, layout and paint will vary based on the size of the document, the applied styles, and of course, the device it is running on: the larger the document the more work the browser will have to do; the more complicated the styles are the more time will be consumed for painting also (e.g. a solid color is “cheap” to paint, and a drop shadow is much more “expensive” to compute and render).
+
+8) Summary
+
+Let’s do a quick recap of all the steps the browser went through:
+
+- Process HTML markup and build the DOM tree.
+- Process CSS markup and build the CSSOM tree.
+- Combine the DOM and CSSOM into a render tree.
+- Run layout on the render tree to compute geometry of each node.
+- Paint the individual nodes to the screen.
+
+Our demo page may look very simple, but it requires quite a bit of work! Care to guess what would happen if the DOM, or CSSOM is modified? We would have to repeat the same process over again to figure out which pixels need to be re-rendered on the screen.
+
+Optimizing the critical rendering path is the process of minimizing the total amount of time spent in steps 1 through 5 in the above sequence. Doing so enables us to render content to the screen as soon as possible and also to reduces the amount of time between screen updates after the initial render - i.e. achieve higher refresh rate for interactive content.

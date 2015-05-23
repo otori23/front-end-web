@@ -1,3 +1,13 @@
+TL;DR
+- Bytes -> characters -> tokens -> nodes -> object model.
+
+- HTML markup is transformed into a Document Object Model (DOM), CSS markup is transformed into a CSS Object Model (CSSOM).
+
+- DOM and CSSOM are independent data structures.
+
+- Chrome DevTools Timeline allows us to capture and inspect the construction and processing costs of DOM and CSSOM.
+
+
 1) The Critical Rendering Path
 
 - Our goal is to prioritize and display the content that relates to the primary action the user wants to take on a page.
