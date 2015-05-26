@@ -1,0 +1,47 @@
+TL;DR
+- Navigation Timing provides high resolution timestamps for measuring CRP.
+- Browser emits series of consumable events which capture various stages of the CRP.
+
+1) Optimizing CRP
+
+You can't optimize what you can't measure. Thankfully, the Navigation Timing API gives us all the necessary tools to measure each step of the critical rendering path!
+
+The foundation of every solid performance strategy is good measurement and instrumentation. Turns out, that is exactly what the Navigation Timing API (i.e. js in broswer) provides.
+
+2) Timestamps
+
+Browser keeps timestamps of CRP events:
+
+domLoading: 
+domInteractive:
+domContentLoaded:
+domComplete: 
+loadEvent:
+
+3) Sample usage of navigation API
+
+   <html>
+      <head>
+        <title>Critical Path: Measure</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link href="style.css" rel="stylesheet">
+        <script>
+          function measureCRP() {
+            var t = window.performance.timing,
+              interactive = t.domInteractive - t.domLoading,
+              dcl = t.domContentLoadedEventStart - t.domLoading,
+              complete = t.domComplete - t.domLoading;
+            var stats = document.createElement('p');
+            stats.textContent = 'interactive: ' + interactive + 'ms, ' +
+                'dcl: ' + dcl + 'ms, complete: ' + complete + 'ms';
+            document.body.appendChild(stats);
+          }
+        </script>
+      </head>
+      <body onload="measureCRP()">
+        <p>Hello <span>web performance</span> students!</p>
+        <div><img src="awesome-photo.jpg"></div>
+      </body>
+    </html>
+
+Note that instead of printing these metrics on the page you can also modify the code to send these metrics to an analytics server (Google Analytics does this automatically), which is a great way to keep tabs on performance of your pages and identify candidate pages that can benefit from some optimization work.

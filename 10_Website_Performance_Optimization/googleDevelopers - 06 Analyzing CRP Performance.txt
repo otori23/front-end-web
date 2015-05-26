@@ -1,0 +1,22 @@
+TL;DR
+
+Identifying and resolving critical rendering path performance bottlenecks requires good knowledge of the common pitfalls. Let's take a hands-on tour and extract common performance patterns that will help you optimize your pages.
+
+1) Goal of Optimization
+
+The goal of optimizing the critical rendering path is to allow the browser to paint the page as quickly as possible: faster pages translate to higher engagement, number of pages viewed, and improved conversion. As a result, we want to minimize the amount of time the visitor has to spend staring at a blank screen by optimizing which resources are loaded and in which order.
+
+2) Assumptions
+
+Finally, one more thing before we start… So far we’ve focused exclusively on what happens in the browser once the resource (CSS, JS, or HTML file) is available to process and have ignored the time to fetch it either from cache or from the network. We’ll dive into how to optimize the networking aspects of our application in great detail in the next lesson but in the meantime (to make things more realistic) we’ll assume the following:
+
+- A network roundtrip (propagation latency) to the server will cost 100ms
+- Server response time will be 100ms for the HTML document and 10ms for all other files
+
+3) Network timeline in Chrome DevTools
+
+- Note that the transparent portion of the blue line indicates the time the browser is waiting on the network - i.e. no response bytes have yet been received
+ 
+- whereas the solid portion shows the time to finish the download after the first response bytes have been received.
+
+4) 
