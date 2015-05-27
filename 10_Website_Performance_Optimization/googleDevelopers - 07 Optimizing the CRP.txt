@@ -1,0 +1,23 @@
+1) Optimizing CRP
+
+In order to deliver the fastest possible time to first render, we need to optimize three variables:
+
+- Minimize the number of critical resources. - less work for browser
+- Minimize the number of critical bytes. - faster processing by browser
+- Minimize the critical path length. - 
+
+A critical resource is any resource that may block initial rendering of the page. The fewer of these resources there are on the page, the less work the browser has to do to get content on the screen
+
+Similarly, the fewer critical bytes the browser has to download, the faster it can get to processing the content and get it visible on the screen. 
+
+Finally, the critical path length is a function of the dependency graph between all the critical resources required by the page and their bytesize: some resource downloads can only be initiated once a previous resource has been processed, and the larger the resource the more roundtrips it will take us to download it.
+
+2) The general sequence of steps to optimize the critical rendering path is:
+
+- Analyze and characterize your critical path: number of resources, bytes, length.
+
+- Minimize number of critical resources: eliminate them, defer their download, mark them as async, etc.
+
+- Optimize the order in which the remaining critical resources are loaded: you want to download all critical assets as early as possible to shorten the critical path length.
+
+- Optimize the number of critical bytes to reduce the download time (number of roundtrips).
