@@ -1,0 +1,60 @@
+Image optimization
+
+Image optimization is both an art and science: an art because there is no one definitive answer for how best to compress an individual image, and a science because there are many well developed techniques and algorithms that can significantly reduce the size of an image. Finding the optimal settings for your image requires careful analysis along many dimensions: format capabilities, content of encoded data, quality, pixel dimensions, and more.
+
+
+
+I) Eliminating and replacing images
+
+TL;DR
+Eliminate unnecessary image resources 
+Leverage CSS3 effects where possible
+Use web fonts instead of encoding text in images
+
+
+
+II) Vector vs. Raster images
+
+TL;DR
+Vector images are ideal for images that consist of geometric shapes
+Vector images are zoom and resolution-independent
+Raster images should be used for complex scenes with lots of irregular shapes and details
+
+1) Vector graphics 
+- use lines, points, and polygons to represent an image.
+
+- based on SVG technology
+
+- Each format has its own set of pros and cons. Vector formats are ideally suited for images that consist of simple geometric shapes (e.g. logos, text, icons, and so on), and deliver sharp results at every resolution and zoom setting, which makes them an ideal format for high-resolution screens and assets that need to be displayed at varying sizes.
+
+2) Raster graphics 
+- represent an image by encoding the individual values of each pixel within a rectangular grid.
+
+- however, vector formats fall short when the scene is complicated (e.g. a photo): the amount of SVG markup to describe all the shapes can be prohibitively high and the output may still not look “photorealistic”. When that’s the case, that’s when you should be using a raster image format such as GIF, PNG, JPEG, or one of the newer formats such as JPEG-XR and WebP.
+
+- raster images do not have the same nice properties of being resolution or zoom independent - when you scale up a raster image you’ll see jagged and blurry graphics. As a result, you may need to save multiple versions of a raster image at various resolutions to deliver the optimal experience to your users.
+
+III) Implications of high-resolution screens
+
+TL;DR
+High resolution screens have multiple device pixels per CSS pixel
+High resolution images require significantly higher number of pixels and bytes
+Image optimization techniques are the same regardless of resolution
+
+1) Vector images
+- A high resolution image just cost more time to process
+
+2) Raster images
+- a high resolution image increases # of bytes of resources O(n^2)
+- if a raster image is required, deliver and optimize multiple variants of each image
+
+So, what does this mean in practice? High resolution screens enable us to deliver beautiful images, which can be a great product feature. However, high resolution screens also require high-resolution images: prefer vector images whenever possible as they are resolution independent and always deliver sharp results, and if a raster image is required, deliver and optimize multiple variants of each image - keep reading for further details
+
+
+
+III) Optimizing vector images
+
+TL;DR
+SVG is an XML-based image format
+SVG files should be minified to reduce their size
+SVG files should be compressed with GZIP
