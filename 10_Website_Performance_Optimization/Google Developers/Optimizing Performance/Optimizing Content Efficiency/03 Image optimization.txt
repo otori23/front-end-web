@@ -2,7 +2,10 @@ Image optimization
 
 Image optimization is both an art and science: an art because there is no one definitive answer for how best to compress an individual image, and a science because there are many well developed techniques and algorithms that can significantly reduce the size of an image. Finding the optimal settings for your image requires careful analysis along many dimensions: format capabilities, content of encoded data, quality, pixel dimensions, and more.
 
+Compression Technique
 
+Find large # of bits (neighbours) that repeat (value); then encode them with a smaller # of bits (key).
+can later decode by using the key/value pair to do a lookup in a dictionary
 
 I) Eliminating and replacing images
 
@@ -58,3 +61,52 @@ TL;DR
 SVG is an XML-based image format
 SVG files should be minified to reduce their size
 SVG files should be compressed with GZIP
+
+1) SVG minification tool
+https://github.com/svg/svgo
+
+- make sure your server is configured to compress SVG assets!
+
+
+
+IV) Optimizing raster images
+
+TL;DR
+A raster image is a grid of pixels
+Each pixel encodes color and transparency information
+Image compressors use a variety of techniques to reduce the number of required bits per pixel to reduce file size of the image
+
+1) Pixels memory usage
+- one pixel of a raster image consumes 4 bytes
+- i.e. one byte per channel for RGBA channels
+- so, each channel has 256 (2^8) "shades"
+
+2) How to compress raster image
+
+2a) Optimize data usage of each pixel
+- reduce the number of bits used to represent each channel
+- i.e. instead of 8 bits maybe use 4, or 2 bits
+- smaller size for image but can represent as many colors
+- may not matter because human eyes not so good at detecting diferences in shades of a color
+
+2b) Compress 
+- after oprimizing data usage of each pixel,
+- use a tecnique like delta encoding to compress the image data (http://en.wikipedia.org/wiki/Delta_encoding)
+
+2c) Delta Encoding
+Next, once we’ve optimized the data stored in individual pixels we could get more clever and look at nearby pixels as well: turns out, many images, and especially photos, have many nearby pixels with similar colors - e.g. the sky, repeating textures, and so on. Using this information to our advantage the compressor can apply “delta encoding” where instead of storing the individual values for each pixel, we can store the difference between nearby pixels: if the adjacent pixels are the same, then the delta is “zero” and we only need to store a single bit! But why stop there…
+
+2d) Optimize Delta Encoding
+The human eye has different level of sensitivity to different colors: we can optimize our color encoding to account for this by reducing or increasing the palette for those colors. “Nearby” pixels form a two dimensional grid, which means that each pixel has multiple neighbors: we can use this fact to further improve delta encoding. Instead of looking at just the immediate neighbors for each pixel, we can look at larger blocks of nearby pixels and encode different blocks with different settings. And so on… 
+
+3) Decoding and using image on Client/Browser
+
+As an aside, regardless of the image format used to transfer the data from the server to the client, when the image is decoded by the browser, each pixel always occupies 4 bytes of memory. This can be an important constraint for large images and devices which do not have a lot of available memory - e.g. low-end mobile devices.
+
+V) Lossless vs lossy image compression
+
+TL;DR
+Due to how our eyes work, images are great candidates for lossy compression
+Image optimization is a function of lossy and lossless compression
+Differences in image formats are due to the difference in how and which lossy and lossless algorithms are used to optimize the image
+There is no single best format or "quality setting" for all images: each combination of particular compressor and image contents produce a unique output
