@@ -1,0 +1,80 @@
+0) Goal
+
+- write web apps that run at 60 fps
+- more to consider than just javascript
+- want to avoid juddering animations
+- this lesson will cover the browsers rendering pipeline
+
+1) Judder
+
+verb
+
+(especially of something mechanical) shake and vibrate rapidly and with force
+"the steering wheel juddered in his hand"
+
+noun
+
+an instance of rapid and forceful shaking and vibration
+
+2) Browser rendering
+
+- want to understand browser rendering pipeline
+- identify where bottlenecks slow down redering process
+- diagnose and solve performance issues
+- get a sense for how to approach performance issues at different stages of your apps lifecycle
+
+3) Avoiding Judder
+
+- very important to users
+- juddering does not affect only games
+- it can affect all sites and web apps
+- bad performing apps kill your reviews; people won't buy or use the app
+
+3a) Most requested feature in app
+
+- smooth navigation
+- we want to understand how to quantify performance, ... 
+- and what tools are available to us to measure performance
+
+3b) Common performance problems
+
+- jank - i.e. juddering animations
+- sticky scrolling
+- flickering updates
+
+4) What goes into a single frame
+
+- devices update their screen at 60 fps (i.e. 60 times a second)
+- browser should have a new frame for device to use every 1/60 th of a second
+- if browser takes too long and misses frame, then the frame rate drops below 60 fps
+- lead to animations and transitions that are not smooth
+- i.e. juddering
+- want to be all the work of making a frame under 1/60 sec (~ 16 ms) to acheive 60 fps
+- to account for other work browser has to do, you actualy have 10 - 12 ms 
+
+5) What Goes Into One Frame
+
+- want to optimize web apps frame rate, by first understanding how the browser renders a frame
+- how is a page put together when it is first loaded ?
+- see CRP process in web optimization class for details
+- main take away is the Render tree contains nodes of objects that will be displayed by browser
+
+6) Render Tree Quiz
+
+- Only visible elements exist in the Render Tree. Which of the following elements would NOT
+be in the Render Tree
+
+a) .style1 {display:none;}              <====== ANS!!!!
+b) .style2::before{display:block;}
+c) .style3 {height: 0;}
+d) .style4 { 
+  	     position: absolute;
+	     left: 100 %; // pushed all the way to the left of page; won't see this
+	   }
+
+- note that options b, c, and d don't take up any space on the page, but will still be in render tree
+- In order for .style2 to end up in the render tree, it needs to have some content, like '' assigned to it.
+
+7)  DOM, CSSOM, Render Tree
+
+- back to rendering process for a single frame ...
