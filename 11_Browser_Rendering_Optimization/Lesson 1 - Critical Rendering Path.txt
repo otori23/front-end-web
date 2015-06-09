@@ -78,3 +78,123 @@ d) .style4 {
 7)  DOM, CSSOM, Render Tree
 
 - back to rendering process for a single frame ...
+- once browser knows which css rules apply to an element (i.e. the render tree has been built),
+- it can start to to calculate Layout
+
+7a) Summary of steps to render a single frame
+
+- Build Render Tree (CRP)
+- Layout (or Reflow)
+- Paint
+
+7b) Layout (or sometimes called Reflow)
+
+- how much space elements take up and where they are on the screen
+- i.e. geometry and position
+
+- the layout step turns the nodes in the render tree into a collection of boxes on the screen
+- see pre-layout.jpeg and post-layout.jpeg
+- in developer tools, the Layout even is encoded with purple/blue color
+- note that one element's layout can affect the layout of others
+- i.e. the width of the body element affects the width of all its children 
+- process can be quite involved for the browser
+
+7c) Paint: Vector to Raster
+
+- boxes are vectors (i.e. shapes)
+- need to turn the shapes into pixels (i.e. raster)
+- this is done by the rasterizer
+- rasterizer will perform a series of actions to turn shapes into pixels
+- see pre-rasterize.jpeg and post-rasterize.jpeg
+- the paint step is encoded with a green color in developer tools
+
+7d) Paint: Image Decode + Resize
+
+- part of paint step where browser draws images to screen (jpegs, pngs, gifs)
+- raster funcion call = drawBitmap()
+- still encoded with green color in developer tools - i.e. part of paint step
+
+7e) Paint: Composite Layers
+
+- when browser combines differnt painted layers to form one frame
+- browser can paint into different layer individually
+- process of managing layers shown as "Composite Layers" in dev tools
+- more details on managing the layering process later
+- drawing the layers happens on tiles
+- details of tiles are not handled by programmer - so ignore
+
+7f) CPU to GPU
+
+- all the processing discussed so far happened on the CPU
+- the CPU transfers layer + tile information to the GPU
+- then the GPU puts the picutes up to the screen
+- http://blogs.nvidia.com/blog/2009/12/16/whats-the-difference-between-a-cpu-and-a-gpu/  
+
+8) Layout quiz - layout-quiz.jpeg
+
+- browser runs layout (and subsequent steps) if the geometry of any elements in render tree changes
+- changing the gemoetry of any element in the render tree create SME amount of work for browser
+- the browser assumes that any change invalidates the entire DOM
+- see layout-quiz.jpeg
+
+8a) Layout boundries
+
+- http://wilsonpage.co.uk/introducing-layout-boundaries/
+- can use developer tools to measure or see what was the scope of the layout
+- in this quiz, all click events have have the whole document as the layour scope
+- it is possible but very difficult to control layout scope
+- use layout boundries to control layout scope
+
+8b) Quiz Summary
+
+- Layout process is extremely complex
+- just assume the entire DOM is processed by every layout step
+
+9) Layout and Paint
+
+- frame render pipeline with JS in the mix
+JS -> Style -> Layout -> Paint -> Composite
+
+- JS step can be replaced with: CSS or Web api animation
+
+9a) JS
+
+- the JS typically handles work that results in physical changes, eg
+- jQuery's animate functions
+- sorting a data set
+- adding DOM elements to page
+
+9b) other methods for creating visual changes
+
+- CSS animations and transitions
+- new web animations api
+
+10) Render Pipeline triggered by changes 
+
+- parts of the pipeline that are triggered by a change depends on the type of change
+- in fact there are THREE ways the pipeline normally plays out per a given frame
+
+10a) Change geometry or position property
+
+- e.g. change a width, height, or postion property of an element
+- JS -> Style -> Layout -> Paint -> Composite
+
+10b) Change paint only property
+
+- e.g. background image, text colors, or shadows
+- JS -> Style -> Paint -> Composite
+
+10c) Change that does not affect layout or pain
+
+- JS -> Style -> Composite
+
+11) Render Quiz - render-quiz.jpeg
+
+- JS -> Layout -> Paint -> Composite
+- note that when flex box is used to rezise page, the styles DID NOT need to be re-calculated
+- also, note the if resizing the page trigger a media query, then styles would be re-calculated
+
+11a) FlexBox reference
+
+- Flexbox in 5 mins - interactive tutorial
+- http://flexboxin5.com/
