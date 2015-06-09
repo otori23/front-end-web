@@ -110,3 +110,94 @@ Due to how our eyes work, images are great candidates for lossy compression
 Image optimization is a function of lossy and lossless compression
 Differences in image formats are due to the difference in how and which lossy and lossless algorithms are used to optimize the image
 There is no single best format or "quality setting" for all images: each combination of particular compressor and image contents produce a unique output
+
+1) A typical image optimization pipeline consists of two high level steps:
+- Image is processed with a “lossy” filter that eliminates some pixel data
+- Image is processed with a “lossless” filter that compresses the pixel data
+
+The first step is optional (depends on if you are willing to lose some information), and the exact algorithm will depend on the particular image format, but it is important to understand that any image can undergo a lossy compression step to reduce its size.
+
+
+2) Certain content types lend themselves to lossly compression: images, audio, video
+- others have to be compressed in a lossless fashion as not to change their meaning:
+text, executables, etc
+
+3) Image formats
+- e.g. JPEG, GIF, PNG, WebP, etc
+- differ in the type of comperssion algorithm that is used on them
+
+4) The compression algorithm determines the type format for an image
+
+
+
+
+VI) Selecting the right image format
+
+TL;DR
+Start by selecting the right universal format: GIF, PNG, JPEG
+Experiment and select the best settings for each format: quality, palette size, etc.
+Consider adding WebP and JPEG XR assets for modern clients
+
+1) Choice of the “right format” for a particular image is a combination of desired visual results and functional requirements (e.g. transparency, animation)
+
+2) There are three universally supported image formats: GIF, PNG, and JPEG. In addition to these formats, some browsers also support newer formats such as WebP and JPEG XR, which offer better overall compression and more features. 
+
+3) Other more current formats not universally supported, but give better performance
+e.g. WebP and JPEG XR
+
+4) Once you’ve determined the optimal image format and its settings for each of your assets, consider adding an additional variant encoded in WebP and JPEG XR.
+
+5) Finally, note that if you are using a Webview to render content in your native application, then you have full control of the client and can use WebP exclusively! Facebook, Google+ and many others use WebP to deliver all of their images within their applications
+
+
+
+
+VII) Tools and parameter tuning
+
+There is no one perfect image format, tool, or a set of optimization parameters that apply to all images. For best results you will have to pick the format and its settings depending on the contents of the image, and its visual and other technical requirements.
+
+Tool			Description
+gifsicle 		create and optimize GIF images
+http://www.lcdf.org/gifsicle/
+
+jpegtran		optimize JPEG images
+http://jpegclub.org/jpegtran/
+
+optipng			lossless PNG optimization
+http://optipng.sourceforge.net/
+
+pngquant		lossy PNG optimization
+https://pngquant.org/
+
+Don’t be afraid to experiment with parameters of each compressor. Dial down the quality, see how it looks, then rinse, lather and repeat. Once you’ve found a good set of settings, you can apply them to other similar images on your site, but don’t assume that all images must be compressed with the same settings.
+
+
+
+
+VIII) Delivering scaled image assets
+
+TL;DR
+Delivering scaled assets is one of the simplest and most effective optimizations
+Pay close attention to large assets as they result in high overhead
+Reduce the number of unnecessary pixels by scaling your images to their display size
+
+Image optimization boils down to two criteria: optimizing the number of bytes used to encode each image pixel, and optimizing the total number of pixels: the filesize of the image is simply the total number of pixels times the number of bytes used to encode each pixel. Nothing more, nothing less.
+
+As a result, one of the simplest and most effective image optimization techniques is to ensure that we are not shipping any more pixels than needed to display the asset at its intended size in the browser. Sounds simple, right? Unfortunately, most pages fail this test for many of their image assets: typically, they ship larger assets and rely on the browser to rescale them - which also consumes extra CPU resources - and display them at a lower resolution.
+
+Note: hovering over the image element in Chrome DevTools reveals both the "natural" and "display" sizes of the image asset.
+
+The overhead of shipping unnecessary pixels, only to have the browser rescale the image on our behalf, is a big missed opportunity to reduce and optimize the total number of bytes required to render the page. Further, note that resizing is not simply a function of the number of pixels by which the image is reduced by, but also of its natural size.
+
+
+
+
+IX) Image optimization checklist
+
+- Prefer vector formats
+- Minify and compress SVG assets
+- Pick best raster image format
+- Experiment with optimal quality settings for raster formats
+- Remove unnecessary image metadata
+- Serve scaled images
+- Automate, automate, automate
