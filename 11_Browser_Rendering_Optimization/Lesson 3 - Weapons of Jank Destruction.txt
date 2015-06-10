@@ -1,0 +1,7 @@
+0) Goal
+
+- use chrome dev tools to identify and destroy jank
+- in particular will be using the timeline in dev tools
+- will use the time line to determine exactly where jank is happenning
+
+1) 
