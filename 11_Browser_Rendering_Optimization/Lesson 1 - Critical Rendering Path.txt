@@ -198,3 +198,20 @@ JS -> Style -> Layout -> Paint -> Composite
 
 - Flexbox in 5 mins - interactive tutorial
 - http://flexboxin5.com/
+
+12) csstriggers.com
+
+- useful tool for determining the amount of work your css will trigger
+- not all css are created equally
+- some css properties will lead to more work for the browser to do than others
+- your css should trigger the least amount of work possible for the browser
+- this means shortening the render pipeline; i.e. avoid layout and paint whenever possible
+
+12a) transforms and opacity
+
+- best properties to change because they only trigger composite portion of render pipeline 
+
+13) Outro
+
+- jank is more probelmatic is some portions of an apps life-cycle than others
+- identify areas (in apps life cycle) that matter most to users
