@@ -145,3 +145,14 @@ iv) Fetching images for below the fold content
 Answer: ii, iii, and iv, 
 
 - i should happen with initial load
+
+9) Time Budget - timeBudget.jpeg
+
+- see image for time allowances for different tasks
+- table helps you set a budget for each taks
+- you and your team use the table to stay on the same page
+
+10) Next steps
+
+- look at tools for identifying jank in your app
+- 1st step in reducing jank is identifying its cause
