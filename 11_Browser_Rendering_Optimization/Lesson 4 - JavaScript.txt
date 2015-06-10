@@ -1,0 +1,38 @@
+0) Goal
+
+- Optimize JS
+
+1) JS Compiler - just in time (JIT)
+
+- JIT compiler convert your js source into assembly type langauge for the browser's js engine
+- the JIT compiler optimizes your js bit by bit as it runs so that it is as fast as possible
+- JIT compilers are brilliant and extremely complicated
+- chrome's js engine is called V8
+
+1a) JIT consequences
+
+- no way to look at js source and know exactly what runs in js engine
+
+1b) irhydra - http://mrale.ph/irhydra/2/
+
+- this is a tool that can display intermediate representations used by V8 and Dart VM optimizing compilers
+- i.e. can see the assembly type coe that JIT will pass along to js engine
+
+1c) Micro-optimization
+
+- this is where you try and write code you think will be a little bit faster for the browser to run
+
+- e.g. try to decide between
+
+for(var i = 0; i < len; i==)...     --or--      while(++i < len)...
+
+- there is now way to know how the JIT compiler will optimize your code...
+- so, micro-optimization is generally a waste time
+ 
+1d) Upshot
+
+- However, there are plenty of things you can do to make you JS run better
+
+2) artifact
+
+- something observed in a scientific investigation or experiment that is not naturally present but occurs as a result of the preparative or investigative procedure.
