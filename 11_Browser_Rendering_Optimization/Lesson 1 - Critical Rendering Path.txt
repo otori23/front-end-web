@@ -86,6 +86,7 @@ d) .style4 {
 - Build Render Tree (CRP)
 - Layout (or Reflow)
 - Paint
+- Composite
 
 7b) Layout (or sometimes called Reflow)
 
