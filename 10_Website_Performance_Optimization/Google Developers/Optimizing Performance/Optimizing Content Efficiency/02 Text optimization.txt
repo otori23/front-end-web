@@ -1,0 +1,69 @@
+I) Data compression 101
+
+TL;DR
+Compression is the process of encoding information using fewer bits
+Eliminating unnecessary data always yields the best results
+There are many different compression techniques and algorithms
+You will need a variety of techniques to achieve the best compression
+
+0) Compression
+
+- once we’ve eliminated any unnecessary resources, the next step is to minimize the total size of the remaining resources the browser has to download - i.e. compress them
+
+
+II) Minification: preprocessing & context-specific optimizations
+
+TL;DR
+Content-specific optimizations can significantly reduce the size of delivered resources.
+Content-specific optimizations are best applied as part of your build/release cycle.
+
+1) Idea behind content specific pre-processing
+
+- the best way to compress redundant or unnecessary data is to eliminate it altogether
+- each content type has it own meta-data type;
+- if you know what these are, they can often be removed
+- humans have a need for them; but the browser does not
+- i.e. comments, whitespace, etc in for text content
+- images even have their own forms of meta-data; i.e. camera settings, location, etc
+
+2) Minification Process
+
+- as a first step in optimizing the efficiency of your assets, build an inventory of the different content types and consider what kinds of content-specific optimizations you can apply to reduce their size
+
+
+III) Text compression with GZIP
+
+TL;DR
+GZIP performs best on text-based assets: CSS, JavaScript, HTML
+All modern browsers support GZIP compression and will automatically request it
+Your server needs to be configured to enable GZIP compression
+Some CDNs require special care to ensure that GZIP is enabled
+
+1) GZIP
+(https://www.youtube.com/watch?v=whGwm0Lky2s&feature=youtu.be&t=14m11s)
+
+GZIP is a generic compressor that can be applied to any stream of bytes: under the hood it remembers some of the previously seen content and attempts to find and replace duplicate data fragments in an efficient way - for the curious, great low-level explanation of GZIP. However, in practice, GZIP performs best on text-based content, often achieving compression rates of as high as 70-90% for larger files, whereas running GZIP on assets that are already compressed via alternative algorithms (e.g. most image formats) yields little to no improvement.
+
+All modern browsers support and automatically negotiate GZIP compression for all HTTP requests: our job is to ensure that the server is properly configured to serve the compressed resource when requested by the client.
+
+2) Assest compression Process - 2 steps
+
+- Apply content-specific optimizations first: CSS, JS, and HTML minifiers.
+- Apply GZIP to compress the minified output.
+
+In general, audit your site and ensure that your assets are, in fact, being compressed!
+
+
+
+
+
+
+
+
+
+
+
+
+Compression proces is two step
+minification - takes care of content specific compression
+compression - genera compression on the output of minification

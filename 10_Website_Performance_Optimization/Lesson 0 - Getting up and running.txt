@@ -1,3 +1,11 @@
+CRITICAL RESOURCES
+- Resourcse that affect time to first paint (HTML, CSS< JS)
+- images are not critical resources
+
+CRITICAL RENDERING PATH
+- Steps browsers takes to process the critical resources
+
+
 0) Instructors
 - Ilya Grigorik: developer advocate and web developer @ Google
 - Ilya has a book 

@@ -1,0 +1,63 @@
+TL;DR
+
+Identifying and resolving critical rendering path performance bottlenecks requires good knowledge of the common pitfalls. Let's take a hands-on tour and extract common performance patterns that will help you optimize your pages.
+
+1) Goal of Optimization
+
+The goal of optimizing the critical rendering path is to allow the browser to paint the page as quickly as possible: faster pages translate to higher engagement, number of pages viewed, and improved conversion. As a result, we want to minimize the amount of time the visitor has to spend staring at a blank screen by optimizing which resources are loaded and in which order.
+
+2) Assumptions
+
+Finally, one more thing before we start… So far we’ve focused exclusively on what happens in the browser once the resource (CSS, JS, or HTML file) is available to process and have ignored the time to fetch it either from cache or from the network. We’ll dive into how to optimize the networking aspects of our application in great detail in the next lesson but in the meantime (to make things more realistic) we’ll assume the following:
+
+- A network roundtrip (propagation latency) to the server will cost 100ms
+- Server response time will be 100ms for the HTML document and 10ms for all other files
+
+3) Network timeline in Chrome DevTools
+
+- Note that the transparent portion of the blue line indicates the time the browser is waiting on the network - i.e. no response bytes have yet been received
+ 
+- whereas the solid portion shows the time to finish the download after the first response bytes have been received.
+
+4) Images - NOT critical resource
+- do not block the domContentLoaded event! 
+- turns out, we can construct the render tree and even paint the page without waiting for each and every asset on the page: not all resources are critical to deliver the fast first paint (aka first render).
+- in fact, as we will see, when we talk about the critical rendering path we are typically talking about the HTML markup, CSS, and JavaScript. 
+
+4a) more on Images and the "load" event
+- images do not block the initial render of the page - although, of course, we should try to make sure that we get the images painted as soon as possible also!
+- That said, the “load” event (also commonly known as “onload”), is blocked on the image 
+- recall that the onload event marks the point when all resources required by the page have been downloaded and processed 
+- this is the point when the loading spinner can stop spinning in the browser and this point is marked by the red vertical line in the network waterfall.
+
+5) domContentLoaded and onload
+- domContentLoaded: Can begin rendering; typically DOM and CSSOM ready
+- onload: all page resources have be downloaded; typically run application logic in js
+
+6) Optimizing the CRP
+- optimizing the critical rendering path is a non-trivial exercise: 
+- we need to understand the dependency graph between different resources, we need to identify which resources are “critical,” and we must choose among different strategies for how to include those resources on the page. 
+- there is no one solution to this problem - each page is different, and you’ll have to follow a similar process on your own to figure out the optimal strategy.
+
+7) CRP Stats
+- Critical Resource: resource that may block initial rendering of the page.
+- Critical Path Length: number of roundtrips, or the total time required to fetch all of the critical resources.
+- Critical Bytes: total amount of bytes required to get to first render of the page, which is the sum of the transfer filesizes of all critical resources. Our first example with a single HTML page contained a single critical resource (the HTML document), the critical path length was also equal to 1 network roundtrip (assuming file is small), and the total critical bytes was just the transfer size of the HTML document itself.
+
+7a) More on roundtrips
+- it may take mulitple roundtrips to get a resource
+- all requests initiated in one time step count as one round trip
+
+8) CRP Analysis
+- Figuring out the characteristics of your critical rendering path means being able to identify which are the critical resources, and also understanding how the browser will schedule their fetches
+
+9) Async JS
+Making the script asynchronous has several advantages:
+- The script is no longer parser blocking and is not part of the critical rendering path
+- Because there are no other critical scripts, the CSS also does not need to block the domContentLoaded event
+- The sooner the domContentLoaded event fires, the sooner other application logic can begin executing
+
+10) non-render blocking css (e.g. media="print") and async js
+- DOM construction and page render happen, BEFORE
+- CSSOM construction and JS execution
+

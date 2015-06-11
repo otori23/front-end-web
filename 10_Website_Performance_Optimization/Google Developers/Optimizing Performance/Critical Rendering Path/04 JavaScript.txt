@@ -27,7 +27,8 @@ When we talk about “optimizing the critical rendering path,” to a large degree w
 
 2) inline JS
 - always parser blocking
-- apparently can add special js code to work around this
+- apparently can add special js code to work around this (script injected js)
+- for morden browsers this is a "bad" pattern: defeats pre-load scanner
 
 3) External JS
 - browser has to fetch js from remote source (network, disk, etc)
@@ -39,5 +40,21 @@ When we talk about “optimizing the critical rendering path,” to a large degree w
 - applied to script tag for external JS
 - means continue to construct DOM and run JS when it arrives
 
-- However JS ALWAYS blocks on CSSOM no matter what???? Look into this
-read: https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/
+- The async attribute on the script tag provides two critical properties: 
+- it tells the browser to not block DOM construction, and 
+- it does not block script execution on CSSOM.
+
+- <script src="...">: use when execution order matters	
+- <script async src="...">: use when execution order does not matter
+
+5) Pre-load scanner
+
+All modern browsers have a "preload scanner" (yes, even IE8/9 and Android 2.3/2.2) which is invoked when the document parser is blocked and whose sole responsibility is to "peek ahead" in the document and find resources that should be fetched as soon as possible to unblock the critical rendering path.
+
+Also, note that the preload scanner will only discover resources that are specified via src/href attributes on script and link tags. The preload scanner cannot and does not execute inline JavaScript blocks, which means that any script-injected assets cannot be discovered by the preload scanner.
+
+6) inline js before CSS
+
+- if we place inline js before any CSS declarations in the head, then the inline js is executed immediately.
+
+- Wait, should I just move all of my JavaScript above the CSS then? No. You want to keep your <head> lean to allow the browser to discover your CSS and begin parsing the actual page content as soon as possible - i.e. optimize the content you deliver in your first round trip to enable the fastest possible page render

@@ -1,0 +1,158 @@
+
+0) Goal
+
+- take a step back an think at a high level about your apps life cycle as a whole
+- goal is to identify when your app can and should do the heavy work to create a smooth experience for users
+- goal is not necessarily to have your app run at 60 fps all the time
+- need to understand what matters to your end uses, then structure your app appropriately
+- there are 4 major areas of any wep apps lifecycle
+- performace fits into these 4 areas in very different ways
+
+1) RAIL
+
+- acronym for four major areas of a web apps lifecycle
+- R: response
+- A: animations
+- I: idle
+- L: load
+- in chronological order should be LIAR
+- a good way to model apps workload
+
+2) Load & Idle
+
+- want the initial load to happen in under 1 second: (i.e. lesson from ilya and cam's CRP class)
+- after an app loads, it is normally idle waiting for a user to interact
+- this is our opportunity to deal with things we differed to meet that 1 second load time
+- normally the idle blocks are about 50 ms; may have several of them happen concurently
+- these idle blocks are FANTASTIC times to get some heavy lifting done ...
+- so that when the user interacts, things are nice and snappy
+
+2a) What to load during idle time
+
+- @ load time load critical and above the fold content: article text, basic critical functionality
+- during idle time load everyting else: images, videos, comments
+- post load tasks should still be kept as short as possible (in 50 ms chuncks)
+- because app needs to respond to user action if need be; and app will have 100 ms to respond
+- basically studies show it takes 100 ms before people notice lag in app response
+
+3) RAIL - Response
+
+- user input should be handled within 100 ms
+- some response are simple; e.g. user selects a check box and you show a check state on the checkbox control
+- other responses are more complex; i.e. reponses that require animation, i.e. tracking finger movement
+
+4) RAIL Dealines
+
+- R: response		100 ms
+- A: animations		16 ms (60 fps) (actually 10 - 12 ms because of browser overhead)
+- I: idle		50 ms
+- L: load		1000 ms
+
+5) RAIL - Animations Part 1
+ 
+- user interaction that needs animation: menu sliding, card expansions, etc
+- easy to accidentally trigger performance issues
+- need to be carefull about which properties you animate and when
+- to get animations at 60 fps - completely depends on your project
+
+5a) google dev summit web site example
+
+- Paul could not get his card expansions to happen @ 60 fps
+- so he tried working backwards; he calls his strategy FLIP
+- FLIP: First, Last, Invert, Play
+- sort a a very specific strategy for his situation
+- basically once the browser has done hard work to run the animation once,
+- he could then run the animation backward at little cost
+- like precomputing the animation ahead of time
+
+5b) FLIP
+
+- First: where the card starts
+- Last: where the card finishes
+- Invert: using information from first and last to apply transform and opacity changes to reverse the animation; the with some extra work like clipping, it is like the card never moved
+- Play: play the animation
+
+5c) FLIP - code
+
+- the whole repo
+https://github.com/udacity/devsummit
+
+- the FLIP code
+https://github.com/udacity/devsummit/blob/master/src/static/scripts/components/card.js
+
+- JS excerpt
+
+// Read Collapsed positions.
+this.collectProperties_(this.collapsedPositions_);
+
+// Expand the card and read again.
+this.elements_.root.classList.add('card--expanded');
+this.collectProperties_(this.expandedPositions_);
+
+// Figure out the difference and transform back.
+this.calculatePositionDiffs_();
+this.setElementTransformsToStartAndClipToCollapsed_();
+
+// Wait a frame. so that system can use new properies to perform animation
+requestAnimationFrame(function() {
+  // Switch on animations and remove the transforms.
+  this.elements_.root.classList.add('card--animatable');
+  this.setElementTransformsToZeroAndClipToExpanded_();
+});
+
+5d) Animation Timeline - animationTimeLine.jpeg
+
+- see animationTimeLine.jpeg
+- the expensive calculations of animation (e.g. property collection) happens upfront
+- i.e. within the 1st 100ms after user click event 
+- time was actually 70ms on Nexus 5 phone
+- then the animations does not need to calculate as much to achieve the 60 fps
+
+6) Rendering Animations Quiz
+
+- Paul applied opacity and transform changes to reverse the animation. What steps
+in the rendering pipeline did he trigger?
+
+i) HTML -> DOM
+ii) CSS -> CSSOM
+iii) DOM + CSSOM -> Render Tree
+iv) Layout
+v) Composite
+vi) Paint
+
+- answer is only Composite step runs
+
+- notice how opacity and transform only trigger composite
+- keep that in mind as you build your performant apps.
+- main lesson is the property you change in your animation determine the amount of work browser has to do
+- pretty much anything that moves should run at 60 FPS... 
+
+7) RAIL Scenario Quiz 1
+
+- should spinner gif be requested during the animation phase ?
+
+Answer: No, this is browsers most time constrained period
+
+8) RAIL Scenario Quiz 2
+
+- In the ~50 ms post-load idle phase, what tasks can you accomplish?
+
+i) Fetching images for above-the-fold content
+ii) FLIPing UI animations
+iii) Starting below the fold asunc requests
+iv) Fetching images for below the fold content
+
+Answer: ii, iii, and iv, 
+
+- i should happen with initial load
+
+9) Time Budget - timeBudget.jpeg
+
+- see image for time allowances for different tasks
+- table helps you set a budget for each taks
+- you and your team use the table to stay on the same page
+
+10) Next steps
+
+- look at tools for identifying jank in your app
+- 1st step in reducing jank is identifying its cause

@@ -1,0 +1,33 @@
+TL;DR
+
+Inventory all own and third party assets on your pages
+Measure the performance of each asset: its value and its technical performance
+Determine if the resources are providing sufficient value
+
+1) Website Resources
+ 
+- the fastest and best optimized resource is a resource not sent. 
+
+- as a performance engineer, it is your job to always maintain a critical eye for any opportunity to eliminate unnecessary resources from your application. 
+
+- it’s a good practice to question, and periodically revisit, the implicit and explicit assumptions with your team.
+
+- all too frequently our pages contain resources which are unnecessary, or worse, hinder page performance without delivering much value to the visitor or the site they are hosted on. 
+
+2) Measure
+
+- measure what users are using on your page and make a decision on what resources to keep vs what to remove.
+
+- while eliminating unnecessary downloads seems like a trivial statement, in practice it is anything but, as it often requires a lot of careful thinking and measurement to make the call. 
+
+- in fact, for best results you should periodically inventory and revisit these questions for each and every asset on your pages.
+
+3) Inventory 
+
+noun: complete list of items
+verb: make a complete list of items
+
+4) Audit
+
+noun: an official inspection of an individual's or organization's accounts, typically by an independent body.
+verb: conduct an official financial examination of (an individual's or organization's accounts). 

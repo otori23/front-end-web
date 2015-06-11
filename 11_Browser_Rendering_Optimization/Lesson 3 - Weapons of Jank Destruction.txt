@@ -1,0 +1,142 @@
+0) Goal
+
+- use chrome dev tools to identify and destroy jank
+- in particular will be using the timeline in dev tools
+- will use the time line to determine exactly where jank is happenning
+
+1) DevTools
+
+- Ctrl-Shift-i
+
+2) Timeline
+
+- allows you to trak frames per seconds (fps) for your project
+- recording in the timeline shows your fps information
+- also, for each frame, you see what work was involved
+- the work involved ties back into the pipeline from last lesson
+
+2a) Frames view
+
+- like bar chart showing fps vs time
+
+2b) Thread workers
+
+- e.g. Main thread, Composititor thread
+- shows work done vs time
+- underneath frame view
+- can see how we spent our time in each frame?
+- when you select a block you can see detials ot the block showing the exact parts of render pipeline being processed
+- js, style calculations, layout, layer management, paint and composite
+
+2c) jank related
+
+- you can see where you are hitting jank
+- i.e. where you are not getting at least 60 fps
+
+2d) references
+
+- demo site
+(http://www.html5rocks.com/static/demos/parallax/demo-1a/demo.html)
+
+- timeline reference
+(https://developer.chrome.com/devtools/docs/timeline)
+
+3) The Timeline in Depth
+
+- Note that the timeline records are color coded
+- Blue: HTML being parsed; normally really fast not a performace bottle neck
+- Purple: Recalculate Styles and Layout
+- Green: Paint and Compisite
+- Yellow: JS
+
+3a) Timeline views
+
+- can toggle on/off the bar chart showing fps vs time information (probably want it on all the time)
+- for view of work being done on threads, can toogle between two views
+- flame chart and waterfall - both show same information
+- severs to show what action trigger what other action - i.e. relationship between actions browser is taking
+
+3b) Thread work - Flame chart view
+
+- default view
+- bars grow down from the top
+- if one action triggers another, the triggered action is shown as a bar underneath its parent
+
+3c) Waterfall view
+
+- scroll up/down
+- tap on records on left hand side
+- the wider a bar, the longer it took tast to complete
+
+4) Identifying Jank Sample - Weight Tracker app
+
+- live site: http://weight.aerotwist.com/
+- github: https://github.com/paullewis/weight-tracker
+- the life site is performant - so no jank
+- take timeline trace of what happens when you expand/collapse hamburger icon
+- analyze trace to identify jank
+- select work block to view details
+
+5) Test… All the Devices!!!
+
+- a mistake most people make is to only test their apps on desktops
+- can miss performance issues because, mobile devices are more resource constrained
+- so you want to test on your mobile device
+- if you have android, you can use same chrome dev tools from your desktop
+- if you don't have andriod device, use emulation settings in chrome dev tools
+(https://developer.chrome.com/devtools/docs/device-mode)
+- though is still best to test on device
+
+6) Setup for mobile
+
+- if you have android, https://developer.chrome.com/devtools/docs/remote-debugging
+- basically, ...
+- turn on developer mode in your android device
+- turn on usb debugging
+- install chrome canary on laptop
+- install chrome beta on device
+
+7) Using dev tools on mobile for android
+
+- open chrome on develoment machine and navigate to chrome://inspect
+- make sure the site you want to inspect is open on your mobile device
+- connect dev machine and mobile device via usb
+- on dev machine can see list of connected devices and chrome tabs open on that device
+- on dev machine you can open/reload/close tabs in chrome on the mobile device
+- on dev machine, can inspect pages running on mobile device
+- i.e. chrome developer tools on dev machine is running with respect to chrome on mobile device
+- screencast mode, displays mobile device screen on dev machine
+- can directly interact with mobile device screen shown on dev machine
+
+8) Mobile tools for iOS
+
+- possible to setup dev tools with iOS
+- use web inspector and iOS WebKit Debug Proxy
+- a little harder to set up; check out link below
+- https://github.com/google/ios-webkit-debug-proxy
+
+9) Testing Strategy
+
+- quit other apps: to make sure you are collecting clean data
+- go incognito: so that extensions don't arrect your results
+- focus on cause of bottlenecks, not symptoms
+- first measure, then optimize: no point in fixing an issue you don't actually have
+- you won't know if you optimizations actually work in you don't have before and after measurements to compare
+
+10) More finding Jank notes
+
+- read the details of the frames/work bars in the time line
+- they may have warning messages that give you more information on source of jank
+- remember your js instructions will trigger the browser to do work
+- in the class quiz, js widht offset assignment was forcing browser to run layout which took a long time and lead to the jank
+
+10a) Jank quiz sample sites
+
+- http://output.jsbin.com/woyoce/1/quiet
+- http://output.jsbin.com/nanana/2/quiet
+- http://output.jsbin.com/saxalu/2/quiet
+- 
+
+11) Outro
+
+- next section will look at common sources of jank and how to fix them 

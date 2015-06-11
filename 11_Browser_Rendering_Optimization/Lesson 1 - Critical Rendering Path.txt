@@ -1,0 +1,218 @@
+0) Goal
+
+- write web apps that run at 60 fps
+- more to consider than just javascript
+- want to avoid juddering animations
+- this lesson will cover the browsers rendering pipeline
+
+1) Judder
+
+verb
+
+(especially of something mechanical) shake and vibrate rapidly and with force
+"the steering wheel juddered in his hand"
+
+noun
+
+an instance of rapid and forceful shaking and vibration
+
+2) Browser rendering
+
+- want to understand browser rendering pipeline
+- identify where bottlenecks slow down redering process
+- diagnose and solve performance issues
+- get a sense for how to approach performance issues at different stages of your apps lifecycle
+
+3) Avoiding Judder
+
+- very important to users
+- juddering does not affect only games
+- it can affect all sites and web apps
+- bad performing apps kill your reviews; people won't buy or use the app
+
+3a) Most requested feature in app
+
+- smooth navigation
+- we want to understand how to quantify performance, ... 
+- and what tools are available to us to measure performance
+
+3b) Common performance problems
+
+- jank - i.e. juddering animations
+- sticky scrolling
+- flickering updates
+
+4) What goes into a single frame
+
+- devices update their screen at 60 fps (i.e. 60 times a second)
+- browser should have a new frame for device to use every 1/60 th of a second
+- if browser takes too long and misses frame, then the frame rate drops below 60 fps
+- lead to animations and transitions that are not smooth
+- i.e. juddering
+- want to be all the work of making a frame under 1/60 sec (~ 16 ms) to acheive 60 fps
+- to account for other work browser has to do, you actualy have 10 - 12 ms 
+
+5) What Goes Into One Frame
+
+- want to optimize web apps frame rate, by first understanding how the browser renders a frame
+- how is a page put together when it is first loaded ?
+- see CRP process in web optimization class for details
+- main take away is the Render tree contains nodes of objects that will be displayed by browser
+
+6) Render Tree Quiz
+
+- Only visible elements exist in the Render Tree. Which of the following elements would NOT
+be in the Render Tree
+
+a) .style1 {display:none;}              <====== ANS!!!!
+b) .style2::before{display:block;}
+c) .style3 {height: 0;}
+d) .style4 { 
+  	     position: absolute;
+	     left: 100 %; // pushed all the way to the left of page; won't see this
+	   }
+
+- note that options b, c, and d don't take up any space on the page, but will still be in render tree
+- In order for .style2 to end up in the render tree, it needs to have some content, like '' assigned to it.
+
+7)  DOM, CSSOM, Render Tree
+
+- back to rendering process for a single frame ...
+- once browser knows which css rules apply to an element (i.e. the render tree has been built),
+- it can start to to calculate Layout
+
+7a) Summary of steps to render a single frame
+
+- Build Render Tree (CRP)
+- Layout (or Reflow)
+- Paint
+- Composite
+
+7b) Layout (or sometimes called Reflow)
+
+- how much space elements take up and where they are on the screen
+- i.e. geometry and position
+
+- the layout step turns the nodes in the render tree into a collection of boxes on the screen
+- see pre-layout.jpeg and post-layout.jpeg
+- in developer tools, the Layout even is encoded with purple/blue color
+- note that one element's layout can affect the layout of others
+- i.e. the width of the body element affects the width of all its children 
+- process can be quite involved for the browser
+
+7c) Paint: Vector to Raster
+
+- boxes are vectors (i.e. shapes)
+- need to turn the shapes into pixels (i.e. raster)
+- this is done by the rasterizer
+- rasterizer will perform a series of actions to turn shapes into pixels
+- see pre-rasterize.jpeg and post-rasterize.jpeg
+- the paint step is encoded with a green color in developer tools
+
+7d) Paint: Image Decode + Resize
+
+- part of paint step where browser draws images to screen (jpegs, pngs, gifs)
+- raster funcion call = drawBitmap()
+- still encoded with green color in developer tools - i.e. part of paint step
+
+7e) Paint: Composite Layers
+
+- when browser combines differnt painted layers to form one frame
+- browser can paint into different layer individually
+- process of managing layers shown as "Composite Layers" in dev tools
+- more details on managing the layering process later
+- drawing the layers happens on tiles
+- details of tiles are not handled by programmer - so ignore
+
+7f) CPU to GPU
+
+- all the processing discussed so far happened on the CPU
+- the CPU transfers layer + tile information to the GPU
+- then the GPU puts the picutes up to the screen
+- http://blogs.nvidia.com/blog/2009/12/16/whats-the-difference-between-a-cpu-and-a-gpu/  
+
+8) Layout quiz - layout-quiz.jpeg
+
+- browser runs layout (and subsequent steps) if the geometry of any elements in render tree changes
+- changing the gemoetry of any element in the render tree create SME amount of work for browser
+- the browser assumes that any change invalidates the entire DOM
+- see layout-quiz.jpeg
+
+8a) Layout boundries
+
+- http://wilsonpage.co.uk/introducing-layout-boundaries/
+- can use developer tools to measure or see what was the scope of the layout
+- in this quiz, all click events have have the whole document as the layour scope
+- it is possible but very difficult to control layout scope
+- use layout boundries to control layout scope
+
+8b) Quiz Summary
+
+- Layout process is extremely complex
+- just assume the entire DOM is processed by every layout step
+
+9) Layout and Paint
+
+- frame render pipeline with JS in the mix
+JS -> Style -> Layout -> Paint -> Composite
+
+- JS step can be replaced with: CSS or Web api animation
+
+9a) JS
+
+- the JS typically handles work that results in physical changes, eg
+- jQuery's animate functions
+- sorting a data set
+- adding DOM elements to page
+
+9b) other methods for creating visual changes
+
+- CSS animations and transitions
+- new web animations api
+
+10) Render Pipeline triggered by changes 
+
+- parts of the pipeline that are triggered by a change depends on the type of change
+- in fact there are THREE ways the pipeline normally plays out per a given frame
+
+10a) Change geometry or position property
+
+- e.g. change a width, height, or postion property of an element
+- JS -> Style -> Layout -> Paint -> Composite
+
+10b) Change paint only property
+
+- e.g. background image, text colors, or shadows
+- JS -> Style -> Paint -> Composite
+
+10c) Change that does not affect layout or pain
+
+- JS -> Style -> Composite
+
+11) Render Quiz - render-quiz.jpeg
+
+- JS -> Layout -> Paint -> Composite
+- note that when flex box is used to rezise page, the styles DID NOT need to be re-calculated
+- also, note the if resizing the page trigger a media query, then styles would be re-calculated
+
+11a) FlexBox reference
+
+- Flexbox in 5 mins - interactive tutorial
+- http://flexboxin5.com/
+
+12) csstriggers.com
+
+- useful tool for determining the amount of work your css will trigger
+- not all css are created equally
+- some css properties will lead to more work for the browser to do than others
+- your css should trigger the least amount of work possible for the browser
+- this means shortening the render pipeline; i.e. avoid layout and paint whenever possible
+
+12a) transforms and opacity
+
+- best properties to change because they only trigger composite portion of render pipeline 
+
+13) Outro
+
+- jank is more probelmatic is some portions of an apps life-cycle than others
+- identify areas (in apps life cycle) that matter most to users

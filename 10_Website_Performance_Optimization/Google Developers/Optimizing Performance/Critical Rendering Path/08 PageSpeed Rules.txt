@@ -1,0 +1,15 @@
+Main Goal is to:
+Eliminate render-blocking JavaScript and CSS
+
+1) Optimize JavaScript Use
+
+- Prefer async JavaScript resources
+- Avoid synchronous server calls
+- Defer parsing JavaScript
+- Avoid long running JavaScript
+
+2) Optimize CSS Use
+
+- Put CSS in the document head: download critical resources as quickly as possible
+- Avoid CSS imports: imports increase round trip time; cannot download in parallel
+- Inline render-blocking CSS: if css needed for rendering don't waste time on a roundtrip
