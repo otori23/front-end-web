@@ -1,6 +1,6 @@
 TL;DR
 - JavaScript can query and modify DOM and CSSOM.
-- JavaScript execution blocks on CSSOM. ALWAYS
+- JavaScript execution blocks on CSSOM, unless async attribute specified.
 - JavaScript blocks DOM construction unless explicitly declared as async.
 
 1) JavaScript
