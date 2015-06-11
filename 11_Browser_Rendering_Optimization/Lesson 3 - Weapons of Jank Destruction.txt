@@ -76,3 +76,67 @@
 - take timeline trace of what happens when you expand/collapse hamburger icon
 - analyze trace to identify jank
 - select work block to view details
+
+5) Test… All the Devices!!!
+
+- a mistake most people make is to only test their apps on desktops
+- can miss performance issues because, mobile devices are more resource constrained
+- so you want to test on your mobile device
+- if you have android, you can use same chrome dev tools from your desktop
+- if you don't have andriod device, use emulation settings in chrome dev tools
+(https://developer.chrome.com/devtools/docs/device-mode)
+- though is still best to test on device
+
+6) Setup for mobile
+
+- if you have android, https://developer.chrome.com/devtools/docs/remote-debugging
+- basically, ...
+- turn on developer mode in your android device
+- turn on usb debugging
+- install chrome canary on laptop
+- install chrome beta on device
+
+7) Using dev tools on mobile for android
+
+- open chrome on develoment machine and navigate to chrome://inspect
+- make sure the site you want to inspect is open on your mobile device
+- connect dev machine and mobile device via usb
+- on dev machine can see list of connected devices and chrome tabs open on that device
+- on dev machine you can open/reload/close tabs in chrome on the mobile device
+- on dev machine, can inspect pages running on mobile device
+- i.e. chrome developer tools on dev machine is running with respect to chrome on mobile device
+- screencast mode, displays mobile device screen on dev machine
+- can directly interact with mobile device screen shown on dev machine
+
+8) Mobile tools for iOS
+
+- possible to setup dev tools with iOS
+- use web inspector and iOS WebKit Debug Proxy
+- a little harder to set up; check out link below
+- https://github.com/google/ios-webkit-debug-proxy
+
+9) Testing Strategy
+
+- quit other apps: to make sure you are collecting clean data
+- go incognito: so that extensions don't arrect your results
+- focus on cause of bottlenecks, not symptoms
+- first measure, then optimize: no point in fixing an issue you don't actually have
+- you won't know if you optimizations actually work in you don't have before and after measurements to compare
+
+10) More finding Jank notes
+
+- read the details of the frames/work bars in the time line
+- they may have warning messages that give you more information on source of jank
+- remember your js instructions will trigger the browser to do work
+- in the class quiz, js widht offset assignment was forcing browser to run layout which took a long time and lead to the jank
+
+10a) Jank quiz sample sites
+
+- http://output.jsbin.com/woyoce/1/quiet
+- http://output.jsbin.com/nanana/2/quiet
+- http://output.jsbin.com/saxalu/2/quiet
+- 
+
+11) Outro
+
+- next section will look at common sources of jank and how to fix them 

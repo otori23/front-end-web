@@ -1,6 +1,16 @@
-0) Goal
+0) So far,
 
-- Optimize JS
+- what goes into making a frame
+- how differnt styles affect the timeline
+- how to prioritize performace work based on RAIL (or LIAR if you like)
+- the application lifecycle
+- chrome dev tools timeline
+
+0a) now
+
+- step into common causes of jank that crop up time and time again
+- use dev tools to find problem fix them and test results
+- will start at the begining of pipeline with javascript
 
 1) JS Compiler - just in time (JIT)
 
