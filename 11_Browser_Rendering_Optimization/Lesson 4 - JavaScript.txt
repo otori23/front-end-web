@@ -46,3 +46,142 @@ for(var i = 0; i < len; i==)...     --or--      while(++i < len)...
 2) artifact
 
 - something observed in a scientific investigation or experiment that is not naturally present but occurs as a result of the preparative or investigative procedure.
+
+3) Optimizing JS for Animations- Quiz
+
+You have 10ms (i.e. to get 60 fps) to prepare every frame. How do you make sure JS is out of the way as much as possible?
+
+Ans: Execute JS as early as possible every frame
+
+4) requestAnimationFrame
+
+- goto tool for creating animations
+- browser does not want to be interrupted in the middle of a task
+- browser has little time to render the frame at 60 fps
+- 1000 ms / 60 = 16.67 ms -> but cause of over head more like 10 ms
+- the js part of creating a frame should be ~ 3-4 ms at most
+- cause there are other things to do like: style calculations, layer management, and compositing
+
+4a) requestAnimationFrame details
+
+- requestAnimationFrame shedules your js to run at the earliest possible moment in each frame
+- remember browser render pipeline
+
+JS -> Style -> Layout -> Paint -> Composite
+
+- this gives browser as much time as possible to run your code (i.e. the js) ...
+- then style, layout, paint, and compositing
+
+4b) legacy animation code
+
+- legacy animation code use setTimeout or setInerval
+- this is because that is all that was availabe
+- in fact, jQuery still uses this method for its animations
+
+4c) Problem with setTimeout and setInterval
+
+- the javascript engine pays no attention to the rendering pipeline when scheduling code resgistered with these 
+functions
+
+- they are good for executing some code after some time has elapsed or executing some code repeatedly
+- NOT good for animation
+- could interrupt browser as at some point in its render pipe line, so most likely to miss 60 fps target
+
+4d) requestAnimationFrame example
+
+1. function animate() {
+2.
+3.  // Do something super rad here.
+4.
+5.  requestAnimationFrame(animate);
+6. }
+7.
+8. requestAnimationFrame(animate);
+
+- basically you 1st register your animate function with the browser, ln 8
+- later, browser will call it to do your animation
+- at the end of you animation code, you schedule the function to run again
+
+- basically, inserting your animation code at the beginning of the browser rendering pipeline
+
+4e) Browser support
+
+- only browser that currently does not support requestAnimationFrame is IE 9
+- for this use a requestAnimationFrame polyfill ???
+- see: https://gist.github.com/paulirish/1579671
+
+5) JavaScript Profile
+
+- remember the entire render pipeline (JS -> ... -> composite) should fit into 10 - 12 ms
+- could take js some time to run; especially if you are using frameworks or libraries
+- e.g. organizing views, handling callbacks, or analyzing data
+
+5a) JS profiler in timeline
+
+- give you more information, than "you spent time in js"
+- which functions, where, and how long
+- select option for JS profiler in timeline, then record
+- this is a good option to use when you know you have long running js
+- reserve its use for when you know you have a problem with long running js
+- can find js bottlenecks more easily
+
+6)  Long Running JS Quiz
+
+- use js profiler in timeline to see which sort function runs longer
+
+7) Web Worker
+
+- incredibly valuable strategy for implementing long running code that produces no jank on main thread
+- interface for spawning scripts to work in the background
+- normally websites (browser) runs in a single thread on the operating system (i.e. the Main thread)
+- Webworkers run in a separate operating system thread
+- Webworker and main thread can communicate with each other
+
+7a) Webworker quiz repo
+
+- https://github.com/udacity/web-workers-demo
+
+7b) Webworker reference
+
+- https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+- http://www.html5rocks.com/en/tutorials/workers/basics/
+
+8) JS Memory Management
+
+- js is automatically garbage collected
+- when js runs the gc, nothing else runs on the page
+- as develper can't really predicty when browser will run gc
+- chrome dev tools will show you memory usage in your app
+
+8a) Timeline memory profile
+
+- looks like saw tooth wave
+- ramp up is your code using up memeory
+- ramp down is garbage collector cleaning up memory
+- if garbage collector is not taking memory usage down to zeor, you may have a memory leak
+
+8b) Task Search
+
+- note can search for specific tasks in flame chart or waterfall
+- hit ctrl-f to bring up search box
+- search for 'gc' to find garbage collector related tasks
+- examine details for more information
+
+9) QR code app quiz
+
+9a) Setup
+
+- repo: https://github.com/udacity/qrcode
+- install npm: https://github.com/npm/npm
+- install Gulp: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md
+- Run npm install in the QR Code App directory (consumes package.json)
+- Build and run with gulp serve
+
+10) Outro
+
+- after optimizing JS
+- next is to optimize other areas of the render pipeline
+- i.e. stlye, layout, paint, composite
+- remember the ENTIRE render pipeline has to fit in 10 - 12 ms window
+- next look at other work the js will trigger; i.e. the rest of the pipeline
+- remember js does not necessarily trigger all areas of the pipeline; but it could, depends on what the js did
