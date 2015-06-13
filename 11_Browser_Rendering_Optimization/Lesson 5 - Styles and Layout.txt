@@ -233,3 +233,25 @@ Javascript -> Style -> Layout -> Paint -> Composite
 - Problem the event handler for the slider is cause FSL
 
 10a) Solution
+
+- this is a fix to just one example of a FSL on the page
+- caused by the response to the slider in the "Our Pizza's" section; js functions called are:
+- onchange -> resizePizzas -> changePizzaSizes -> determinDx
+- determineDx causes alot of Layout work
+
+10b) changePizzaSizes 
+- calls document.querySelectorAll(".randomPizzaContainer") multiple times
+- this always queries the DOM; so instead just cache the result and use in subsequently
+
+- in a for loop 
+- 	access geometric property: var newwidth = (randomPizzas[i].offsetWidth + dx) + 'px';
+-       the changes thier style: randomPizzas[i].style.width = newwidth;  
+- clearly source of FSL
+
+- set width style in % instead of px
+
+10c) determinDx 
+- useless
+- complicated
+- creates alot of work and has no business being in the for loop
+- no need to convert back and forth between pixels and percentages
