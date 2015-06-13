@@ -174,8 +174,32 @@ functions
 - repo: https://github.com/udacity/qrcode
 - install npm: https://github.com/npm/npm
 - install Gulp: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md
-- Run npm install in the QR Code App directory (consumes package.json)
+- Run npm install in the QR Code App directory (consumes package.json) (get all app dependencies)
 - Build and run with gulp serve
+
+9b) Step 1
+
+- refactor the QR code app with requestAnimationFrame (i.e. replace class to setInterval)
+- work in: app/scripts/main.js
+- build and run: glup serve
+
+9c) Step 2
+
+- move all the image decoding work into a webworker
+- initally the qrCode app is doing all if its work on the main thread
+- the process data that worker will return to main thread is a url if qr code was resolved or undefined if not
+
+- use the web worker: app/scripts/qrworker.js - in a mostly ready state
+- create web worker in: QRCodeManager object
+- send dat to workler from: detectQRCode function
+- remove unnecesssaryscripts from: index.html - as they now exist in web worker
+- finally there is a small bug when the main thread starts recevind data from worker - what is it ???
+
+9d) other
+
+- npm install: gets all the dependencies for the app
+- gulp serve: build as server website
+- gulp serve also rebuilds and refresh page if you change any source files
 
 10) Outro
 
