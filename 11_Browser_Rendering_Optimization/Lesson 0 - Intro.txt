@@ -2,3 +2,30 @@
 
 - Cameron Pittman: Course Develper, UDACITY
 - Paul Lewis: Developer Advocate, Google
+
+- Paul notes that: It’s important to use “tools not rules!” because architectures change and bugs get fixed. Memorizing rules isn’t going to cut it when that happens.
+
+- Rule applies in any fast changing (dynamic) environment
+
+- Cam says
+
+Here's the helper function that I use instead of document.querySelectorAll. 
+It creates an array of DOM nodes, which I think is useful because array methods like forEach() are pretty rad.
+(can us forEach idiom on collection returned by document.querySelectorAll)
+
+function getDomNodeArray(selector) {
+  // get the elements as a DOM collection
+  var elemCollection = document.querySelectorAll(selector);
+
+  // coerce the DOM collection into an array
+  var elemArray = Array.prototype.slice.apply(elemCollection);
+
+  return elemArray;
+};
+
+var divs = getDomNodeArray('div');
+
+// now can do something like
+divs.forEach(function(elem, index, arr) {
+  // process elem
+});

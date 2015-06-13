@@ -158,7 +158,7 @@ functions
 - looks like saw tooth wave
 - ramp up is your code using up memeory
 - ramp down is garbage collector cleaning up memory
-- if garbage collector is not taking memory usage down to zeor, you may have a memory leak
+- if garbage collector is not taking memory usage down to zero, you may have a memory leak
 
 8b) Task Search
 
