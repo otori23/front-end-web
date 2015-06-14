@@ -255,3 +255,27 @@ Javascript -> Style -> Layout -> Paint -> Composite
 - complicated
 - creates alot of work and has no business being in the for loop
 - no need to convert back and forth between pixels and percentages
+
+11) Outro
+
+- remember your app does not always touch every part of the rendering pipeline
+- the browser's work load depends on which properties you change
+
+11a) Animate with JS or CSS - which is faster
+
+- they are pretty much thesame, because they trigger thesame workload in the browser rendering pipeline
+- changing width incurs the cost of layout, no matter how you do it
+
+11b) Paint - part of pipeline
+
+- Paint is an extremly expensive part of the pipeline
+- if you change a box shadow, this will trigger paint
+- and you can't trigger layout without triggering paint
+
+11c) Upshot - Animation Phase
+
+- you need to be carefull about what styles you change and when
+- you can afford to do expensive changes in the Load, Idle, and Response phases of an apps lifecylce
+- DO NOT make expensive changes during the Animation phase
+- layout and paint should not be triggered during animation frame; not enough time to complete and acheive 60 fps
+- if you can not avoid lay and/or paint - then try to limit their effects
