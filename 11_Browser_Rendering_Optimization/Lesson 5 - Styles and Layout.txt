@@ -1,0 +1,281 @@
+0) Goal
+
+- understand that your js is only a small part of making a frame
+- this lesson deal with style (aka recalculate styles)
+- want to identify and solve performace issues that result from style calcualtions
+- js can trigger style related performance issues; but js in not necessarily at fault
+
+1) Style calculations
+
+- take the DOM and for each element figure out what its visual properties should be
+- the result is that the browser ends up with a render tree
+- remember the render tree contains only the elements that should be drawn
+
+2) Cost of style changes
+
+- the cost of recalculate styles scales linearly with the number of elements.
+- change a style means changing CSSOM
+- render tree probably has to be re-created 
+- therefore, render-tree and all other subsequent steps in pipeline
+
+3) Selector Matching
+
+- process of figuring out whether some styles should apply to a given DOM element
+
+<div class="box"></div>
+<div class="box"></div>
+<div class="box b-3"></div>
+
+- the third div can be selected as .b-3 or :nth-child(3)
+- the latter is more complex - i.e. browser does more work to evaluate it
+
+3a) Consequences of style complexity
+
+- previous example was simple (mathcing a single element), so performace hit might not be so much
+- however, if you have a large # of elements affected by a style change, then the complexity of the selectors can really start to matter
+
+3b) BEM - manage css complexity
+
+- Block, Element, Modifier
+- uses single style names to style elements
+- produces more modular, reusable, and modular styles
+- also, advantages tp performance because class matching is fasters selector to match for mordern browsers
+- to match the third div is our sample above, use the css class: .box--three
+- do more research on BEM if interested; there are other systems that may work for you besides BEM
+
+3c) Upshot
+
+- keep your selector matching simple
+
+4) Selector Matching Quiz
+
+Which CSS selector is fastest ?
+
+i) div.box:not(:empty):last-of-type .title
+ii) .box--last > .title-container > .title
+iii) .box:nth-last-child(-n+1) .title
+
+4a) Answer is (ii)
+
+- this BEM style selector is the simplest and the most performant
+
+4b) Upshot
+
+- just because the css is slow today, doesn't mean the browser companies won't fix thier code so things run faster in future releases
+
+- Paul adds: It’s important to use “tools not rules!” because architectures change and bugs get fixed. Memorizing rules isn’t going to cut it when that happens.
+
+5) Recalculate Styles Quiz
+
+- make recalculate styles 5-10x more efficient
+- live site: https://dl.dropboxusercontent.com/u/2272348/codez/udacity/box-recalc-style-slow.html
+- downloadable version (for refactoring): box-recalc-style-slow.html
+
+5a) steps - three possibilities
+
+- reduce the number of affected elements
+- reduce selector complexity
+- do both
+
+5b) Reduce Affected Elements
+
+- fewer changes to render tree
+
+5c) Reduce Selector Complexity
+
+- use fewer tags & class names to select elements
+
+5d) Hints
+
+- sample uses a class on the body to change the style on all the boxes
+- look for: document.body.classList.toogle('toogled');
+- so browser has to check the style on each and every box on page 
+- see this happenning in the css
+
+body.toogled main .box-container .box:nth-child(2n) {
+  background: #777 !important;
+}
+
+- an alternative is to use querySelectorAll to grab all of the boxes on the page, then loop thru list and toogle style of every other box in js
+
+6) Layout Thrashing
+
+- live demo site: http://output.jsbin.com/aqavin/2/quiet
+- resizing columns can take a long time if not careful
+
+- look at order of tasks in pipe line again
+- Javascript -> Styles -> Layout -> Paint -> Composite
+- maintaining this order is very important
+
+6a) Code
+
+- code looks like:
+
+var paragraphs = document.querySelector('p');
+var greenBlock = document.getElentById('block');
+
+for (var p = 0; p < paragraphs.length; p++) {
+  var blockWidth = greenBlock.offsetWidth;
+  paragraphs[p].style.width = blockWidth + 'px';
+}
+
+- first select all paragraphs, and then the green block
+- for each paragraph, request the green blocks width, and then...
+- reset the widht of each paragraph to match
+
+6b) Problem with code
+
+- the line that says: var blockWidth = greenBlock.offsetWidth; ...
+- the browser has to calculate the width ot the greenBlock at this point in the code
+- forces the browser to run layout
+- this shuffles the pipeline, moving layout into js area, i.e. before the style calculations
+
+- this is not a problem, unless you make a style change, which we did
+- remember we change the width of the paragraphs to use the greenBlocks width - on the next line
+- so, now the layout we just did is invalidated and layout has to run again
+- EXPENSIVE MISTAKE !!!!
+
+6c) Forced Synchronous Layout (FSL)
+
+- Timeline alerts you to alert you
+- in waterfall view: see a caution sign beside the layout events of interest
+- in flame chart view: see red triangle in top right of layout tasks
+- details of layout will have the Warning message:
+- Forced synchronous layout is a possible preformance bottleneck.
+
+7) FSL Quiz
+
+- there are a few different properties that when accessed will force a layout
+
+// divs is an array of DOM elements
+// see Lesson 0 for helper functions that converts dom collection 
+// from document.querySelector into an array of DOM elements
+
+Which of the 3 snippets below does not cause FSL warnings
+
+(i)
+divs.forEach(function(elem, index, arr) {
+  if (window.scrollY < 200) {
+    elem.style.opacity = 0.5;
+  }
+})
+
+(ii)
+divs.forEach(function(elem, index, arr) {
+  if (elem.offsetHeight < 500) {
+    elem.style.maxHeight = '100vh';
+  }
+})
+
+(iii)
+var newWidth = container.offsetWidth;
+divs.forEach(function(elem, index, arr) {
+  if (window.scrollY < 200) {
+    elem.style.width = newWidth;
+  }
+})
+
+Answer - (iii)
+
+7a) options (i) and (ii)
+
+- options (i) and (ii) access property (froces layout)
+- then changes style (invalidate previous layout, causing layout to run again)
+- this puts browser in bad read/write cycle between stlye and layout 
+- the access and style change is all happenning in a loop
+
+7b) option (iii)
+
+- property access happens outside the loop
+- layout runs once
+- batch update the styles afterwards
+
+7c) References
+- see CSSTriggers: http://csstriggers.com/
+- more on Layout: http://gent.ilcore.com/2011/03/how-not-to-trigger-layout-in-webkit.html
+
+8) Stopping FSL Strategy Quiz
+
+- What can resonably be done to avoid FSL?
+- read layout properties, then batch style changes
+
+- Remember pipeline again:
+Javascript -> Style -> Layout -> Paint -> Composite
+
+- reading the layout 1st in the js phase means that you are using the layout from the previous frame
+- then when you do your style changes afterwards, the pipeline stays intact
+- BIG performance win !!!
+
+9) Causes of Forced Synchronous Layout
+
+- we have seen that .offsetWidth can cause FSL
+- actually anything to do with goemtric informantion: position, dimensions -> will for browser to run layout
+
+9a) Layout Thrasing in Pizzeria page of project
+
+- cause FSL many times in quick succession
+- in browser render opt lesson 5 -  Causes of Forced Synchronous Layout
+- Paul shows that FSL is causing the frame generation to be below 30 fps
+- on amination acheived by scrolling the page
+- so probably accessing geometric properties (layout), and ...
+- then changle a style (recalculate styles -> layout) in a loop
+- fix this by accessing properties outside of loop, then batch style changes
+
+10) Stop FSL Quiz
+
+- on the Pizzeria page, of the project in course
+- scroll down to "Our Pizza's" section
+- there is a slider on the left hand side of the page we can use to change the size of the pizzas
+- the app writes to console the aveerage time it took to generate the last ten frames: 29.544...ms
+- also, outputs to console, the average time it takes to resize a pizza: 98.655...ms
+- the time to resize falls under the response category of (RAIL) - i.e. resize as a result of user clicking on slider
+- R catergory says 100ms; but page is so simple the response should not take that much time
+- Problem the event handler for the slider is cause FSL
+
+10a) Solution
+
+- this is a fix to just one example of a FSL on the page
+- caused by the response to the slider in the "Our Pizza's" section; js functions called are:
+- onchange -> resizePizzas -> changePizzaSizes -> determinDx
+- determineDx causes alot of Layout work
+
+10b) changePizzaSizes 
+- calls document.querySelectorAll(".randomPizzaContainer") multiple times
+- this always queries the DOM; so instead just cache the result and use in subsequently
+
+- in a for loop 
+- 	access geometric property: var newwidth = (randomPizzas[i].offsetWidth + dx) + 'px';
+-       the changes thier style: randomPizzas[i].style.width = newwidth;  
+- clearly source of FSL
+
+- set width style in % instead of px
+
+10c) determinDx 
+- useless
+- complicated
+- creates alot of work and has no business being in the for loop
+- no need to convert back and forth between pixels and percentages
+
+11) Outro
+
+- remember your app does not always touch every part of the rendering pipeline
+- the browser's work load depends on which properties you change
+
+11a) Animate with JS or CSS - which is faster
+
+- they are pretty much thesame, because they trigger thesame workload in the browser rendering pipeline
+- changing width incurs the cost of layout, no matter how you do it
+
+11b) Paint - part of pipeline
+
+- Paint is an extremly expensive part of the pipeline
+- if you change a box shadow, this will trigger paint
+- and you can't trigger layout without triggering paint
+
+11c) Upshot - Animation Phase
+
+- you need to be carefull about what styles you change and when
+- you can afford to do expensive changes in the Load, Idle, and Response phases of an apps lifecylce
+- DO NOT make expensive changes during the Animation phase
+- layout and paint should not be triggered during animation frame; not enough time to complete and acheive 60 fps
+- if you can not avoid lay and/or paint - then try to limit their effects
