@@ -1,0 +1,76 @@
+0) Goal
+
+- remember not all style changes are equal
+- different style changes will trigger different parts of the render pipeline
+- some will trigger layout -> paint -> composite
+- some will trigger paint -> composite
+- some will trigger composite
+
+0a) Optimize Paint and Composite
+
+- the goal of this section is to learn how to optimize last two steps in pipeline
+
+0b) Remember csstriggers.clm 
+
+- provides a breakdown of how styles affect the rendering pipeline
+- if you are wondering whether the thing you are want to animate will trigger layout, paint, composite ???
+- check out this site
+
+0c) Paint is expensive
+
+- paint is one of the fastests ways to kill your fps
+- try to avoid during animations
+
+1) Paint Rectangles Quiz
+
+- paint problems are likely to be way worse than any other performace bottleneck you are likely to hit
+
+1a) Investigating Paint in Timeline
+
+- in timeline open the "drawer"
+- select the Rendering tab
+- check "Show paint rectangles" option
+- now as you interact with page (e.g. scroll), components that invoke paint light up in green
+
+1b) Paint Profiler
+
+- like the JS profiler
+- check this option to give more details about paint in timeline chart 
+- see the summary panel/tab for the Paint Profiler
+- use to measure and bust paint jank
+
+1c) Paint Profiler tab in timeline
+
+- whole new timeline showing details of paint 
+- select a paint record in the main thread to see its details
+- can see list of paint commands for selected paint record in main thread
+- can also see what part of page got painted for the selected paint record
+- if you limit the timeline for the selected paint record in the main thread, you can see ONLY what was painted then
+- so you can see what the browser is painting at different points
+
+2) Compositing - side nav example
+
+- say you have a page and you want to bring out a side nav
+
+2a) Option one - paint sidenav when needed
+
+- have one layer in memory
+- then redraw the pixels for the side nav when it is needed
+- need to re-paint for every frame of animation
+- not good as we are constatnly painting
+
+2b) Option two - use multiple layers (store nav and call it up when needed)
+
+- have one layer with the page contents
+- have another layer with the side nav
+- slide the side nav on-top of the page when it is needed
+- NO painting is done
+- nav bar slides in when hamburger icon is clicked
+
+3) Conceptual Question about Layers Quiz - Sketch Book Pro
+
+- at Udacity they use SketchBook pro to create drawings
+- use layers to make it easy to separate and edit different parts of a drawing
+- layers are a way to manage a complex drawing
+
+4) Composite Layers
