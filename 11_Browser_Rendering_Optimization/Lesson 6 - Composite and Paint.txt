@@ -10,7 +10,7 @@
 
 - the goal of this section is to learn how to optimize last two steps in pipeline
 
-0b) Remember csstriggers.clm 
+0b) Remember csstriggers.com
 
 - provides a breakdown of how styles affect the rendering pipeline
 - if you are wondering whether the thing you are want to animate will trigger layout, paint, composite ???
@@ -73,4 +73,179 @@
 - use layers to make it easy to separate and edit different parts of a drawing
 - layers are a way to manage a complex drawing
 
-4) Composite Layers
+4) Composite Layers - 2 types
+
+- chrome dev tools has two type of records related to layers
+- Update Layer Tree
+- Composite Layer
+
+4a) Update Layer Tree
+
+- happens when chromes internal engine (blink) figures out what layers are needed for the page
+- blink looks at style of elements and trys to figure out what order everything should be in... 
+- and how many layers are needed
+
+4b) Composite Layers
+
+- browser is putting the page together to send to the screen
+- the more layers you have, the more time is spent in layer management and compositing
+- so, there is a tradeoff in reducing paint time and increasing layer management time
+
+5) Managing Layers
+
+- layer management is mostly and automated process
+- most of the time, you let browser manage layers
+- but if you are encountering a paint issue; may want to promote an element to its own layer
+- you can manually create a layer for the element, if it doesn't already have its won layer (i.e assinged by broswer)
+
+6) Managing Layers 2
+
+- to get more details on layers in the browser, open up chrome dev tools
+- open the drawer and select the "Rendering" tab
+- check the "Show composited layer borders"
+
+6a) Show composited layer borders 
+
+- when swithed on, page shows a grid
+- the grid lines represent the tiles that the layers are split into
+- as developers we don't control the grid; browser manages this
+
+6b) ORANGE boxes
+
+- elements with orange boxes around them are on their own compositor layer
+- how do develpers put elements on thier own layer ???
+- many ways to do this, some more hacky than others
+- newer not hacky way is, ... 
+- signal browser with css property will-change
+
+6c) Will-Change
+
+- sample css
+
+.circle {
+  will-change: transform; // works for chrome and firefox
+}
+
+- signal browser to expect visual changes to the .cirlce class 
+- browser can then CHOOSE to put the element on a new compositor layer
+
+6d) will-change: transform
+
+- tell browser we intend to change the element's transform at some point
+- to prepare for this browser create a new layer
+- instead of transform, can use any visual property: left, top, width, height, etc ...
+
+6e) Benefit of: will-change: transform
+
+- browser still has to layout and paint new layer
+- BUT with the will-change signal, browser does this work ahead of time
+- i.e. NOT on the fly, which could kill you fps
+
+6f) Null Transform Hack
+
+- hacky way of signaling browser for layer creation
+
+.circle {
+  transfrom: translateZ(0);
+}
+
+- applies a 3d transform pushing the element is z space by nothing
+- but gets browser to create new layer
+
+6g) Creating layers in production environment
+
+- use both css properties so that layer creation works on all browsers
+
+.circle {
+  will-change: transform; // works for chrome and firefox -> hint browser can ignore
+  transfrom: translateZ(0); // for safari etc -> forces browsers hand
+}
+
+- try not to use hacks unnessecarily
+- browsers are always evloving and could end up supporting an operation
+
+7) Will-Change Quiz
+
+- page to improve: http://udacity.github.io/60fps/lesson6/willChange/index.html
+- in the Rendering tab of drawer: select "Show paint Rectangles"
+- initially the entire page lights up as green - i.e. inefficient paint
+- fix this inefficiency
+
+7a) How to fix
+
+- promote the box class elements using: will-change: transform
+- this puts them on thier own layer
+- can also use the "isolate" button on the html page itself to use a 3d transform to create layers
+
+7b) Movement and opacity properties
+
+- promoting elements to layers can be used to avoid paint problems
+ 
+7b) Visual Properties - e.g. text colors, shadows
+
+- promoting elements to layers not useful in this case
+- paint will still run
+
+7c) Upshot
+
+- only use layer promotion where it makes sense
+
+8) Your Compositing Budget
+
+- so we should promote everything right???
+- NO !!!!
+- layer management and compositing is not free
+- no magic number of layers to shoot for
+- but want Update Layer Tree: 2ms; and Compositing: 2ms for 60 fps critical work like animations
+
+9) Layer Counting Quiz 
+
+- you can find out how many layers there are on a page
+- go to timeline in chrome dev tools
+- with the paint profiler on, take a recording of you interacting with the page
+- note that each frame has a gray bar at the top of the "main thread" title bar
+
+9a) View Layers
+
+- see panel below the flame chart for the threads
+- select the "Layer" tab
+- can select a layer "record", and get details on why it was created
+- can use tool on layer tab to pan - zoom - rotate to see layers
+
+10) Painting and Compositing - Quiz and Analysis
+
+- https://dl.dropboxusercontent.com/u/2272348/codez/parallax/demo-promo/index.html
+- performance aware developer start in the timeline to take measurements  
+- note that when you analyze rendering, see that the who page is constantly getting painted
+- from timeline trace (with paint profiling) see that background is what is constantly getting painted
+- to fix: promote element with #background id to its own layer using will-transform
+- with this change, now only the scroll bars on browser light up green when user interacts with page
+- can't really do anything about painting the scroll bars - that is totally in the browsers control
+
+11) Generate your own quizzes
+
+- course includes alot of quizzes because that is how people learn
+- when you attempt to generate your own questions; gaps in your knowledge gets exposed
+- the act of teaching, deciding what questions to ask, clarifies/reinforces the information to the teacher
+- teaching (generating quiz questionss) is a much better excersice than answering quiz question
+- do you have a better question than those the instructors gave in the quizzez
+- do you have a better app to debug than those given during the course
+
+12)  Final Project Quiz - Debug Hacker news app (a news aggregator)
+
+- repository: https://github.com/udacity/news-aggregator  
+- live site:  http://udacity.github.io/news-aggregator/
+- hints: https://github.com/udacity/news-aggregator/tree/gh-pages/hints
+
+12a) Hints
+
+- give an overview of where hacker new app should be improves
+- before looking, take measurements and try to figure things out preformance bottlenecks for yourselfs
+
+12b) Soulution Video for quiz
+
+- show a few high level problems with app
+- how cam solved them
+- there are many different ways to solve; cam just gives example of what he did
+- also, many other areas of improvement exist
+- cam will also post a list of known bugs in the project
