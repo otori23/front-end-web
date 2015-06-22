@@ -1,0 +1,10 @@
+1) Scrolling timeline
+- scrolling js event handler - causing FSL - see colorizeAndScaleStories function
+- need to use webworker somewhere in scroll event listener
+- massive paint problems - put story, clickable, story__score on own layer??? 
+
+2) Expanding articles
+- animation is using setTimeout (use requestAnimationFrame instead)
+- this causes render pipeline to get out of sync; js does not get max amout of time to run
+- animation seems to cause FSL
+- also, alot of painting
