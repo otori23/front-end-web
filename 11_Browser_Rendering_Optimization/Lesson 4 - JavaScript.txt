@@ -191,7 +191,7 @@ functions
 
 - use the web worker: app/scripts/qrworker.js - in a mostly ready state
 - create web worker in: QRCodeManager object
-- send dat to workler from: detectQRCode function
+- send data to workler from: detectQRCode function
 - remove unnecesssaryscripts from: index.html - as they now exist in web worker
 - finally there is a small bug when the main thread starts recevind data from worker - what is it ???
 
