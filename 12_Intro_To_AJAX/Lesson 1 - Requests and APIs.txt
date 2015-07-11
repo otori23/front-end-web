@@ -1,0 +1,29 @@
+
+1) Pre-introduction
+
+- modern web sites can load content without reloading
+- can load content after 1st page render in many ways
+- one way is to use AJAX requests
+- AJAX - Asynchronous JavaScript And XML
+- data retireved with AJAX can be requested late in the load process
+- web site should load acceptably with or without it
+
+2) Intro - Move Planner App
+
+- see Move_Planner_App folder for starter code
+- requires 3 asychronous requests
+a) data from google's street view
+b) the new york times
+c) wikipedia
+
+2a) App
+
+- user types in an address
+- google street view picture becomes the background
+- related articles from New York times and Wikipedia will display on page
+
+2b) pre building the App
+
+- break down components of asynchronous requests
+
+3)   
