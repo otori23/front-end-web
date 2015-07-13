@@ -1,0 +1,23 @@
+
+1) Welcome
+
+- onto writing professional quality code
+- build js code with or without organizational js library
+
+1a) Course Progression
+
+- build an app in a way we already know how
+- look at some of the problems with this apporach
+- learn techniques to solve this problem
+- learn about organization frameworks
+- learn to pick code we have never seen before
+- final project = neighbourhood map
+
+1b) Lessons
+
+- don't rush
+- find time to play - work on projects outside of the class
+
+2) Introduce Cat Clicker and Andy
+
+- cat pictures account for a quarter of the internet
