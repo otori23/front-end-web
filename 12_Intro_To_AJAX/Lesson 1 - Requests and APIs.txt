@@ -4,7 +4,6 @@
 - modern web sites can load content without reloading
 - can load content after 1st page render in many ways
 - one way is to use AJAX requests
-- AJAX - Asynchronous JavaScript And XML
 - data retireved with AJAX can be requested late in the load process
 - web site should load acceptably with or without it
 
@@ -16,7 +15,7 @@ a) data from google's street view
 b) the new york times
 c) wikipedia
 
-2a) App
+2a) App behaviour
 
 - user types in an address
 - google street view picture becomes the background
@@ -26,4 +25,48 @@ c) wikipedia
 
 - break down components of asynchronous requests
 
-3)   
+3) AJAX - Asynchronous JavaScript And XML request
+ 
+- allows for content retrieval and display without reloading the webpage
+- because the request is asynchronous, browser is not blocked waiting for a response
+
+3a) AJAX requests differ
+
+- occur in a number of different ways
+- with varying degrees of difficulty
+- some use API key 
+- some use OAUTH 
+- other use no authentication
+
+3b) AJAX response differ
+
+- .Data
+	- XML  <entry></entry>
+	- JSON {property: data}
+	- HTML <div></div>
+
+3c) Moving Planner - 3 different AJAX techniques
+
+- google street view
+- Wikipedia
+- NY Times
+
+4) API Inspiration
+
+- many websites use external APIs
+
+4a) Google APIs
+https://developers.google.com/apis-explorer/#p/
+
+4b) Giant Database of APIs
+http://www.programmableweb.com/apis/directory]
+
+4c) Udacity APIs
+https://www.udacity.com/catalog-api
+
+5) Fun with APIs
+
+- brains storm on what APIs you want to explore
+- be creative and combine old APIs to be used in new ways
+- hell create your own brand new API
+- these are the kinds of things that lead to new businesses and moves the web/internet/technology forward

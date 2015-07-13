@@ -1,0 +1,133 @@
+
+1) Requests with jQuery
+
+- jQuery is a popular js library
+- makes a number of common js tasks simpler via a consistent API across all browsers
+- peforming AJAX requests that works in every browser is problematic.
+- jQuery's AJAX interface provides a standard environment supports all browsers
+- extremely common for developers to use libraries to make AJAX requests
+
+1a) jQuery AJAX method
+
+- jQuery.ajax()
+- jQuery.getJSON()
+
+2) Loading Street View
+
+2a) Google street view API
+
+- https://developers.google.com/maps/documentation/streetview/
+
+2b) img src example with google street view api
+
+<img class="bgimg" src= "http://maps.googleapis.com/maps/api/streetview?size=600x400&location=1600 pennsylvaina ave, washington dc">
+
+- notice there is a comma between the street address and city
+
+3) NYT API Key
+
+- NYT provides an article search API
+- articles available from 1851 - present
+- will need an API key
+
+3a) The API key
+
+- identify yourself to service when you want to access their data
+- many reasons for requiring an API key
+- for NYT login with facebook to request api key
+
+3b) Reasons for requiring an api key
+
+- limit the rate of your request so that they don't get overwhelmed
+
+4) Authentication (i.e. OAuth)
+
+- another way to identify yourself to a service
+- services like facebook and twitter use services like OAuth to authenticate users
+- they only want people with accounts to be able to get data, since data is often not publically accessible
+
+4a) Building your own services
+
+- if you want to build your own involved applications with services like facebook, ...
+- look into what OAuth can do
+
+5) Implement AJAX request to NYT
+
+- see js in Move_Planner_App folder
+- use chrome dev tools network tab to view xhr request/response and examine JSON response
+
+
+6) Error Handling with NY Times (see jQuery.error())
+
+- sometimes requests fail
+- important that your app handle errors
+- e.g don't want your app completely breaking when an AJAX request does not work
+- you want to add error handling to all of your AJAX requests
+
+6a) jQuery.error()
+
+- add to jQuery object, before making AJAX request
+
+HTML
+<img alt="Book" id="book">
+
+JS
+$( "#book" )
+  .error(function() {
+    alert( "Handler for .error() called." )
+  })
+  .attr( "src", "missing.png" );
+
+7) Wikipedia API
+
+- no api key needed
+- making reqular JSON requests to wikipedia API leads to CORS errors
+- by default Wikipedia servers prevent cross origin requests
+- a couple of ways around the CORS issue
+
+7a) HTTP Headers
+
+- can use header parameters in AJAX request to enable CORS on Wikipedia servers
+- i.e. origin and content-type headers on the request
+
+7b) JSON-P
+
+- use json-p
+- involves the server wrapping the response inside a function
+- jQuery simplifies json-p requests
+
+7c) jQuery and JSON-P
+
+- use more robust $.ajax()
+- $.getJSON() is just a higher level of abstraction on the $.ajax() method
+
+
+
+
+
+
+
+
+7) Cross-Origin Resource Sharing (CORS)
+
+tl;dr CORS works around a sometimes overly-strict browser policy meant to protect servers from malicious requests. CORS is enabled on the server-side, so you won't generally need to worry about it for your code. You do need to know about it though, since some APIs support it, and some do not.
+
+8) What is CORS and why are we using it?
+
+CORS works around the same-origin policy. The same-origin policy was implemented by web browsers to prevent malicious scripts from untrusted domains from running on a website. In other words, it ensures sure that scripts from one website can't insert themselves into another.
+
+For example, the same-origin policy keeps the bad guys’ JavaScript from somehow running on your bank’s website and stealing your information.
+
+Over time, developers realized that this policy was too strict, and often got in the way of legitimate use-cases. There are many reasons to serve content from multiple domain origins, and so developers found a way around it.
+
+Developers that maintain server-side APIs can enable CORS on their servers to disable the same-origin policy. CORS is a relatively recent feature added to browsers. When certain headers are returned by the the server, the browser will allow the cross-domain request to occur.
+
+For APIs that don't support CORS, you may need to use another method. The other way around the same-origin policy is JSON-P. JSON-P is a unique trick to allow cross-domain requests. Many APIs allow you to provide a callback function name, and they will generate a JavaScript file that passes the data into that function when it gets run in your browser.
+
+This isn't the simplest thing to implement cleanly, but if you're using jQuery to create your AJAX requests, using JSON-P is as simple as adding an extra property to the options object that you pass into the AJAX method. You'll be doing this very soon, and I promise it's not as scary as it sounds. :)
+
+9) The nitty gritty of JSON-P
+
+Your application loads up a script from the other domain using a simple <script> tag. Once the script has been received, that code gets run by your browser. All the code does is build the data object you requested as a simple JavaScript object, and runs the callback function (that you told the server to use) with the object (your data) as a parameter.
+
+You’ll need to refer to the documentation for any data API’s you want to use, and figure out if the API supports CORS or if you need to use JSON-P.
