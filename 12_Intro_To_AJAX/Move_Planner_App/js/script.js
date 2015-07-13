@@ -1,4 +1,4 @@
-'use-strict';
+'use strict';
 
 function loadData() {
 
@@ -15,7 +15,9 @@ function loadData() {
     // YOUR CODE GOES HERE!
 
 	// load street view background image
-	var loc = $('#street').val() + ', ' + $('#city').val();
+	var street = $('#street').val();
+	var city = $('#city').val();
+	var loc =  street + ', ' + city;
 	$greeting.text('So, you want to live at ' + loc + '?');
 	var imgSrc = 'http://maps.googleapis.com/maps/api/streetview?size=600x400&location=' + loc;
 	$body.append('<img class="bgimg" src="' + imgSrc + '">');
@@ -45,28 +47,31 @@ function loadData() {
 
 	// Get Wikipeida links
 	// No API Key, YAY!!!!!
-	var wikiURI = 'https://en.wikipedia.org/w/api.php?action=opensearch&search='+loc+'&format=json&callback=wikiCallback';
+	var wikiRequestTimeout = setTimeout(function() {
+		$wikiElem.text("failed to get wikipedia resources");
+	}, 8000);
+
+	var wikiURI = 'https://en.wikipedi.org/w/api.php?action=opensearch&search='+city+'&format=json&callback=wikiCallback';
 	var wikiAjaxSettings = {
 		url: wikiURI,
 		dataType: "jsonp",
 		//jsonp: "callback",
 		success: function (data, textStatus, jqXHR) {
-			/*
-			data.response.docs.forEach(function(doc) {
+			var articleList = data[1];
+			articleList.forEach(function(item, index) {
 				var wikiLink = $('<a></a>');
-				wikiLink.text('');
-				wikiLink.attr('href', '');
+				wikiLink.text(item);
+				wikiLink.attr('href', data[3][index]);
 
 				var listItem = $('<li></li>');
 				listItem.append(wikiLink);
 				$wikiElem.append(listItem);
-			*/
-			console.log(textStatus);
-		},
-		error: function (jqXHR, textStatus, errorThrown) {
-			console.log(textStatus);
+
+				clearTimeout(wikiRequestTimeout);
+			});
 		}
 	};
+
 	$.ajax(wikiAjaxSettings);
     return false;
 };

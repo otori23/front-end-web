@@ -101,18 +101,73 @@ $( "#book" )
 - use more robust $.ajax()
 - $.getJSON() is just a higher level of abstraction on the $.ajax() method
 
+8) Wikipedia API quiz
 
+- JS for jsonp request to wikipedia
 
+var wikiURI = 'https://en.wikipedia.org/w/api.php?action=opensearch&search='+city+'&format=json&callback=wikiCallback';
+var wikiAjaxSettings = {
+  url: wikiURI,
+  dataType: "jsonp",
+  //jsonp: "callback",
+  success: function (data, textStatus, jqXHR) {
+      var articleList = data[1];
+      articleList.forEach(function(item, index) {
+      var wikiLink = $('<a></a>');
+      wikiLink.text(item);
+      wikiLink.attr('href', data[3][index]);
 
+      var listItem = $('<li></li>');
+      listItem.append(wikiLink);
+      $wikiElem.append(listItem);
+    });
+  },
+  error: function (jqXHR, textStatus, errorThrown) {
+    console.log(textStatus);
+  }
+};
+$.ajax(wikiAjaxSettings);
 
+- mostly self explanatory
 
+8a) commented out line: //jsonp: "callback"
 
+- by default, setting 'dataType: "jsonp"', will set the callback name to "callback"
+- so the commented out line is not needed
+- some APIs want to use a different name for the callback function
+- so, that is when you can use the commented out line; i.e. tell the server the variable name that indicates what
+the callback function is.
 
-7) Cross-Origin Resource Sharing (CORS)
+9) Error Handling with JSON-P
+
+- error handling not built into jsonp
+- work around this limitation with setTimeout
+- use setTimeout to update page text with error message
+- if, ajax request is successful, then inside success method, clear the timeout
+
+10) Debugging
+
+use chrome deve tools, console, or network tab
+
+11)  Speeding up the First Render
+
+- idea/goal is to separate generic html from unique html
+- so separate request for generic and unique html
+- that way can render generic html first (i.e. speed up time to first render)
+- defer loading and render of unique html (i.e. using ajax requests)
+
+11a) Sequence
+
+- request generic HTML
+- request unique HTML
+- render generic HTML
+- render unique HTML
+
+12) Cross-Origin Resource Sharing (CORS)
 
 tl;dr CORS works around a sometimes overly-strict browser policy meant to protect servers from malicious requests. CORS is enabled on the server-side, so you won't generally need to worry about it for your code. You do need to know about it though, since some APIs support it, and some do not.
 
-8) What is CORS and why are we using it?
+13) What is CORS and why are we using it?
 
 CORS works around the same-origin policy. The same-origin policy was implemented by web browsers to prevent malicious scripts from untrusted domains from running on a website. In other words, it ensures sure that scripts from one website can't insert themselves into another.
 
@@ -126,7 +181,7 @@ For APIs that don't support CORS, you may need to use another method. The other 
 
 This isn't the simplest thing to implement cleanly, but if you're using jQuery to create your AJAX requests, using JSON-P is as simple as adding an extra property to the options object that you pass into the AJAX method. You'll be doing this very soon, and I promise it's not as scary as it sounds. :)
 
-9) The nitty gritty of JSON-P
+14) The nitty gritty of JSON-P
 
 Your application loads up a script from the other domain using a simple <script> tag. Once the script has been received, that code gets run by your browser. All the code does is build the data object you requested as a simple JavaScript object, and runs the callback function (that you told the server to use) with the object (your data) as a parameter.
 
