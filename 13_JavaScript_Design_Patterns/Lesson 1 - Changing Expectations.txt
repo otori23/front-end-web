@@ -30,7 +30,7 @@
 - cow clicker is a satire of social network game where you click on a cow every 6 hours
 - cow clicker became popular
 
-2a) Cat Clicker requirements
+2a) Cat Clicker requirements v1
 
 - see folder Cat Clicker Requirements
 
@@ -40,3 +40,15 @@
 - new ideas, new customers, fickle manager
 - goal of course is to write extensible, well organized code
 - so, that you can efficiently react to project requirement changes
+
+3a) REQUIREMENTS CHANGE ALL THE TIME
+
+- the product is always evolving
+- always discovering new ways to improve the user experience
+
+4) Cat Clicker requirements v2
+
+- use two cat images
+- quick and easy way is to copy & paste all the code for cat 1 and use for cat 2 after renaming a few things
+- what if requirements change later to use say, 5 cats?
+- this method is NOT scalable
