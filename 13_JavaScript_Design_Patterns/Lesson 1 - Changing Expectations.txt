@@ -1,3 +1,8 @@
+0) Instructor
+
+- Ben Jaffe
+- https://www.linkedin.com/in/benjaffe
+- http://blog.udacity.com/2015/03/3-web-developers-built-careers-scratch-part-three-ben-jaffe.html
 
 1) Welcome
 
@@ -21,3 +26,17 @@
 2) Introduce Cat Clicker and Andy
 
 - cat pictures account for a quarter of the internet
+- cat clicker based on facebook game cow clicker 
+- cow clicker is a satire of social network game where you click on a cow every 6 hours
+- cow clicker became popular
+
+2a) Cat Clicker requirements
+
+- see folder Cat Clicker Requirements
+
+3) Requirements Change All The Time
+
+- always the case that requirements change
+- new ideas, new customers, fickle manager
+- goal of course is to write extensible, well organized code
+- so, that you can efficiently react to project requirement changes
