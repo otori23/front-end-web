@@ -65,3 +65,38 @@
 6a) Later
 
 - move toward becoming professional in our code organizational techniques
+- want to take the skills we have learned so far, and scale them up
+- we need some organizational guidance and new building techniques
+- separate your projects into parts that later connect to each other
+- leads to stable and extensible code
+
+7) What is Spaghetti Code
+
+- things get messy when you connect things together
+- writing an app is ultimately just about connecting things to each other
+- if you connect every piece to every other piece, it becomes difficult to move thing around
+
+8) Introduction to MVO - Model View Octopus
+
+- basically just MVC (controller <=> octopus)
+- this paradigm provides the separation of concerns we need when writing apps
+
+8a) Model
+
+- apps data either from user or from database
+
+8b) Controller / Octopus
+
+- separtion layer
+
+8c) View
+
+- things the user sees and interacts with
+
+8d) Other acronyms
+
+- MVC: Model View Controller
+- MVVM: Model View View Model
+- MVP: Model View Presenter
+- MV*: Model View *... whatever
+
