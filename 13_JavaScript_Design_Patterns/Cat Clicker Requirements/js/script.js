@@ -1,19 +1,37 @@
-var catClickEventHander = function(e) {
-	var catImg = document.getElementById(e.srcElement.id);
-	var catClickCountElem = catImg.previousElementSibling;
-	var catClickCount = parseInt(catClickCountElem.textContent);
-	catClickCountElem.textContent = ++catClickCount;
-};
+"use strict";
 
+// Cat List
+var numCats = 5;
 
-var catName1 = "cat1";
-var catName2 = "cat2";
+var ulist = document.createElement('ul');
+var catItem, catLink;
+for(var i = 1; i <= numCats; i++) {
+  catLink = document.createElement('a');
+  catLink.href = '#';
+  catLink.text = 'Cat-' + i ;
+  catLink.id = 'cat' + i;
 
-document.getElementById('cat-name1').textContent = catName1;
-document.getElementById('cat-name2').textContent = catName2;
+  catLink.addEventListener("click", (function() {
+	  var name = catLink.text;
+	  var image = 'images/' + catLink.id + '.jpg';
+	  var clicks = 0;
+	  var imgClickEventHandler = function() {
+		  document.getElementById('count-item').textContent = ++clicks;
+	  };
 
-var catImage = document.getElementById('cat1-image');
-catImage.addEventListener("click", catClickEventHander, false);
+	  return function() {
+		  document.getElementById('cat-name').textContent = name;
+		  document.getElementById('count-item').textContent = clicks;
+		  var catImage = document.getElementById('cat-image')
+		  catImage.src = image;
+		  catImage.onclick = imgClickEventHandler;
+	  };
+  })());
 
-catImage = document.getElementById('cat2-image');
-catImage.addEventListener("click", catClickEventHander, false);
+  catItem = document.createElement('li');
+  catItem.appendChild(catLink);
+  ulist.appendChild(catItem);
+}
+
+var catList = document.getElementById('cat-list');
+catList.appendChild(ulist);

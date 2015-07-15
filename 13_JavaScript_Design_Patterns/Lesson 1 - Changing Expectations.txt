@@ -52,3 +52,16 @@
 - quick and easy way is to copy & paste all the code for cat 1 and use for cat 2 after renaming a few things
 - what if requirements change later to use say, 5 cats?
 - this method is NOT scalable
+
+5) IIFE (Immediately-Invoked Function Expression, pronounced like "iffy")
+
+(function(a) {.... })(2);
+
+6) Cat Clicker requirements v3
+
+- list on oneside
+- cat information on the other side
+
+6a) Later
+
+- move toward becoming professional in our code organizational techniques
