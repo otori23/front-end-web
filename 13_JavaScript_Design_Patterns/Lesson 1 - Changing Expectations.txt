@@ -100,3 +100,47 @@
 - MVP: Model View Presenter
 - MV*: Model View *... whatever
 
+9) Sample pizza app (Udacity Hut)
+
+- see forked repository: ud989-pizzamvo
+- simple example to illustrate MVO
+
+9a) The model
+
+var data = {
+  lastID: 0,
+  pizzas: []
+};
+
+9b) The view
+
+- consiste of the view variable in the js, and the html itself
+- the html just has a button, unordered list, and a script template
+
+9c) template script
+
+- html we will use over and over again
+
+9d) The octopus
+
+- var octopus
+- couples view and model
+- model and view never talks directly to each other, by design
+- model is only ever edited by octopus
+
+10) Identify the MVO in New App : Udacity retain
+
+- see forked repo: ud989-retain
+
+11) Code organization libraries
+
+- may have different philosophies on how to organize your code
+- but are all consistent and well thought out
+
+12) Date.now()
+
+- returns number of milliseconds since January 01st 1970
+
+12a) new Date(Date.now()).toString()
+
+- string representation of current data time
