@@ -1,0 +1,60 @@
+
+1) Introduction
+
+- build cat clicker as a professional
+- plan the application out first before building
+
+2) The Model
+
+- and array of cat objects + handle to current cat
+
+[
+  {
+    name: 'Cat',   // image url
+    clickCount: 6  // click count
+  }, 
+  
+  {...}
+]
+
+currentCat
+
+3) The View
+
+- split in to 2: the list of cats, and the cat viewing area
+- i.e. we will have two view objects
+- when thinking of how to spilt view, think of when things are rendered
+- both views will contain render functions that redraw their respective areas
+- the views will also contain click handlers to process user events
+
+4) The Octopus
+
+- how does model interface with view?
+- let's think about what happens in out app
+- load app -> screen is blank -> list gets created -> list view gets populated with cats -> 
+- this is the responsibility of the octopus
+- basically the octopus gets things going (loads model, and tells view to render itself)
+- on a cat click, octopus updates the current cat handle and then refreshes the view
+- on cat info area click, octupus updates the appropriate clickCount in model, and refresh appropriate view
+- notice you are refreshing the view anytime the model changes
+
+5) Andy's Code 1
+
+- see in folder Andy_Code_1
+- has views for each of 5 cats, then hides/shows/updates based on what is clicked
+- all view are hardcoded 
+- BAD, BAD, BAD
+- not extensible, what if we wanted 15 cats
+
+6) Where does Andy's model live
+
+- andy is storing all the data in the DOM (which is part of the view).
+- definition of spaghetti code 
+- that means he can't effectively separate his model and view from each other.
+
+7) In Defense of Andy
+
+- requirements were so simple, it was easy meets spec by storing model data in view
+- IT WAS SO EASY TO DO
+- but biggest problem with code is that we violated our seperation of concerns principle
+
