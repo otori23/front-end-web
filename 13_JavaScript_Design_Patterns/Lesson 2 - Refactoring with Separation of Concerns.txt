@@ -58,3 +58,11 @@ currentCat
 - IT WAS SO EASY TO DO
 - but biggest problem with code is that we violated our seperation of concerns principle
 
+8) Rebuild Cat Clicker Premium
+
+- use MVO
+- use two views (one for list, other for info area)
+- each view should have its own render method
+- remember, model and view never talk directly to each other
+- communication is only ever through the octopus
+
