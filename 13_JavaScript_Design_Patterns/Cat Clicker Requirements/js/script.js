@@ -66,12 +66,12 @@ function main() {
 		// posssibly load data from external source
 		// in this case hard code data into application source
 		init: function() {
-			this.cats.push({name: 'Cat-1', clickCount: 0});
-			this.cats.push({name: 'Cat-2', clickCount: 0});
-			this.cats.push({name: 'Cat-3', clickCount: 0});
-			this.cats.push({name: 'Cat-4', clickCount: 0});
-			this.cats.push({name: 'Cat-5', clickCount: 0});
-			this.cats.push({name: 'Cat-6', clickCount: 0});
+			this.cats.push({name: 'Cat-1', clickCount: 0, imgURL: 'images/cat1.jpg'});
+			this.cats.push({name: 'Cat-2', clickCount: 0, imgURL: 'images/cat2.jpg'});
+			this.cats.push({name: 'Cat-3', clickCount: 0, imgURL: 'images/cat3.jpg'});
+			this.cats.push({name: 'Cat-4', clickCount: 0, imgURL: 'images/cat4.jpg'});
+			this.cats.push({name: 'Cat-5', clickCount: 0, imgURL: 'images/cat5.jpg'});
+			this.cats.push({name: 'Cat-6', clickCount: 0, imgURL: 'images/cat6.jpg'});
 		},
 
 		getNumCats: function() {
@@ -101,9 +101,20 @@ function main() {
 			return this.cats[this.currentCatId].clickCount;
 		},
 
+		getCurrentCatImgURL: function() {
+			return this.cats[this.currentCatId].imgURL;
+		},
+
 		incrementCurrentCatClicks: function() {
 			this.cats[this.currentCatId].clickCount++;
 			octopus.currentCatClickCountChanged();
+		},
+
+		editCurrentCatData: function(newData) {
+			this.cats[this.currentCatId].name = newData.name;
+			this.cats[this.currentCatId].clickCount = newData.clickCount;
+			this.cats[this.currentCatId].imgURL = newData.imgURL;
+			octopus.currentCatDataChanged();
 		}
 	}
 
@@ -118,6 +129,7 @@ function main() {
 			model.init();
 			catListView.init();
 			catDetailView.init();
+			catAdminView.init();
 		}, 
 		
 		catLinkSelectedHandler: function(e) {
@@ -153,18 +165,32 @@ function main() {
 			return model.getCurrentCatClicks();
 		},
 
+		getCurrentCatImgURL: function() {
+			return model.getCurrentCatImgURL();
+		},
+
 		getCurrentCatId: function() {
 			return model.getCurrentCatId();
+		},
+
+		currentCatDataChangedHandler: function() {
+			var newCatData = catAdminView.getNewCatData();
+			model.editCurrentCatData(newCatData);
+		},
+
+		currentCatDataChanged: function() {
+			catListView.init();
+			catDetailView.render();
 		}
 	};
 
 	var catListView = {
-		catList: document.createElement('ul'),
-
-		catLinks: [],
-
 		init: function() {
 			// Create DOM nodes and register event handlers
+			
+			this.catList = document.createElement('ul');
+			this.catLinks = [];
+
 			var numCats = octopus.getNumCats();
 			var catLink, catItem;
 			for(var i =0; i < numCats; i++) {
@@ -187,9 +213,9 @@ function main() {
 
 		render: function() {
 			var catListSection = document.getElementById('cat-list');
-			if(catListSection.childElementCount === 0) {
-				catListSection.appendChild(this.catList);
-			}
+			catListSection.innerHTML = '';
+			catListSection.appendChild(this.catList);
+
 		},
 
 		getClickedCatLinkId: function(link) {
@@ -212,7 +238,52 @@ function main() {
 		render: function() {
 			document.getElementById('cat-name').textContent = octopus.getCurrentCatName();
 			document.getElementById('count-item').textContent = octopus.getCurrentCatClicks();
-			document.getElementById('cat-image').src = 'images/cat' + (octopus.getCurrentCatId() + 1) + '.jpg';
+			document.getElementById('cat-image').src = octopus.getCurrentCatImgURL();
+		}
+	};
+
+	var catAdminView = {
+		show: false,
+
+		init: function() {
+			// Register event handler
+			document.getElementById('admin-btn').onclick = function() {
+				catAdminView.show = true;
+				catAdminView.render();
+			};
+
+			document.getElementById('save-btn').onclick = function() {
+				octopus.currentCatDataChangedHandler();
+				document.getElementById('name-text').value = '';
+				document.getElementById('clicks-text').value = '';
+				document.getElementById('img-url-text').value = '';
+			};
+
+			document.getElementById('cancel-btn').onclick = function() {
+				var handleCancel = function(){
+					this.show = false;
+					this.render();
+				};
+				handleCancel.call(catAdminView);
+			};
+
+			// Render
+			this.render();
+		},
+
+		render: function() {
+			var elems = document.getElementsByClassName('admin-area');
+			for(var i = 0; i < elems.length; i++) {
+				elems[i].style.display = (this.show)? 'initial' : 'none';
+			}
+		},
+
+		getNewCatData: function() {
+			var newCatData = {};
+			newCatData.name = document.getElementById('name-text').value || octopus.getCurrentCatName();
+			newCatData.clickCount = document.getElementById('clicks-text').value || octopus.getCurrentCatClicks();
+			newCatData.imgURL = document.getElementById('img-url-text').value || octopus.getCurrentCatImgURL();
+			return newCatData;
 		}
 	};
 

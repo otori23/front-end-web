@@ -66,3 +66,72 @@ currentCat
 - remember, model and view never talk directly to each other
 - communication is only ever through the octopus
 
+9) Cat Clicker Premium - MVO solutions
+
+- in general can store DOM elements in view object; still maintian separation of concerns
+
+9a) Mine
+
+- see index.hmtl in Cat Clicker Requirements folder
+- use MouseEventArg (i.e. e.target) in cat list event handler to identify what cat data to use in detail area
+
+9b) Instructor
+
+- see folder ud989-cat-clicker-premium-vanilla
+- uses closures for event handlers for cat list
+- the IIFE allows the event handlers to correctly identify which cat data to use in detail area
+
+9c) Creating and Binding Event Handler in For-Loops
+
+- if you create and bind event handler directly in a for-loop, the you have a potential bug
+- all the event handlers will operate on thesame instance of data when called later
+- use closures to solve bug
+
+9d) Closures: creating event listeners in for-loops
+
+- bind function and data that the function operates on
+- use IIFE to wrap the even handler; IIFE is an outer function wrapping the event handler
+- the IIFE will contain the data that the event-handler will operate on (data is local var or input parameter)
+- then the IIFE will return the event handler to the method that binds the event handler to an event
+- later when the event handler is called it operates on its own copy of 
+
+9d) Closures: use of "this" keyword in an event handler
+
+- not really thesame situation, but....another place to use outer/inner function
+- basically event handler, is the outer function
+- has an inner function that is written using the "this" keyword
+- then back in the outer function (which is the event handler) do:
+- innerFunction.call(<<var to bind to this>>, ....);
+
+10) Cat Clicker Premium Pro
+
+- see requirements in Cat Clicker Requirements folder {txt, jpg} files for premium pro
+
+11) How to Modernize Projects
+
+- MVO organization allows you to implement new requirements with more ease
+- unfortunately not all projects are well organized, i.e. legacy code
+- every organization has legacy code
+
+11a) 2 opposing methods for bring legacy code upto date
+
+- Refactor: if code is useful and can be re-organized
+- Destroy and Replace: if code is not useful or you just can't reorganize it
+
+11b) Refactoring
+
+- process of taking a piece of code and making it more readable and maintainable without changing its functionality
+- means editing internals of a function or breaking things up without changing interface to outside world
+
+12)  Refactor Spaghetti Code
+
+- code for not so well designed school attendance application
+
+- here is the repository for the School Attendance Application. (cloned into course notes repo)
+(https://github.com/udacity/ud989-school-attendance)
+
+- remember that you can refactor it in place if the code looks salvageable, or you can burn it to the ground and start over.
+
+- if the project gets too overwhelming or feels too big, don't worry about finishing it right now. 
+- the main point of this exercise is to get you looking at some bad code, and for you to decide how to deal with it.
+  
