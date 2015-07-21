@@ -134,4 +134,26 @@ currentCat
 
 - if the project gets too overwhelming or feels too big, don't worry about finishing it right now. 
 - the main point of this exercise is to get you looking at some bad code, and for you to decide how to deal with it.
-  
+
+12a) Solution
+
+- my solution just reorganizes the existing functions into MVO format
+
+13) Refactoring the Resume
+
+- remember seperation of concerns is NOT a library, more MVO discipline
+- many libraries exist: angular, ember, meteor, backbone, knockout, etc (many, many, exist)
+- don't confuse library with MVO; we have implemented MVO with no library thus far
+
+13a) Resume project
+
+- any project that updates DOM based on data; can use MVO
+- your resume project is just that
+- do all of your new work in a new branch on the project
+- you can refactor or burn it and start over
+
+14) Segue Into L3
+
+- js rockstarts often write code with no organizational libraries
+- sometimes organizational libraries are desirable because you don't need to generate boilerplate code
+- we will learn about an organizational library in the next lesson  

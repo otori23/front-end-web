@@ -1,0 +1,12 @@
+
+1) MVO in the wild
+
+- not all libraries use the word Octopus; others are
+- Model View Controller
+- Model View ViewModel
+- Model View Presenter
+
+1a) All different ways of solving thesame problem
+
+- goal is to separate concerns so that we can minimize connections
+- controller, viewmodel, presenter: all octopi with slightly different personalities
