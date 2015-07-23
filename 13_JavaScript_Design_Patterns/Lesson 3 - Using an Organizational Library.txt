@@ -10,3 +10,293 @@
 
 - goal is to separate concerns so that we can minimize connections
 - controller, viewmodel, presenter: all octopi with slightly different personalities
+
+2) Library vs Framework
+
+- no concensus in the community
+- just code packaged and ready to use
+- I say, you call library, framework calls you
+
+3) Organizational Libraries
+
+- libraries that help you implement MVO in your application
+
+4) Using Libraries
+
+- mis-conception that using libraries makes you less legitimate
+- good to rebuild things other have done before as an academic excercise
+- but not good engineering necessarily
+
+4a) The Core of Good Engineering
+
+- take what has been build before
+- what is well tested, and documented (like a good framework or library)
+- and using it to build something even better
+
+4b) Libraries Udacity uses
+
+- underscore (http://underscorejs.org/): for things javascript does not support natively
+- angular (https://angularjs.org/): organizational library: automatically update page when data model changes
+- it would take you alot of time to write these libraries yourself, but the angular and underscore guys make it their full time job to provide their tools, so you can just benefit from their thier work
+
+4c) Lesson 
+
+- don't write from scratch; use a framework that is solidly built and tested
+- leverage the work of other people to go even further
+- only re-invent wheel to learn
+
+
+5) Universal Organizational Concepts
+(Fundamental organizational concepts.jpg)
+
+- Model: objects that store data (can be smart, i.e. have methods defined)
+- Collections: grouping/array of model elements with smarts (probably a collection class with methods)
+- Controller: gule model and view; contain logic that implements app behaviour
+- Views: things that draw the UI and allow the user to interact with the UI
+- Routers: similar to views; but specifically for the url
+
+5a) Routers
+
+- Routers keep track of the state of the url
+- somethng the user can interact with and see - a view component
+- are often used to keep track of the state of the application
+- the view component for the url bar
+
+5b) Different organizational libraries
+
+- may look different on the surface, but all use same universial concepts
+- i.e. Model, Collections, Controller, Views, Routers
+- if you have a solid understanding of the universal concepts, you can pick up other organizational libraries easily
+
+6) Knockout JS
+
+6a) ViewModel
+
+- knockout's ViewModel is similar to the Octopus
+- it separates the Model and the View
+
+6b) Declarative Bindings
+
+- bindings allow you to connect the View and Model in a direct and simple way.
+- till now you have been connecting your DOM elements and data model by writing code in octopus
+- this was a tedious
+- knockout solves this problem by allowing you to put bindings in the html
+- knocout still goes through the uses the viewmodel for sep of conc.; just in an automated fashion
+- the logic is in the DOM in the form of bindings; instead of viewmodel like you did manually
+
+6c) Automatic UI Refresh
+
+- knockout's will update the View when the Model changes. 
+- with the right declarative bindings, Knockout can update the Model when elements in the View change (such as input elements, checkboxes, etc).
+- this is called two way binding 
+- view <--> viewmodel <--> model
+
+6d) Dependency Tracking
+
+- sometimes model data depends on other model data
+- knockout allows you to create a relationship between parts of the Model, and will automatically update Model data that depends on other Model data when that other Model data changes.
+- example 
+
+7) Picking up other frameworks
+
+- look out for the universal concepts
+- Models, Views, Controller/ViewModel, Routers
+- ViewModel, Declarative Bindings, Automatic UI Refresh, Dependency Tracking
+- find new concepts and figue out what the mean
+
+8) Bindings and Views in Knockout
+
+- example project: http://jsfiddle.net/rniemeyer/3Lqsx/
+- notice that html elements have "data-bind" attributes
+- the data-bind attributes connect the DOM (view) with the rest of the application
+- knockout uses the data-bind attributes to watch the button (input) and update the other views (output) 
+- go thru the data bind attributes one-by-one
+
+HTML
+
+<div class='liveExample'> 
+    
+    <div>You've clicked <span data-bind='text: numberOfClicks'>&nbsp;</span> times</div>
+     
+    <button data-bind='click: registerClick, disable: hasClickedTooManyTimes'>Click me</button>
+     
+    <div data-bind='visible: hasClickedTooManyTimes'>
+        That's too many clicks! Please stop before you wear out your fingers.
+        <button data-bind='click: resetClicks'>Reset clicks</button>
+    </div>
+        
+</div>
+
+JS
+
+var ClickCounterViewModel = function() {
+    this.numberOfClicks = ko.observable(0);
+ 
+    this.registerClick = function() {
+        this.numberOfClicks(this.numberOfClicks() + 1);
+    };
+ 
+    this.resetClicks = function() {
+        this.numberOfClicks(0);
+    };
+ 
+    this.hasClickedTooManyTimes = ko.computed(function() {
+        return this.numberOfClicks() >= 3;
+    }, this);
+};
+ 
+ko.applyBindings(new ClickCounterViewModel());
+
+CSS
+
+body { font-family: arial; font-size: 14px; }
+.liveExample { padding: 1em; background-color: #EEEEDD; border: 1px solid #CCC; max-width: 655px; }
+.liveExample input { font-family: Arial; }
+.liveExample b { font-weight: bold; }
+.liveExample p { margin-top: 0.9em; margin-bottom: 0.9em; }
+.liveExample select[multiple] { width: 100%; height: 8em; }
+.liveExample h2 { margin-top: 0.4em; }
+
+8a) <div>You've clicked <span data-bind='text: numberOfClicks'>&nbsp;</span> times</div>
+
+- data-bind='text: numberOfClicks'
+- data-binding syntax is saying...
+- telling ko that we always want this span to show the value of the js variable: numberOfClicks
+- so, when the js variable numberOfClicks changes, the span text will change to match
+
+8b) <button data-bind='click: registerClick, disable: hasClickedTooManyTimes'>Click me</button>
+
+- data-bind='click: registerClick, disable: hasClickedTooManyTimes'
+- data-binding syntax is saying...
+- when the button is clicked run the registerClick js function
+- also, diable button when js variable hasClickedTooManyTimes = true
+
+8c) KnockOut specifics
+
+- numberOfClicks: ko.observable
+- registerClick: method on ko's ViewModel
+- hasClickedTooManyTimes: ko.computed
+
+8d) General Pattern for Data Binding Syntax
+
+- value of data-bind attribute is a list of key value pairs of the form ...
+- data-bind="KO binding attribute(related to DOM element attribute): JS variable, ...."
+
+9) KO Sample Summary
+
+- primitive ko model elemeents: ko.observable
+- ko model elements that are linked to other model elements: ko.computed
+- ko eventhandlers: methods in the view model
+
+10) Models in Knockout: ko.observable
+
+- ko uses a special kind of object to keep track of data in the model
+
+10a) Create an observable with an initial value
+
+- var favNum = ko.observable(42);
+
+10b) Get the value of an observable
+
+- var val = favNum();
+
+10c) Set the value of favNum
+
+- favNum(43);
+
+10d) ko model summary
+
+- ko models data as function objects
+- this ways my execute function to edit data
+- that way ko can keep track of when data in model changes
+- no need for you to manually call view.render when things change
+
+11) Interview about Documentation
+
+- crucial for productivity
+- totally normal and necessary to always be looking things up
+- libraries without documentation are not very effective to use
+
+12) KO model for arrays
+
+- observableArrays
+- they are smarter arrays
+- create with ko.observableArray()
+- can treat them like regular arrays - ie. use same interface as regular array
+- primary exception is how you retrieve values
+
+13) Build Cat Clicker With KnockOut
+
+- won't need as many objects and methods like we did before
+- ko will automate most of the work to synchronise model and view
+
+13a) Bind DOM attribute in KO
+
+- data-bind usually uses ko specific bidning attributes
+- e.g. bind src attribute if img element using ko
+- <img src="" alt="cute cat" data-bind="..., attr: {src: <<ko js data>>}">
+
+14) Computed Observables
+
+- another kind of model data object
+- created from other data in the model
+- think object properties in C#
+
+14a) Computed Observables: Example
+
+- var firstName = "Ben"
+- var lastName = "Jaffe"
+- var fullName = "Ben Jaffe"
+- e.g. fullName = firstName + lastName // REDUNDANT
+
+14b) Computed Observables: Example
+
+- store fullName as an action
+- var fullName = function() { return firstName + " " + lastName };
+
+14c) Computed Observables: Detail
+
+- this.fullName = ko.computed(function() {...}, this)
+- 1st argument: funtion that computes value
+- 2nd argument: what to bind to this in the 1st argument
+
+15) Review of Terms
+
+Model			ViewModel 	View
+
+Observables				Bindings
+Computed Observables
+Observable Arrays
+
+16) KO Control Structures
+
+- http://knockoutjs.com/documentation/foreach-binding.html
+
+17) Separating Out the Model
+
+- in preparation for multiple cats, move model to different area
+
+18) 'with' and Binding Contexts
+
+- with binding: http://knockoutjs.com/documentation/with-binding.html
+- binding context: http://knockoutjs.com/documentation/binding-context.html
+- move into a cat object; navigate to model data in DOM by using the cat object
+
+19) How to make js code more robust to different binding contexts "With"
+
+- don't implement event handlers with 'this'
+- store 'this' and use the chached value in event handlers
+
+var ViewModel = function() {
+  var self = this;
+
+  this.currentCat = ko.observable( new Cat() );
+  
+  this.incrementCounter = function() {
+    self.currentCat().clickCount(self.currentCat().clickCount() + 1);
+  };
+};
+
+- this way even if the execution context for incrementCounter changes, 
+- the value of self is cached 
+

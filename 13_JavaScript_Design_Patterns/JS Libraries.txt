@@ -1,0 +1,6 @@
+Angular
+Underscore
+Knockout = organizational library
+Meteor
+D3 - charting library
+jQuery - dom manipulation, ajax, and much more
