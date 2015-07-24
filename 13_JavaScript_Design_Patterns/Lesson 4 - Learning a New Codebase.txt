@@ -1,4 +1,134 @@
 
-1) Interview: Gaining Context
+1) Gaining Context
 
-- 
+- get new code with no context; now, what to do...
+- how do you figure out what is going on to get the right amount of context to be userful?
+- 1st track libraries or frameworks that code base might be using
+
+1a) Libraries\Code with documentation
+
+- then go throught the library documentation looking for key concepts
+- trying to get the big picutre; 
+- i.e. how things are organized in the framework/library; 
+- what problem does the framework aim to solve
+- what best practices does the framework establish
+
+1b) Libraries\Code without documentation
+
+- dive into code
+- you will be less efficient
+
+2) ToDoMVC
+
+- http://todomvc.com/
+- provides several example of the same application using different frameworks
+- so, you can now compare, and decide on which choice of framework is right for you
+
+2a) ToDoMVC web-app
+
+- no more simple examples
+- todo mvc is well writtim professional code-base
+- professional developers have written the same application using different frameworks
+
+3) Local Web Servers
+
+There are many different ways to set up a local server.
+
+Here's a general overview of local servers, plus a getting started guide with MAMP
+(http://www.dwuser.com/education/content/why-you-need-a-testing-server-and-how-to-do-it/)
+
+You can also make a web server really easily with python. Here's a site explaining that process.
+(http://www.linuxjournal.com/content/tech-tip-really-simple-http-server-python)
+
+4) Exploring a New Codebase
+
+- Run the application
+- Explore the file structure
+- Look at what js files are loaded
+- Figure out what the libraries do!
+- Modify the application (i.e. test)
+- Add more new features ( and test them out; remember to be tofu)
+
+5) ToDo Codebase 
+
+- see the git repo ud989-todo-app
+- look at folder structure of repo to get an overview of what is going on
+
+5a) Views
+
+- views/app-view.js: view for entier application
+- views./todo-view.js: view for each to do item
+
+5b) Models
+
+- models/todo.js: model for a to do item
+
+5c) Collections
+
+- collections/todo.js: grouping of to do item
+- like observableArray of to do items if using knockout.js
+
+5d) Routers 
+
+- just like views for the urls (instead of the page itself)
+
+5e) Bower
+
+- a package manager for the web ( as oppsed to npm which is for node)
+- keeps track of all the libraries that the app uses
+- libraries: backbone, backbone.localStorage, jquery, todomvc-common, underscore
+
+6) High Level Overview of Backbone
+
+- backbonejs.org
+- en.wikipedia.org/wiki/Backbone.js
+- addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/
+- More like MV* - similar to but not same as save KO which is MVVM
+
+7) Adding to a project without the code you add sticking out like a sore thumb
+
+- do not need to have 100% visibility of code before you can add your own code and be useful
+- get a good overview of key concepts, then apply them and be useful
+
+7a) Be Tofu
+
+- absorb flavor of what is around you
+- write your code; just like the people who wrote the code before you
+- might not be the way you would have written it (i.e. your style), 
+- but consistency of a local dialect improves team efficiency
+
+8) IIFE
+
+https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
+
+9) Exploring the Codebase
+
+- in index.html, the order in which the script tags are included probably matters
+- the last js file included is, app.js
+- it needs the models, collections, views and routers, setup first, before it (app.js) is loaded
+- all the js files has some sort of pattern where, they create and object and add it to the app object
+- i.e. they are are all building some part of the app object
+
+9a) Kick off app in app.js
+
+$(function () {
+  'use strict';
+
+  // kick things off by creating the `App`
+  new app.AppView();
+});
+
+10) Adding Features to The ToDo application
+
+- Add and edit button to each todo item
+- Add a priority button to each todo item
+
+10a) More Ideas
+
+- Let the user set the priority status when creating the todo item
+- Let users filter or sort by priority status
+- Expand the priority feature to have more than two levels 
+(i.e. more than true/false; instead, L1, 2, 3, ...)
+- Add a recycle bin for recovering deleted todos
+- Add colors, so people can associate different todos with each other
+- Add lables for sorting and filtering 
