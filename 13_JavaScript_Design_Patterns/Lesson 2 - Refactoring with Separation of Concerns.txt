@@ -1,0 +1,159 @@
+
+1) Introduction
+
+- build cat clicker as a professional
+- plan the application out first before building
+
+2) The Model
+
+- and array of cat objects + handle to current cat
+
+[
+  {
+    name: 'Cat',   // image url
+    clickCount: 6  // click count
+  }, 
+  
+  {...}
+]
+
+currentCat
+
+3) The View
+
+- split in to 2: the list of cats, and the cat viewing area
+- i.e. we will have two view objects
+- when thinking of how to spilt view, think of when things are rendered
+- both views will contain render functions that redraw their respective areas
+- the views will also contain click handlers to process user events
+
+4) The Octopus
+
+- how does model interface with view?
+- let's think about what happens in out app
+- load app -> screen is blank -> list gets created -> list view gets populated with cats -> 
+- this is the responsibility of the octopus
+- basically the octopus gets things going (loads model, and tells view to render itself)
+- on a cat click, octopus updates the current cat handle and then refreshes the view
+- on cat info area click, octupus updates the appropriate clickCount in model, and refresh appropriate view
+- notice you are refreshing the view anytime the model changes
+
+5) Andy's Code 1
+
+- see in folder Andy_Code_1
+- has views for each of 5 cats, then hides/shows/updates based on what is clicked
+- all view are hardcoded 
+- BAD, BAD, BAD
+- not extensible, what if we wanted 15 cats
+
+6) Where does Andy's model live
+
+- andy is storing all the data in the DOM (which is part of the view).
+- definition of spaghetti code 
+- that means he can't effectively separate his model and view from each other.
+
+7) In Defense of Andy
+
+- requirements were so simple, it was easy meets spec by storing model data in view
+- IT WAS SO EASY TO DO
+- but biggest problem with code is that we violated our seperation of concerns principle
+
+8) Rebuild Cat Clicker Premium
+
+- use MVO
+- use two views (one for list, other for info area)
+- each view should have its own render method
+- remember, model and view never talk directly to each other
+- communication is only ever through the octopus
+
+9) Cat Clicker Premium - MVO solutions
+
+- in general can store DOM elements in view object; still maintian separation of concerns
+
+9a) Mine
+
+- see index.hmtl in Cat Clicker Requirements folder
+- use MouseEventArg (i.e. e.target) in cat list event handler to identify what cat data to use in detail area
+
+9b) Instructor
+
+- see folder ud989-cat-clicker-premium-vanilla
+- uses closures for event handlers for cat list
+- the IIFE allows the event handlers to correctly identify which cat data to use in detail area
+
+9c) Creating and Binding Event Handler in For-Loops
+
+- if you create and bind event handler directly in a for-loop, the you have a potential bug
+- all the event handlers will operate on thesame instance of data when called later
+- use closures to solve bug
+
+9d) Closures: creating event listeners in for-loops
+
+- bind function and data that the function operates on
+- use IIFE to wrap the even handler; IIFE is an outer function wrapping the event handler
+- the IIFE will contain the data that the event-handler will operate on (data is local var or input parameter)
+- then the IIFE will return the event handler to the method that binds the event handler to an event
+- later when the event handler is called it operates on its own copy of 
+
+9d) Closures: use of "this" keyword in an event handler
+
+- not really thesame situation, but....another place to use outer/inner function
+- basically event handler, is the outer function
+- has an inner function that is written using the "this" keyword
+- then back in the outer function (which is the event handler) do:
+- innerFunction.call(<<var to bind to this>>, ....);
+
+10) Cat Clicker Premium Pro
+
+- see requirements in Cat Clicker Requirements folder {txt, jpg} files for premium pro
+
+11) How to Modernize Projects
+
+- MVO organization allows you to implement new requirements with more ease
+- unfortunately not all projects are well organized, i.e. legacy code
+- every organization has legacy code
+
+11a) 2 opposing methods for bring legacy code upto date
+
+- Refactor: if code is useful and can be re-organized
+- Destroy and Replace: if code is not useful or you just can't reorganize it
+
+11b) Refactoring
+
+- process of taking a piece of code and making it more readable and maintainable without changing its functionality
+- means editing internals of a function or breaking things up without changing interface to outside world
+
+12)  Refactor Spaghetti Code
+
+- code for not so well designed school attendance application
+
+- here is the repository for the School Attendance Application. (cloned into course notes repo)
+(https://github.com/udacity/ud989-school-attendance)
+
+- remember that you can refactor it in place if the code looks salvageable, or you can burn it to the ground and start over.
+
+- if the project gets too overwhelming or feels too big, don't worry about finishing it right now. 
+- the main point of this exercise is to get you looking at some bad code, and for you to decide how to deal with it.
+
+12a) Solution
+
+- my solution just reorganizes the existing functions into MVO format
+
+13) Refactoring the Resume
+
+- remember seperation of concerns is NOT a library, more MVO discipline
+- many libraries exist: angular, ember, meteor, backbone, knockout, etc (many, many, exist)
+- don't confuse library with MVO; we have implemented MVO with no library thus far
+
+13a) Resume project
+
+- any project that updates DOM based on data; can use MVO
+- your resume project is just that
+- do all of your new work in a new branch on the project
+- you can refactor or burn it and start over
+
+14) Segue Into L3
+
+- js rockstarts often write code with no organizational libraries
+- sometimes organizational libraries are desirable because you don't need to generate boilerplate code
+- we will learn about an organizational library in the next lesson  

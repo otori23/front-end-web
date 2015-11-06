@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cat Clicker v1</title>
+	<link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+    <div class="grid">
+	  <!-- row 1 -->
+	  <div class="row">
+	    <div id="cat-list" class="col-6">
+	    </div>
+	    <div id="cat-info" class="col-6">
+		  <p id="cat-name"></p>
+		  <p id="count-item">0</p>
+		  <img id="cat-image" src="" >
+	    </div>
+      </div>
+	  
+	  <!-- row 2 -->
+	  <div class="row">
+	    <div class="col-6">
+	    </div>
+	    <div class="col-1">
+		  <button id="admin-btn">Admin</button>
+		</div>
+		<div class="col-1 admin-area">
+		  <label>Name:</label><br>
+		  ImgURL:<br>
+		  Clicks:
+	    </div>
+		<div class="col-4 admin-area">
+		  <input type="text" id="name-text" value=""><br>
+		  <input type="text" id="img-url-text" value=""><br>
+		  <input type="text" id="clicks-text" value=""><br>
+		  <button id="save-btn">Save</button>
+		  <button id="cancel-btn">Cancel</button>
+        </div>
+	  </div>
+	</div>
+	<script src="js/script.js"></script>
+  </body>
+</html>

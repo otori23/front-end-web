@@ -1,0 +1,33 @@
+Project Requirements for Cat Clicker Premium
+
+1) Visuals
+
+The application should display
+
+- a list of cats by name
+- an area to display the selected cat
+
+In the cat display area, the following should be displayed
+
+- the cat's name
+- a picture of the cat
+- text showing the number of clicks
+
+The specifics of the layout do not matter, so style it however you'd like.
+
+2) Interaction
+
+- When a cat name is clicked in the list, the cat display area should update to show the data for the selected cat.
+- The number of clicks in the cat area should be unique to each cat, and should increment when the cat's picture is clicked.
+
+3) Resources
+
+Check out the earlier reading node on how to deal with event listeners and closures. 
+(https://www.udacity.com/course/viewer#!/c-ud989/l-3417188540/m-3480348671)
+You likely will need it to get the click events for your cat list to work.
+
+4)Inspiration
+
+Cute Cat for Inspiration (cat6.jpg)
+
+Thanks to Cowboy Dave for the photo.

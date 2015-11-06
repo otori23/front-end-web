@@ -1,0 +1,19 @@
+New Project Requirements for Cat Clicker
+
+1) Visuals
+
+The application should display two cats. Each cat includes
+	- the cat's name
+	- a picture of the cat
+	- text showing the number of clicks
+The specifics of the layout do not matter, so style it however you'd like.
+
+2) Interaction
+
+The number of clicks should increment when each cat picture is clicked.
+
+Inspiration
+
+Cute Cat for Inspiration (cat2.jpg)
+
+Thanks to chewie for the photo.

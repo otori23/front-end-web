@@ -1,0 +1,146 @@
+0) Instructor
+
+- Ben Jaffe
+- https://www.linkedin.com/in/benjaffe
+- http://blog.udacity.com/2015/03/3-web-developers-built-careers-scratch-part-three-ben-jaffe.html
+
+1) Welcome
+
+- onto writing professional quality code
+- build js code with or without organizational js library
+
+1a) Course Progression
+
+- build an app in a way we already know how
+- look at some of the problems with this apporach
+- learn techniques to solve this problem
+- learn about organization frameworks
+- learn to pick code we have never seen before
+- final project = neighbourhood map
+
+1b) Lessons
+
+- don't rush
+- find time to play - work on projects outside of the class
+
+2) Introduce Cat Clicker and Andy
+
+- cat pictures account for a quarter of the internet
+- cat clicker based on facebook game cow clicker 
+- cow clicker is a satire of social network game where you click on a cow every 6 hours
+- cow clicker became popular
+
+2a) Cat Clicker requirements v1
+
+- see folder Cat Clicker Requirements
+
+3) Requirements Change All The Time
+
+- always the case that requirements change
+- new ideas, new customers, fickle manager
+- goal of course is to write extensible, well organized code
+- so, that you can efficiently react to project requirement changes
+
+3a) REQUIREMENTS CHANGE ALL THE TIME
+
+- the product is always evolving
+- always discovering new ways to improve the user experience
+
+4) Cat Clicker requirements v2
+
+- use two cat images
+- quick and easy way is to copy & paste all the code for cat 1 and use for cat 2 after renaming a few things
+- what if requirements change later to use say, 5 cats?
+- this method is NOT scalable
+
+5) IIFE (Immediately-Invoked Function Expression, pronounced like "iffy")
+
+(function(a) {.... })(2);
+
+6) Cat Clicker requirements v3
+
+- list on oneside
+- cat information on the other side
+
+6a) Later
+
+- move toward becoming professional in our code organizational techniques
+- want to take the skills we have learned so far, and scale them up
+- we need some organizational guidance and new building techniques
+- separate your projects into parts that later connect to each other
+- leads to stable and extensible code
+
+7) What is Spaghetti Code
+
+- things get messy when you connect things together
+- writing an app is ultimately just about connecting things to each other
+- if you connect every piece to every other piece, it becomes difficult to move thing around
+
+8) Introduction to MVO - Model View Octopus
+
+- basically just MVC (controller <=> octopus)
+- this paradigm provides the separation of concerns we need when writing apps
+
+8a) Model
+
+- apps data either from user or from database
+
+8b) Controller / Octopus
+
+- separtion layer
+
+8c) View
+
+- things the user sees and interacts with
+
+8d) Other acronyms
+
+- MVC: Model View Controller
+- MVVM: Model View View Model
+- MVP: Model View Presenter
+- MV*: Model View *... whatever
+
+9) Sample pizza app (Udacity Hut)
+
+- see forked repository: ud989-pizzamvo
+- simple example to illustrate MVO
+
+9a) The model
+
+var data = {
+  lastID: 0,
+  pizzas: []
+};
+
+9b) The view
+
+- consiste of the view variable in the js, and the html itself
+- the html just has a button, unordered list, and a script template
+
+9c) template script
+
+- html we will use over and over again
+
+9d) The octopus
+
+- var octopus
+- couples view and model
+- model and view never talks directly to each other, by design
+- model is only ever edited by octopus
+
+10) Identify the MVO in New App : Udacity retain
+
+- see forked repo: ud989-retain
+
+11) Code organization libraries
+
+- may have different philosophies on how to organize your code
+- but are all consistent and well thought out
+
+12) Date.now()
+
+- returns number of milliseconds since January 01st 1970
+
+12a) new Date(Date.now()).toString()
+
+- string representation of current data time
