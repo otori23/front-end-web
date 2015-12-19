@@ -1,146 +1,138 @@
-0) Instructor
+0) instructor
 
-- Ben Jaffe
-- https://www.linkedin.com/in/benjaffe
-- http://blog.udacity.com/2015/03/3-web-developers-built-careers-scratch-part-three-ben-jaffe.html
+- Mike Wales
+- https://www.linkedin.com/in/michaelwales
 
-1) Welcome
+0a) Goal
 
-- onto writing professional quality code
-- build js code with or without organizational js library
+- write apps that don't fail
+- add new features to app without breaking anything
+- instead of testing manually; refresh browser and make sure things are still working
+- do it programmatically
 
-1a) Course Progression
+1) Test Driven Development (TDD)
 
-- build an app in a way we already know how
-- look at some of the problems with this apporach
-- learn techniques to solve this problem
-- learn about organization frameworks
-- learn to pick code we have never seen before
-- final project = neighbourhood map
+- write test for the features before writing the application itself
 
-1b) Lessons
+2) What is a Test
 
-- don't rush
-- find time to play - work on projects outside of the class
+- each Boeing 747 has > 170 miles of wiring
+- complex machines with a variety of redundant systems:
+- navigation, pressurization, air quality, etc
+- all these systems go through a number of tests
+- however there are some tests some airplanes have never passed
 
-2) Introduce Cat Clicker and Andy
+3) Tests that always fail
 
-- cat pictures account for a quarter of the internet
-- cat clicker based on facebook game cow clicker 
-- cow clicker is a satire of social network game where you click on a cow every 6 hours
-- cow clicker became popular
+- airplane manufacturers test how much the wings of the airplane can flex
+- this simulates any turbulance the plane may experience
+- they DON'T just flex the wing enough to pass the test
+- they keep flexing the wing until it breaks right off
+- this test always fails
+- however it provides useful information about the wing
 
-2a) Cat Clicker requirements v1
+- the important thing is that they defined an expectation and then validated it
+- that is all a test is...
+- validate an expectation about something
+- failing a test is not bad; it gives you information to build bug free apps
 
-- see folder Cat Clicker Requirements
+4) Validating an Opinion
 
-3) Requirements Change All The Time
+- when a school teacher tests a student, think of it as...
+- the teacher validationg the expectation that he/she taught the material sufficiently
 
-- always the case that requirements change
-- new ideas, new customers, fickle manager
-- goal of course is to write extensible, well organized code
-- so, that you can efficiently react to project requirement changes
+5) Identifying Expectations
 
-3a) REQUIREMENTS CHANGE ALL THE TIME
+- a test is based around expections
+- so you want to identify areas in your code where you are setting expectations
+- this will point you to what type of test you need to run
 
-- the product is always evolving
-- always discovering new ways to improve the user experience
+5a) Example
 
-4) Cat Clicker requirements v2
+function add(x, y) {
+  return x + y;
+}
 
-- use two cat images
-- quick and easy way is to copy & paste all the code for cat 1 and use for cat 2 after renaming a few things
-- what if requirements change later to use say, 5 cats?
-- this method is NOT scalable
+add(2, 3);	// 5
 
-5) IIFE (Immediately-Invoked Function Expression, pronounced like "iffy")
+Expectations
 
-(function(a) {.... })(2);
+- the function is already defined and exists (the functions coult be in a library)
+- the function is executing as intended (e.g. should not return 6)
+- the function will be called with two numbers (e.g. not two strings)
 
-6) Cat Clicker requirements v3
+- it is important to identify each of these expectations as soon as possible
+- then you can start to write tests against them
+- above list is not comprehensive
+- as you identify more expectations, you updated your test suite
 
-- list on oneside
-- cat information on the other side
+Other way to write expectations:
+- Expect 2+3=5
+- Expect error if non-numbers are used (this will fail its test -> two string get concatenated)
+- Expect 0.1+0.2=0.3 (this will fail -> due to how computers do floating pt math)
 
-6a) Later
+6) Refactoring add()
 
-- move toward becoming professional in our code organizational techniques
-- want to take the skills we have learned so far, and scale them up
-- we need some organizational guidance and new building techniques
-- separate your projects into parts that later connect to each other
-- leads to stable and extensible code
+- can safley refactor bacause now you have tests that tell you if you inadvertatnly broke something
+- 
+6a) Red/Green refactoring cycle
 
-7) What is Spaghetti Code
+- green check mark next to expectation you are passing
+- red check mark next to expectation you are not passing
+- refactor and get all green marks
 
-- things get messy when you connect things together
-- writing an app is ultimately just about connecting things to each other
-- if you connect every piece to every other piece, it becomes difficult to move thing around
+7) 1st pass at rewriting that add function
 
-8) Introduction to MVO - Model View Octopus
+- this solution is naive because it only applies to a small set of use cases
+- the value in the solution is that you want to have confidence that you can refactor your function  without breaking anything
 
-- basically just MVC (controller <=> octopus)
-- this paradigm provides the separation of concerns we need when writing apps
+function add(x, y) {
+  var result;
+  if ((typeof x && typeof y) !== 'number') { // testing error for non-numbers
+    throw new Error('Params must be a number');
+  }
 
-8a) Model
+  result = x + y;
+  if (parseInt(result) !== result) { // testing 2+3 = 5
+    result = parseFloat(result.toFixed(1)); // tesing 0.1 + 0.2 = 0.3
+  }
 
-- apps data either from user or from database
+  return result;
+}
 
-8b) Controller / Octopus
+- the function above will have all green check marks
+- now when you refactor the function, you will run test again to make sure you have all green checks
+- this means the funtion behaves thesame as before
 
-- separtion layer
+8) Writing Expectations in Code
 
-8c) View
+- so far, the tests have just be done in our heads
+- we want to do it in code
 
-- things the user sees and interacts with
+// Example:
+// Expect add(2, 3) to equal 5
+expect(add(2, 3)).toBe(5);
 
-8d) Other acronyms
+// Example:
+// Expect add() to throw an error if x/y are not numbers
+expect(add(2, 'test')).toThrow();
 
-- MVC: Model View Controller
-- MVVM: Model View View Model
-- MVP: Model View Presenter
-- MV*: Model View *... whatever
+// Example:
+// Expect add(0.1, 0.2) to equal 0.3
+expect(add(0.1,0.2)).toBe(0.3);
 
-9) Sample pizza app (Udacity Hut)
+8a) Explanation of test code
 
-- see forked repository: ud989-pizzamvo
-- simple example to illustrate MVO
+- we pass the code we want to test into the expect function
+- chain a rule set fucntion called a matcher (i.e. toBe()) to whatever expect returns
+- pass what you know to be the correct value to the matcher
 
-9a) The model
+9) Next steps
 
-var data = {
-  lastID: 0,
-  pizzas: []
-};
+- explore the Jasmine framework
+- write real world tests
 
-9b) The view
 
-- consiste of the view variable in the js, and the html itself
-- the html just has a button, unordered list, and a script template
 
-9c) template script
+ 
 
-- html we will use over and over again
-
-9d) The octopus
-
-- var octopus
-- couples view and model
-- model and view never talks directly to each other, by design
-- model is only ever edited by octopus
-
-10) Identify the MVO in New App : Udacity retain
-
-- see forked repo: ud989-retain
-
-11) Code organization libraries
-
-- may have different philosophies on how to organize your code
-- but are all consistent and well thought out
-
-12) Date.now()
-
-- returns number of milliseconds since January 01st 1970
-
-12a) new Date(Date.now()).toString()
-
-- string representation of current data time
