@@ -1,0 +1,273 @@
+1) Introduction to Jasmine
+
+- will write test for synchronous and asynchronous functionality
+- several different javascript testing libraries available
+- this course uses one called Jasmine
+- it is popular and easy to use
+- used by many software companies
+- this course uses the version 2.2.o branch
+
+2) Explore SpecRunner.html
+
+- git clone https://github.com/udacity/ud549
+- open SpecRunner.html in browser
+
+2a) Contents of SpecRunner.html in browser
+
+- this is just styled html
+- see source below
+- describe() - colored black
+- to() - colored green
+
+
+5 specs, 0 failures
+  Player
+    should be able to play a Song
+
+    when song has been paused
+      should indicate that the song is currently paused
+      should be possible to resume
+
+    tells the current song if the user has made it a favorite
+
+    #resume
+      should throw an exception if song is already playing
+
+
+2b) Source of SpecRunner.html
+
+- see complete source below
+- the html:
+- loads the jasmine libraries
+- load the source files (code to be tested): Player.js and Song.js
+- load the test spec files (code where expecations/test are defined): SpecHelper.js, PlayerSpec.js
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jasmine Spec Runner v2.2.0</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.2.0/jasmine_favicon.png">
+  <link rel="stylesheet" href="lib/jasmine-2.2.0/jasmine.css">
+
+  <script src="lib/jasmine-2.2.0/jasmine.js"></script>
+  <script src="lib/jasmine-2.2.0/jasmine-html.js"></script>
+  <script src="lib/jasmine-2.2.0/boot.js"></script>
+
+  <!-- include source files here... -->
+  <script src="src/Player.js"></script>
+  <script src="src/Song.js"></script>
+
+
+  <!-- include spec files here... -->
+  <script src="spec/SpecHelper.js"></script>
+  <script src="spec/PlayerSpec.js"></script>
+
+
+</head>
+
+<body>
+</body>
+</html>
+
+2c) Contents of PlayerSpec.js
+
+- see full source below
+- notice that the text in the call to describe(...) and it(...) is the same text you see in SpecRunner.html
+- contains expectations (expect(...)) and matchers (toBe(...)) like in the previous section
+
+
+describe("Player", function() {
+  var player;
+  var song;
+
+  beforeEach(function() {
+    player = new Player();
+    song = new Song();
+  });
+
+  it("should be able to play a Song", function() {
+    player.play(song);
+    expect(player.currentlyPlayingSong).toEqual(song);
+
+    //demonstrates use of custom matcher
+    expect(player).toBePlaying(song);
+  });
+
+  describe("when song has been paused", function() {
+    beforeEach(function() {
+      player.play(song);
+      player.pause();
+    });
+
+    it("should indicate that the song is currently paused", function() {
+      expect(player.isPlaying).toBeFalsy();
+
+      // demonstrates use of 'not' with a custom matcher
+      expect(player).not.toBePlaying(song);
+    });
+
+    it("should be possible to resume", function() {
+      player.resume();
+      expect(player.isPlaying).toBeTruthy();
+      expect(player.currentlyPlayingSong).toEqual(song);
+    });
+  });
+
+  // demonstrates use of spies to intercept and test method calls
+  it("tells the current song if the user has made it a favorite", function() {
+    spyOn(song, 'persistFavoriteStatus');
+
+    player.play(song);
+    player.makeFavorite();
+
+    expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
+  });
+
+  //demonstrates use of expected exceptions
+  describe("#resume", function() {
+    it("should throw an exception if song is already playing", function() {
+      player.play(song);
+
+      expect(function() {
+        player.resume();
+      }).toThrowError("song is already playing");
+    });
+  });
+});
+
+3) Introducing Suites and Specs
+
+3a) describe() and it()
+
+- used to create an outline and orgaize information
+
+- it() identifies a specification (spec for short); defines the boundry for a set of expectations/test of one feature
+
+- describe() identifies a suite; which is just a group of related specs
+- so everything contained in the block describe("Player", function () {...});, is related to the "Player"
+
+3b) a Spec
+
+- the container for a test
+- a way to identify the exact feature we are testing
+- if all the expectations (i.e. expect(...) calls) within a spec returns true, then that spec passes
+- if any expectation within a spec returns false, then the spec will fail
+
+3c) Test organization
+
+- no right or wrong way to organize your test
+- use describe/it as tools for oganization; or tools for indentation
+
+4) Writing a Test
+
+expect(add(0.1, 0.2)).toBe(0.3);
+
+- interprete this test as: add(0.1, 0.2) === 0.3; onse evaluated by the framework
+
+4a) expect(...) 
+
+- each test starts with a call to expect(...)
+- the expect(...) function is the entry point of a test
+- it starts the process of a test
+
+4b) The Actual
+
+- the expect(...) function accepts a sinlge value
+- this value is called the "actual"
+- in our example, the actual = add(0.1, 0.2)
+
+4c) The Matcher
+
+- tells the testing framework what type of comparision to use against the actual
+- the comparison method is called the Matcher
+- the matcher is a method chained after the call to expect
+- in this example the matcher is toBe(...)
+
+4d) toBe(...)
+
+- the equivalent of a strict equals comparison
+- pass the expected value to the matcher; in this case 0.3
+
+4e) Negate the Matcher
+
+expect(add(0.1, 0.2)).not.toBe(0.1); // this will return true, i.e. pass
+
+5) Multiple Tests per Spec
+
+it('should consider this spec', function() {
+  expect(true).toBe(true);
+  expect(false).not.toBe(false);
+});
+
+- This spec would fail because our second test is returning false
+
+6) Getting Started with Red-Green-Refactor
+
+- the real power behind testing shows itself when you write the test first
+- initially, the tests all fail, since there is no code to make them pass
+- then write the code required to make your test pass
+- then later, you can safely refactor your code as you continue to add new features
+
+7) Writing AddressBookSpec.js
+
+- see AddressBook folder in notes repo
+- add the files ~/AddressBook/spec/AddressBookSpec.js and ~/AddressBook/src/AddressBook.js
+- update ~/AddressBook/SpecRunner.html to load the two files above
+
+7a) What functionality would be useful for an address book?
+
+- being able to add a contact
+- add a new suite called "AddressBook"
+- in suite, add spec, "should be able to add a contact"
+- create and address book and a contact object
+- add the contact to the address book
+- test that the contact was added to the address book 
+
+7b) Value in writing the test first
+
+- because we wrote the test first we now understand the following things:
+- the AddressBook will have an addContact method to add new Contact objects
+- the AddressBook will have a getContact method to retrive preiously added Contact
+- the AddressBook.getContact takes an interger as an argument to identify which Contact to retrieve
+
+7c) Run SpecRunner.html
+
+- SpecRunner.html highlights the test you are failing:
+'Address Book should be able to add a contact'
+
+- SpecRunner.html tells you why the test is failing
+'ReferenceError: AddressBook is not defined'
+
+- SpecRunner.html then tells you what line in AddressBookSpec.js caused the failure
+'... at Object.<anonymous> (file://...../spec/AddressBookSpec.js:4:25) i.e. line 4, column 25
+
+7c) Next Step: Implememtn AddressBook
+
+- implement the AddressBook in file: ~/AddressBook/src/AddressBook.js
+- write code that will pass the test(s) in the AddressBookSpec.js
+
+7d) Iterating on our Implementation
+
+- 1st error is 'AddressBook' not defined (identify line in spec file generating this error)
+- so in AddressBook.js add an empty constructor for AddressBook objects
+- rerun SpecRunner.html
+- 2nd error 'ReferenceError: Contact is not defined' (identify line in spec file generating this error)
+- so in Contact.js add an empty constructor for Contact objects
+- Contact.js was also loaded in SpecRunner.html
+- rerun SpectRunner.html
+- 3rd error: 'TypeError: addressBook.addContact is not a function'
+- ...
+
+7e) Red-Green-Refactor Cycle
+
+- continue the red-green-refactor cycle until all test pass (i.e. all specs show up in green)
+
+loop (until all specs pass) {
+  - refresh the SpecRunner.html
+  - identify the error
+  - fix the errror
+} 
+
