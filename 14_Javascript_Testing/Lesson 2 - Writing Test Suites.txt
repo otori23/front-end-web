@@ -268,9 +268,9 @@ it('should consider this spec', function() {
 - 3rd error: 'TypeError: addressBook.addContact is not a function'
 - ...
 
-7e) Red-Green-Refactor Cycle
+7e) Red-Green-Refactor Workflow Cycle
 
-- continue the red-green-refactor cycle until all test pass (i.e. all specs show up in green)
+- continue the red-green-refactor workflow cycle until all test pass (i.e. all specs show up in green)
 
 loop (until all specs pass) {
   - refresh the SpecRunner.html
@@ -278,3 +278,166 @@ loop (until all specs pass) {
   - fix the errror
 } 
 
+8) Another Spec: delete a contact
+
+- 1st thing to do is to spec out the feature by adding another it() block AddressBookSpec.js
+- write out code that excercises behaviour in the it() block and compare it against expectation(s)
+
+9) Remove Redundant Code
+
+- currently AddressBookSpec.js looks like
+
+describe('Address Book', function() {
+	it('should be able to add a contact', function() {
+		/* create and address book and a contact object */ 
+		var addressBook = new AddressBook();
+		var thisContact = new Contact();
+
+		/* add the contact to the address book */
+		addressBook.addContact(thisContact);
+
+		/* test that the contact was added to the address book */
+		/* interpret as: if I were to get the 1st conact in the address book */
+		/* it would be thesame as 'thisContact' */
+		expect(addressBook.getContact(0)).toBe(thisContact);
+	});
+
+	it('should be able to delete a contact', function() {
+		var addressBook = new AddressBook(),
+			thisContact = new Contact();
+
+		// Do some work
+		addressBook.addContact(thisContact);
+		addressBook.deleteContact(0);
+
+		// test expectation
+		expect(addressBook.getContact(0)).not.toBeDefined();
+	});
+});
+
+- notice the redundant code: have to always create AddressBook and Contact in each it()
+- on the one hand, this is a good thing because you get a nice clean slate for every test
+- on the other hand, we are manually creating redundant code
+- jasmine has a mechanism for specifying code that should be run before each test
+
+9a) beforeEach function
+
+- use to tell jasmine instructions to execute before each test
+- refactor spec like:
+
+describe('Address Book', function() {
+	var addressBook,
+		thisContact;
+
+	beforeEach(function() {
+		addressBook = new AddressBook();
+		thisContact = new Contact();
+	});
+
+	it('should be able to add a contact', function() {
+		addressBook.addContact(thisContact);
+
+		expect(addressBook.getContact(0)).toBe(thisContact);
+	});
+
+	it('should be able to delete a contact', function() {
+		addressBook.addContact(thisContact);
+		addressBook.deleteContact(0);
+
+		expect(addressBook.getContact(0)).not.toBeDefined();
+	});
+});
+
+10) Testing Asynchronous Code
+
+- this a bit different
+- need some way to inform our testing framework that the asynchronous function has completed
+- let's imagine out application (i.e. the AddressBook) needs to make an API call to a server to retrieve a list of inital contacts to put back into our application
+- write a new test suite for our asynchronous functionality
+
+10a) 1st Fake the Asynchronous functionality
+
+- normally you are given an asynchronous method from an api provider 
+- but, in this case we will spoof the implematation of the async method (using setTimeout)
+
+- insturtor use https://www.firebase.com/ as an example of api provider
+- explore firebase some more
+- take udacity's firebase course
+
+Spoof:
+
+AddressBook.prototype.getInitialContacts = function(cb) {
+	var self = this;
+
+	setTimeout(function() {
+		self.initialComplete = true; // has inital value = false set in constructor
+		if(cb) {
+			return cb();
+		}
+	}, 3);
+};
+
+11) Writing an Asynchronous Test: 'Async Address Book'
+
+describe('Async Address Book', function() {
+	it('should grab initial contacts', function() {
+		var addressBook = new AddressBook();
+
+		addressBook.getInitialContacts(); // note that this is an asynchronous method
+		expect(addressBook.initialComplete).toBe(true);
+	});
+});
+
+- the call to addressBook.getInitialContacts() is asynchronous
+- so, it will return immediately
+- the expectation on the next line will fail because it will take 3 seconds before the 
+addressBook.initialComplete === true
+
+12) Correcting our Asynchronous Test
+
+12a) Try #1: call expectation in callback to async function
+
+- this does not work
+
+describe('Async Address Book', function() {
+	it('should grab initial contacts', function() {
+		var addressBook = new AddressBook();
+
+		addressBook.getInitialContacts(function {
+			expect(addressBook.initialComplete).toBe(true);
+		});
+	});
+});
+
+- why doesn'this work
+- the call to expect will run in the scope of our application NOT in the scope of our testing framework (which is what we want)
+
+12b) Soultion = beforeEach + done
+
+12c) done
+
+- special globally available function object in Jasmine Testing Framework
+- signals to the framework when an aysnchronous function has completed, and we are ready to test an expectation
+
+describe('Async Address Book', function() {
+	var addressBook = new AddressBook();
+
+	// Think of done as a WaitHandle in C#
+	beforeEach(function(done) {
+		addressBook.getInitialContacts(function(){
+			// Signals to Jasmine Framework that our asynchronous call is finished
+			// so continue any tests that are flagged to wait for me to finish
+			done();
+		});
+	});
+
+	it('should grab initial contacts', function(done) {
+		expect(addressBook.initialComplete).toBe(true);
+
+		// Signals to Jasmine Framework that this test, i.e. this it-block
+		// relys on the asynchronous function call in the beforeEach
+		// i.e. this test (it-block) is flagged as having to wait for asynchronous
+		// call in beforeEach to complete
+		done();
+	});
+});
