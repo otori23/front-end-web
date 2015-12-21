@@ -161,6 +161,13 @@ describe("Player", function() {
 - no right or wrong way to organize your test
 - use describe/it as tools for oganization; or tools for indentation
 
+3d) it() another Interpretation
+
+- it() is what you consider the test unit
+- inside the it() you write out the use case that is being tested
+- then you have one or more assertions/conditions (i.e. expects()) in here that indicate whether
+this test/use case is operating as expected (i.e. passing or failing) 
+
 4) Writing a Test
 
 expect(add(0.1, 0.2)).toBe(0.3);
