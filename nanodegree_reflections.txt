@@ -2,9 +2,49 @@ Go back and explore
 
 1) HTML/CSS & Responsive Web design
 - Bootstrap framework
+- CSS3 Missing manual
+- Jasmine kindle book
+- Grunt kindle book
+- Yeoman + Bower + Grunt (or Gulp)
+- Bower: dependency management
+- Grunt (or Gulp): build system
+- Yoeman: binds the two together
 
 2) JS & JQuery Basics
 - Google developers (https://developers.google.com/)
 especially: Monetizing, Web Fundamentals -> Monetization, Maps API
 
-- D3 (d3js.org)
+3) D3 (d3js.org)
+
+4) FEND Optional Project
+
+- take backbone.js course
+- 
+
+5) Firebase
+https://www.firebase.com/
+- like the way thier site is constructed
+- so, try to mimic it
+- Udacity has a firebase course - take it!!!!!
+
+6) Other Interesting Udacity Courses
+
+App Monetization
+App Marketing
+Building High Conversion Web Forms
+Web Tooling and Automation
+Designing RESTful APIs
+Writing READMEs
+Responsive Web Design
+Responsive Images
+How to Build a Startup
+A/B Testing
+Data Visualization and D3.js
+Web Development
+Moblie Web Development
+Software Testing
+Software Debugging
+Make Your Own 2048
+Product Design
+App Monetization via Display Advertising
+Rapid Prototyping - Building Apps for Web and Mobile
