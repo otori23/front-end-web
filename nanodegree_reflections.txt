@@ -9,6 +9,7 @@ Go back and explore
 - Bower: dependency management
 - Grunt (or Gulp): build system
 - Yoeman: binds the two together
+- handlebars.js
 
 2) JS & JQuery Basics
 - Google developers (https://developers.google.com/)
