@@ -1,36 +1,4 @@
-﻿0) Targeted Resume Structure: Examples of Common Orders
-
-0a) Career Change
-
-Heading 
-Summary Statement
-Skills
-Projects
-Experience
-Education
-etc
-
-0b) Just Graduated
-
-Heading
-Education
-Skills
-Projects
-Experience
-Activities
-Achievements
-etc
-
-0c) Extensive Experience Insame Industry
-
-Heading
-Skills
-Projects
-Experience
-Education
-Publications
-Achievements
-etc
+﻿
 
 1) Most Commonly Used Resume Sections That They Have Identified
 
