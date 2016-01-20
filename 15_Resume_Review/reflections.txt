@@ -1,0 +1,46 @@
+﻿
+1) 6 Seconds
+
+- the average number of secs a recuriter looks at you resume to decide if you are a fit or not
+- therfore resume needs to be clear and concise
+- resume needs to be crafted for the postion you are targeting
+- also, it should be formatted so that recriuters can read it
+
+2) Master Resume
+
+- comprehensive spreadsheet of all you professional experiences
+- also called a master resume
+- later summarize information in master resume with bulletted items in actual resume
+- at this point, comprehensiveness it the priority
+- be detailed, note specific dates, locations, skills used, and concrete achievements
+- keeping information up-to date on your master resume will make it easier for you to craft targeted resumes for specific jobs later
+
+2a) The actual resume
+
+- meant to be targeted; not to show everything you have ever done
+
+3) Quick tips
+
+- inspired by hiring managers
+
+
+4) Udacity Resume Checklist
+
+- See checklist for details of to include/not include in resume
+
+5) Which of the following items is appropriate to include on your resume?
+- Personal Photo
+- Mailing Address
+- LinkedIn Account Link -> Ans
+- References
+
+The other items are not necessary to include on you resume because including these items may make your vulnerable to a recruiter's unconscious bias.
+
+6) Which of the statements below are true
+
+- it is appropriate to include projects I worked on for a class 			-> ans
+- it is appropriate to include the months and dates of my professional experience	-> ans
+- it is appropriate to include the year I graduated a degree program
+
+That's correct. You'll want to include relevant project you've worked on as well as the months and dates of your professional experience. You should not include the year you graduated a degree program
+
