@@ -1,0 +1,202 @@
+
+1) What is Linkedin?
+
+- largerst professional online network with over 300 million users
+- more than 95% of recruiters use LinkedIn as a recruiting tool
+- different from a resume
+- linkedin can help you strengthen your professional network
+- use it to learn about industry trends
+- often features intersting articles from industry leaders
+- great place to initiate informational interviews
+
+resume = career at a glance
+linkedin = more detailed profile
+
+
+2) Goals
+
+- different components of a linkedin profile and best practices for each:
+
+Headline
+Summary
+Experience
+Projects
+Education
+Courses
+Groups
+Companies
+Skills
+
+- want to convey an accurate depiction of your professioanl experience and goals
+
+3) Overview of LinkedIn Sections
+
+- a linkedin profile contains multiple customizable sections
+- can change order of sections to properly convey your background
+- e.g. if you are switching careers, make projects section appear befor your work section
+
+4) The Strategic LinkedIn Mindset
+
+- Goal 1: Show up in search results
+- Goal 2: Stand out in search results
+- Goal 3: Signal that you are qualified and motivated for the job
+
+5) 3 R's Activity: Overview
+
+Reflect + Research + Relate
+
+5a) Reflect
+
+- Ask yourself - what is my target job or industry
+
+5b) Research
+
+- based on your above reflection, reserach jobs of interest
+- note any keywords and themes that you see and put these in a formal list
+
+5c) Relate
+
+- now that you have a list of keywords and themes... 
+- think of how you can relate your exisiting experience with these keywords and themes
+- note any ideas
+- you can flesh this out in future activities
+
+6) Professional Profile Picture
+
+- optional but highly recommended
+- wear appropriate attire
+- image should be shoulders up and face should take up 60% of frame
+- keep lighting even and background simple
+- use an image with a friendly expression
+
+7) Professional Headline
+
+- appears in search results between your name and photo
+- use to craft you personal brand
+- brand yourself as you wish (i.e. Web development professional or front end web-developer)
+
+- use positive language
+- be aspirational - keep in mind the job you want, not simply the job you have
+- integrate industry specific keywords
+- use clear action oriented language
+
+8) Summary Section
+
+- typically 1 - 4 sentences; like an elevator pitch
+- convey the most important information of what you are all about profesionally
+- use 3Rs; your audience is recruiters and employer
+- use acttion oriented words
+
+- create a list of your achievement, passions, and professional goals
+- make these into phrases that integrate key words and numerical evidence
+- trim these statements into a cohesive summary section and enter it into your LinkedIn profile
+
+8a) Instructor Notes
+
+This activity requires you to update your LinkedIn profile. To allow you to take your time with the updates, we recommend that you change settings to not notify your network while editing and change settings to "Yes, publish an update to my network about my profile changes" once you are finished with updates.
+
+9) Experience Section
+
+- include full-time positions or internships
+- like on your resume
+- use bullet point statements to convey your achievements at each position
+- each statement starts with an action verb and should be 1-1.5 lines long
+- include acheivements and not just daily tasks
+- include concrete details
+- bullet statements are simplified phrases; don't be verbose
+- aim for 4 bullet points or less
+- previous organization, job title, and time at each
+- add links to projects, videos, photos, and anything else that relates to your experience
+- don't need to list irrelevant positions from the past
+
+9a) Review and assess guidlines for experience section and bullet statements
+
+- Statements befine with a variety of action verbs
+- 1-1.5 lines long
+- Achievements
+- Concrete details
+- Simplified sentence structure
+- 4 bullet points or less per section
+- Add concrete interactive envidence by integrating links to projects,videos, photos, and other relevant attachments
+
+9b) Darft your own experience section. This will be an open-ended activity
+
+10) Projects Section
+
+- Apply your knowledge of the Projects Guidelines and list these guidelines
+- Draft your Projects section with the guidelines provided
+- Check for keywords and make sure these correlate to you 3R's
+- Add to your LinkedIn profile
+- Move the Projects Section to the appropriate position in your LinkedIn profile
+
+10b) Project Guidelines
+
+- Include project title and dates
+- Concise, informative descriptions
+- Use keywords
+- Note coding languages
+- Sort by most recent
+- provide a link to the project
+
+11) Courses Section
+
+- good for people new to a field
+- include course names and orgnization took courses from
+- include only courses relevant to your target position
+
+11a) Activitiy: Courses Section
+
+- step 1: create a list of all the courses you have taken
+- step 2: trim down your 1st list and create a 2nd list of courses that relate to your 3R's results
+- step 3: add this to your LinkedIn profile
+
+12) Formal Education
+
+- include any formal degrees (universities, community college, or similar)
+- include nano degree in this section
+
+12a) Activity: Education section
+
+- step 1: list all of your formal education experiences (degree and nanodegree credentials)
+- step 2: add these to your LinkedIn profile 
+
+
+13) Skills Section
+
+- simple and easy way to integrate alot keywords into your profile with minimal effort
+- add only what is relevant to your goals
+- this section makes your LinkedIn profile much easier to find by interested recruiters
+
+13a) Activity: Skills section
+
+- step 1: Start by revisitig your 3R's exercise and list keywords
+- what are the keywords and themes specific to skill set that pop up? Write these down
+- Step 2: Based on the new list, log in to LinkedIn and add as many of these skills as possible to your Skills section
+
+14) Groups, Companies, and Causes Sections
+
+- help you keep up to date with industry trends
+- help you network
+- they show recriuters what you are interested in
+- good way to make you profile look more robust especially if you are new to the field
+
+14a) Activitiy: Groups, companies, and causes sections
+
+- step 1: for this exercise, log into LinkedIn and search for groups, companies, and causes that interest you
+- step 2: when you see groups, companies or causes that interest you, add them
+
+14b) Group Examples
+
+- jQuery, node.js, HTML5/CSS3/Javascript, Udacity, MongoDB, AngularJS Developers 
+
+15) Get Connected
+
+- now, you need to actually build a linkedin network
+- connect with others
+- can be more powerful than your skills or expertise
+- can find a connection at the company you want to work for
+- more people will be aware of your job hunt
+- connect with people who like you and know how you work
+- don't connect with people you have never met
+
+- can also ask for recommendations from people that know about your work
