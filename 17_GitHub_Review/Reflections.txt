@@ -1,0 +1,34 @@
+
+1) Overview
+
+- demonstrats that you know GitHub best practices
+- sends a signal to other developers and hiring managers that you’re ready to work together on the next great thing. 
+- your repositories should show that you’re serious about the projects you start and that you write clean, well-formatted code
+- can be used for continued learning
+- used as a way for potential employers to review your work
+
+2) Udacity GitHub Blog Post
+
+- http://blog.udacity.com/2015/06/become-github-pro.html
+
+3) Why this GitHub Profile Project?
+
+- GitHub is increasingly used as a recruiting platform and as a way for potential employers to review your work
+- It is also a great place to connect with other developers and showcase your skills
+
+4) The Path to a Perfect Profile
+
+4a) Show Regular Activity
+
+- want to show constant activity on your profile
+- commit small, incremental changes, every day
+- github does a good job showing your activity in graphical form
+
+4b) Contribute to Open Source Repositories
+
+- this is a huge positive signal for recruiters
+- it shows that you work well with others
+- more importantly, it shows that coding is a true passion
+- it is something that you do in your free time and without a direct monetary reward
+- if you’re interested in how to get started, check out the GitHub guide
+(https://guides.github.com/activities/contributing-to-open-source/)
