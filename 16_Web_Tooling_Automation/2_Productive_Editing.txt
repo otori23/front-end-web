@@ -74,6 +74,15 @@
 
 - open the Sublime console with View -> Show Console or Ctrl + `
 
+9b) Other Package Managers
+
+- node.js -> npm
+- visual studio -> nuget
+- these package managers streamline to process of extending the underlying framework
+- you install them manually on top of the framework
+- then the plugins are like apps for the package manager
+- the plugins are how you extend the functionality of the underlying framework
+
 10) Installing Package Control in Sublime
 
 - from Package Control's website, copy and paste installation text into Sublime's console
