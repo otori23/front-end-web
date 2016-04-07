@@ -1,0 +1,14 @@
+
+1) Not All Optimizations are Worth Doing
+
+- ask yourself how long will it take to implement?
+- how much time will I save using the optimization after it is implemented
+- if the time saved using the optimaztion is far greater than the time spent implementing it, then go ahead and do it
+- else, don't do it
+
+2) Avoid the Following
+
+- building a better tool from scratch
+- using obscure not well supported libraries
+ (e.g. some random build tool vs Gulp)
+- tools that claim to do it all and have no well defined API for extension or interfacing

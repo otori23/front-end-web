@@ -1,0 +1,139 @@
+
+1) Set up Development Environment
+
+- typically means setting up your Editor
+- the right tools can make your experience much less frustrating
+
+2) Integrated Development Environments - IDEs
+
+- like a development productivitiy swiss army knife
+- can do many things: editing, building, debugging, compiling, optimizing
+- the trade off is that there are more specialized tools that to a better job doing just ONE thing
+
+3) Native Development Tends To Use IDEs
+
+- vendor controls language and development environments
+
+-   Apple: 	Xcode
+- Android: 	Android Studio
+- Windows:	Visual Studio
+
+4) Development on The Web
+
+- you have got to live with fragmentation
+- due to different browsers, devices, and standards
+- most web developers use individual tools specialized for doing one job
+- and they make sure these tools work well together
+
+5) The Sublime Editor
+
+- will use this for the course
+- reason being that it is popular, dependable, extensible, fast, and well supported by its community
+ 
+5a) The Atom Editor
+
+- also a good choice
+- new kid on the block
+- constantly improving
+
+6) Built In Editor Magic
+
+- in the first couple of days of using a new editor, ...
+- try out lots of build-in shortcuts and features, even if they seem overkill
+- try them all out and observe yourself
+- which shortcuts stick, which do you have to force yourself to use?
+
+7) Sublime Shortcuts - On Mac
+
+- CMD + T -> Fuzzy File Finder
+- CMD + R -> Symbol Search
+- CMD + ALT + G -> find next instance of current selection
+- TAB -> Autocompletion
+- ALT + drag -> Column Selection (i.e. specific instance of more general multi-selection)
+- CMD + D -> mutli-selection of mext instance of current selection
+- CMD + CTRL + G -> multi-selection of all instances
+- CMD + SHIFT + P -> Sublime's Command Palette
+- CMD + SHIFT + C -> opens the system color picker and allows you to quickly pick a color
+
+8) Extending the Editor
+
+- Sublime's extensions comes from a healthy community of developers like you
+- Sublime is just a text editor, it doesn't know anything about the Web
+- we will use extensions to make sublime a front-end web editor
+
+9) Package Control - https://packagecontrol.io
+
+- the Sublime text package manager
+
+- Sublime does not have a built in plugin repository
+- so, need to install Package Control
+- acts like a package manager for Sublime
+- will need to install it and make subline aware of it
+
+9a) The Sublime Console
+
+- open the Sublime console with View -> Show Console or Ctrl + `
+
+10) Installing Package Control in Sublime
+
+- from Package Control's website, copy and paste installation text into Sublime's console
+- looks like it was written in python
+- this fetch pulgins and install all their dependencies
+
+11) CMD + SHIFT + P (CTRL + SHIFT + P for windows) - Command Palette
+
+- open Sublime's command palette
+- contains ALL of Sublime's commands
+- can use it to discover stuff you didn't know about
+- can discover short cuts for the commands
+- can execute actions that don't have shortcuts
+- can execute actions that have crazy long shortcuts
+
+12) Package Control: Install Package
+
+- command we will use to install packages
+- start typing this into the command palette
+- execute the command to see a list of all packages in the repository
+
+13) Plugins to Install
+
+- Emmet 		- https://packagecontrol.io/packages/Emmet
+- Sidebar Enhancements 	- https://packagecontrol.io/packages/SideBarEnhancements
+- Color Picker 		- https://packagecontrol.io/packages/ColorPicker
+- Color Highlighter 	- https://packagecontrol.io/packages/Color%20Highlighter
+
+14) Emmet - http://emmet.io/
+
+- dramatically improves and extends sublime's built in text snippet
+- craziest fearture: use CSS selectors to create new HTML markup
+- see Emmet's manual for a complete list of features
+
+14a) CSS Selector -> HTML
+
+i) type: ul#nav>li*4
+ii) hit the 'TAB' key
+iii) expands to:
+ 
+<ul id="nav">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
+
+15) Sidebar Enhancements
+
+- enhances Sublime text's default sidebar
+- basically adds more commands to the sidebar
+
+16) Color Picker + Color Highlighter
+
+- makes working with colors in CSS much easier
+- CMD + SHIFT + C -> opens the system color picker and allows you to quickly pick a color
+- will higilight a color hex code in the editor to give you an idea of what the color is
+
+17) Outro
+
+- explore the editor
+- explore more Plugins from Package Control website
+- see how sublime feels with code you have already written
