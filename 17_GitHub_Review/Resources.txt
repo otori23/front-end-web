@@ -1,0 +1,28 @@
+
+1) Udacity Github Blog Post
+
+- http://blog.udacity.com/2015/06/become-github-pro.html
+
+2) Portfolio & Showcasing Your Work
+
+- http://career.udacity.com/resource-center/hiring_process_portfolio.html
+
+3) GitHub Profile Rubric
+
+- https://docs.google.com/document/d/15B7SBSQ1iKqUjo1UpHHVtqonCzxZwqBaV2lC4mN5N1U/pub?embedded=true
+
+4) GitHub Profile Checklist
+
+- https://docs.google.com/document/d/1a9AKnNyqfGgdQV5ohPCN5H9ntnEUhMptWMwVBWURCN0/pub?embedded=true
+
+5) Udacity Git Commit Message Style Guide
+
+- http://udacity.github.io/git-styleguide/
+
+6) GitHub's Markdown Guide
+
+- https://help.github.com/articles/getting-started-with-writing-and-formatting-on-github/
+
+7) Contributing to Open Source on GitHub
+
+- https://guides.github.com/activities/contributing-to-open-source/

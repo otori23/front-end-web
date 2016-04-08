@@ -1,0 +1,193 @@
+﻿
+
+1) Most Commonly Used Resume Sections That They Have Identified
+
+a) Heading
+
+Name
+Email
+Phone
+Links to any Online Profile: linkedin, github, twitter, stack overflow etc
+
+b) Summary
+
+c) Technical Skills
+
+- include technical competency and level of expertise
+- use keywords that recruiters are looking for
+- give a succinct summary of what you know how to do
+
+d) Project Experience
+
+- concrete examples that illustrate your skills
+- link to: github, the app store, google play, or the web
+- potential employers can see what you have done
+
+e) Work Experience
+
+- work history (relvant to job you are pursuing)
+- include details, acomplishements, and achievements
+
+f) Education
+
+- list any formal degrees, certificates, and relevant courses
+- e.g. nanodegree credentials
+
+g) Honors and Activities
+
+- Awards, Publications, Presentations, and Interests are extra browine points
+
+2) Changing Careers ?
+
+- include a summary statement, projects, internships, volunteer exp, etc that are relevant
+
+3) Bulleted Item For Each Section Heading
+
+3a) what makes a good bullet point statement?
+
+- starts with an action verb (e.g. Directed, Created, Organized)
+- aviod using pronouns and small words (I built the toaster -> Built toaster)
+- keeps statements concise, consistent, and direct
+- keep length of statement to between 1 - 1.5 lines
+- show concrete and numerical evidence to show the impact of your work
+- noting achievements and accomplishments make your resume shine
+
+3b) Example From Video
+
+Work Experience
+----------------------------
+
+Korda/Nemeth Engineering - Mechanical Engineer	 	Columbus, OH | January 2014 - January 2015
+
+- Designed HVAC and plumbing systems for education and health care facilities.
+- Collaborated with architects and engineers to ensure issues were resloved before construction phase.
+- Conistently submitted drawings on time while working on multiple projects with difficult schedules.
+
+Honda R&D Americas, Inc. - Design Engineer		Raymond, OH | June 2012 - January 2014
+
+- Design rear bumper beam, front bumper, and grille on future Honda vehicle.
+- Worked in multi-functional team comprised of engineers, stylists, buyers, and suppliers.
+- Matured part designs and issued drawings under tight deadlines.
+
+3c) Bullet Point Statement Quiz: What are pros/cons of each statement
+
+- Designed HVAC and plumbing systems for education adn health care facilities.
+- Optimized critical rendering path of existing website to achieve PageSpeed Insights score above 90.
+- Eliminated inefficiencies in the website's scroll animation. Site now scrolls at 60 frames per second.
+
+3d) Answer
+
+Pros:
+
+Start with an action verb.
+Use concrete details.
+Are appropriate length.
+Use numerical, concrete details to quantify their achievements.
+Use keywords related to profession
+
+Cons:
+
+Each could integrate specific numerical details or achievement.
+Each statement could indicate the impact of the achievement.
+
+3e) Summary of Bullet Point Requirements
+
+- Start with an action verb
+- Length: Statement should be 1-1.5 lines maximum
+- Keywords: Integrate relevant keywords
+- Concrete details: include concrete numerical details that quantify your contributions
+
+4) How to Write About Projects, Technologies, and Skills
+
+Now that you’ve started to flesh-out the professional experience section of your master resume, you can start to detail your projects, technologies and skills. Similar to the previous section, comprise these sections with keywords and concrete evidence.
+
+Your Projects section is a great place to show actionable evidence of work you’ve completed. Here, include:
+
+- A heading that includes the title of your project.
+- A functioning hyperlink to the project.
+- Bullet pointed description of the project.
+- Note the technologies and any skills you used.
+- Keep the description concise.
+
+The Technologies and Skills section is your chance to be very clear. Note any varying levels of expertise. Additionally, if you have a skills across several areas - feel free to categorize these under sub-headings.
+
+5) Detailing Your Education
+
+- can include a variety of forms beyond the traditional college experience
+- be sure to present this an an organized way on your targeted resume
+- organize by category: University Degrees, Certificates, Courses, WorkShops, etc
+- don't need to include the specific years you graduated
+- don't neet to include your GPA; though if you have a great GPA, you can (> 3.5)
+
+5a) Things to Include in Education Section
+
+- Formal college degrees
+- Certificates
+- Nanodegree credentials
+- Individual Courses
+- Professional Development
+- Workshops
+- Online Courses
+
+(MIT, Stanford, Coursera, Edx, Udacity, etc)
+
+6) Tips for Special Situations
+
+- making a career change
+- new to a field
+- want to make your personality shine
+
+- include a summary statment below your heading section
+
+7) What is a Summary Statement?
+
+- 2-3 sentence statement that serves as your elevator pitch
+- helps frame your resume
+- speaks to your passion strenghts and current career
+- add this section to your master resume
+- later, can refine it for your targeted resume
+
+7a) Example 
+
+Summary
+------------
+
+Web development specialist with experience in start-ups as well as established operations leveraging expertise in reponsive design, redering, and problem solving to provide exceptional user support and user expereince. Exprience includes managing and designing high profile websites.
+
+7b) New to the Field? Have limited Experience?
+
+- inlude all projects and course work you have completed at udacity
+- this provides evidence of your work
+
+8) Selecting What to Put in Your Targeted Resume
+
+Use the list of themes and keywords you created in the last activity as a compass to navigate how to construct your targeted resume.
+
+As we mentioned in the introduction, your resume should NOT contain everything you’ve ever done. Instead, it should be a highly selective and relevant snapshot of your experience.
+
+Start copying and pasting relevant parts of your resume onto document into the recommended sections. Don’t worry about section order just yet - as we will detail how to best organize your resume shortly.
+
+Here, focus on getting all of the information you want to include onto one page. Feel free to edit, trim, adjust margins, and customize the language to mirror your target job.
+
+9) How to Structure Your Targeted Resume
+
+- structure your professional narrative to tell an interesting story
+- do this by strategically ordering the sections of your resume
+- order the sections from your master resume in a stragetic and meaningful way
+- the order of your resume section provides logical evidence of your experience
+
+
+9a) The Way Your Resume Looks Depends On ...
+
+- just starting a career
+- making a career change
+- many year of experience within a single industry
+- etc
+
+10) Visual Style Format Your Resume
+
+- communicates your attention to detail
+- can be an opportunity to show your personality
+
+- make sure your name is the largest text on the page
+- have distincts styles for: your name, section titles, section sub-titles, dates, location
