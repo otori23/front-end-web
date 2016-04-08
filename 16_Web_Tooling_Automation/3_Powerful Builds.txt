@@ -1,0 +1,238 @@
+0a) Further Reading
+
+- Gulp vs. Grunt: http://jaysoo.ca/2014/01/27/gruntjs-vs-gulpjs/
+- Sass: http://sass-lang.com/
+
+0b) Gulp Plugins
+
+- are npm modules
+- use npm install to get a gulp plugin
+- this updates the projects 'node_modules' folder
+- then require() in gulpfile.js to include the the plugin as a dependency for gulp file
+-----------------------------------------------
+
+1) Automated Tooling
+
+- trend in web development
+- give tool a task, and it does it automatically
+
+2) Overview of Build Tools
+ 
+- web development specific automated tools only became popular a few years ago
+
+2a) Bash Shell Script (*.sh)
+
+- most simple build tool
+- a series of terminal commands of functions that can be executed from the command line
+- however, some tasks are tricky to perform using just the shell: 
+-- working with dependency graphs
+-- only updating files that have changed
+
+2b) Make
+
+- original build system that aimed to automate the build process
+
+2c) Ant, Maven, Gradle
+
+- build systems that came after make
+- all popular in the Java world
+- all have declerative tasks
+- Ant and Maven - use XML to drive them
+- Gradle uses its own domain specific language (DSL)
+
+2d) XML a No No
+
+- apparently web developers don't like xml
+- thus the emergence of web specific build tools
+- they use javascript, which is a language that web developers are already familiar with
+
+3) Gulp and Grunt
+
+- most popular node.js based build tools
+- the concept of what work needs to be done is same for both systems
+- same plugins typically exists for both systems
+
+3a) The Core Desirable Properties of a Build Tool
+
+- Fast: 		build is not more than a few seconds; don't want to interrupt your development 					flow by waiting on the build tool to do its thing
+- Community Driven: 	create plugins for extension; they answer questions on stackoverflow
+- Modular & Extensible: can customize it as you see fit
+- Feature-rich: 	should solve many common problems right out of the box
+
+3b) Grunt
+
+- has a strong community
+- has a healthy plugin ecosystem
+
+3c) Gulp - 2 Significant Advantages over Grunt
+
+- built for speed, and can execute tasks in parallel
+- converts open files into super fast streams internally
+- this is the new popular kid on the block
+- this class uses Glup
+
+3d) Gulp Task - Code over Configuration
+
+- just use normal javascript to specify tasks
+- use js to extend or modify tasks that don;t work for you
+
+4) Getting Started with Gulp
+
+- main difference between gulp and grunt is gulp is driven by code, grunt is driven by configuration
+
+4a) Grunt
+
+- uses a javascript config object to configure certain tasks (e.g. concat, uglify, etc)
+- the config object is used to modify the plugin's behaviour to some extent, but...
+- to change or extend the plugins you would have to modify the plugins themselves
+- executes tasks in sequence, one after another
+
+4b) Gulp
+
+- uses vanilla javascript to build tasks
+- user has more control over the behviour of tasks use Gulps piping feature
+- by default executes tasks in parallel
+- converts source files to streams and applies build transforms to the stream; minimizing file I/O
+
+- parallel task execution + streams => Gulp is faster than Grunt
+
+5) gulpfile.js
+
+- every gulp project starts with a Gulp file (gulpfile.js)
+- this file sits in the root directory of your project
+- it defines all the tasks you should execute when running gulp
+
+5a) Hello World Gulp File
+
+- most basic gulp file imaginable
+
+var gulp = require('gulp'); // require dependecies
+
+gulp.task('default', function() {
+  // Do useful stuff here.
+  console.log("hello world!");
+});
+
+6) Streams in Gulp (streams.jpeg)
+
+- http://jaysoo.ca/2014/01/27/gruntjs-vs-gulpjs/
+
+- Grunt uses the file system to store intermediate build results
+- as a result every Grunt task incurs a penalty for file I/O and file system operations
+
+- Gulp on the other hand converts the input file(s) into and in-memory stream
+- file system operations are only done at the beginning and end of the task
+- this gives gulp a great speed increase in many situations
+
+7) Why CSS Sucks
+
+- vendor specific prefixes
+- obscure syntax
+- inability to nest styles
+- inability to use variables
+
+- working with CSS is just and unfortunate part of being a web developer
+
+8) Making CSS Suck Less - Sass(http://sass-lang.com/)
+
+- working with CSS does not have to be unpleasant
+- write you CSS in a more abstract form e.g. use the SASS language
+- Sass eleminates most of the CSS annoyances
+- then your sass can be 'complied' into css
+- sass has a gulp plugin
+
+9) Autoprefixer
+
+- automatically prefixes css properties for all browsers
+- has a gulp plugin
+
+10) npm install gulp-sass
+
+- install gulp plugin
+
+11) Gulp Task for 'Compiling' Sass -> CSS
+
+// require dependecies
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+
+gulp.task('default', function() {
+  console.log("hello world!");
+});
+
+gulp.task('styles', function() {
+  gulp.src('sass/**/*.scss')	// input: sass file in the ~/sass/ dir and subfolders at any level
+      .pipe(sass())		// pipe input files into the sass plugin to do the compilation
+      .pipe(gulp.dest('./css'));// store compiled output to a specified destination folder
+});
+
+11a) gulp styles
+
+- command line to run the 'styles' task
+- invoke in your project's root (i.e. the location of gulpfile.js)  
+
+12) Build Errors
+
+- by default any error at any step of a task will terminate the entire task
+- sometimes want the error logged and the task to continue to completion
+- then examine the error log later
+
+12) Sass Errors
+
+- sass plugins emit events on error
+- so can explicitly listen for and log error events in your gulp file
+ 
+12a) sass().on('error', sass.logError)
+
+- listen for and log error events on the sass object
+- gulp will log the sass errors and go on as usual
+
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+
+gulp.task('default', function() {
+  console.log("hello world!");
+});
+
+gulp.task('styles', function() {
+  gulp.src('sass/**/*.scss')
+      .pipe(sass().on('error', sass.logError))		
+      .pipe(gulp.dest('./css'));
+});
+
+13) Gulp Autoprefixer -> npm install gulp-autoprefixer
+
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+
+gulp.task('default', function() {
+  console.log("hello world!");
+});
+
+gulp.task('styles', function() {
+  gulp.src('sass/**/*.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(autoprefixer({
+        browsers: ['last 2 versions']
+      }))		
+      .pipe(gulp.dest('./css'));
+});
+
+13a) gulp-autoprefixer configuration object
+
+- use to tell the plugin what versions of browser you want prefixes generated for
+
+14) Watching in Gulp
+
+- basically trigger gulp tasks on file changes in the file system
+- i.e. run 'styles' task when you save a new version of your sass files
+- makes your workflow more efficient
+- i.e. no need to keep switching between editor, browser, and shell
+
+14a) Use 'default' task to watch for changes in SCSS Files
+
+gulp.task('default', function() {
+  gulp.watch('sass/**/*.scss', ['styles']);
+));
+
