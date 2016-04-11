@@ -1,0 +1,4 @@
+CSS Preprocessing 		- ['styles']
+Watching For File Changes	- ['watch']
+Linting				- ['lint']
+Tests				- ['test']

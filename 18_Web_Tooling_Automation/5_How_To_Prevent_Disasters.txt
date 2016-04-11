@@ -1,0 +1,263 @@
+
+1) Goal
+
+- learn how to prevent cross-browser issues in your css
+- learn how to catch javascript errors before they happen
+- and more ...
+
+2) Rely on Tools to Prevent Bad Things
+
+- use build and editing tools to improve the quality of your coding
+- List of tools to follow
+
+3) Linting 
+
+- a way to automatically check you javascript code for errors
+- can be done at various stages during development
+- no right answer here, just do what works for you
+
+3a) Different Times you Can Lint
+
+- via your editor
+- via your build process
+- via pre-commit hook in version control
+
+3b) Types of Linting: Code Style vs. Syntax
+
+- normally when people refer to linting they mean: syntax or structural linting
+
+3c) Sytax Linting
+
+- syntax rules check for javascript anti-patters such as:
+- unreacable code, or forgetting to do a strict comparison against null
+
+3d) Code Style Linting
+
+- e.g. check for variable names that are not properly camelCased
+- e.g. check for a particular way of placing braces on a function
+
+3e) Popular JavaScript Linters
+
+- JSHint
+- JSCS
+- ESLint
+
+3f) Comparison of JavaScript linting tools
+
+- http://www.sitepoint.com/comparison-javascript-linting-tools/
+
+3g) ESLint - http://eslint.org/
+
+- supports modern ES6 code
+- can be extended
+- it outputs are really easy to understand
+
+4) Setting Up ESLint in Your Development Environment
+
+- to make linter most effective, you want to have it run at the earliest possible time
+- in our case, this is after you press a key in your editor to make a change
+
+4a) npm install -g eslint
+
+- install eslint globally in node
+
+5) Integrating ESLint into the Sublime Text Editor
+
+5a) Get Two Different Sublime Plugins
+
+- SublimeLinter + SublimeLinter-contrib-eslint
+
+5b) SublimeLinter - http://www.sublimelinter.com/en/latest/
+
+- a linting framework for the sublime text 3 system
+- supports many other linters besides eslint 
+- not tied to any one linter language; can add extensions for language of choice
+- so, if you want your HTML, CSS, PHP, etc linted, there is a plugin for that
+- these extensions are in the form: "SublimeLinter-contrib-<<plugin-name>>"
+
+5c) SublimeLinter-contrib-eslint
+
+- this linter plugin for SublimeLinter provides an interace to ESLint (for sublime)
+- the wrapper code that connects ESLint to SublimeLinter (and this sublime)
+
+6) Configuring ESLint - $eslint --init
+
+- by default eslint does nothing without a configuration
+- want to create a configuration at the root of your project folder
+
+6a) eslint --init
+
+- use command line to generate a basic configuration
+- this command will open an interactive prompt that will guide you throuhg create a config file
+
+6b) .eslintrc.json
+
+- eslint's confirguartion (i.e. run commands) file
+- the "extends" property is instructing eslint to run with its recommended settings, and overide these settings only when you add something new
+- this is a useful starting point
+
+6c) Localized Configruation - /*eslint-env node*/
+
+- if you look at your gulp file your will notice red blocks around the calls to require()
+- this is because eslint thinks your code runs in the browser and there are no require() calls in the browser
+- so, make eslint turn off node.js warning ONLY when in the gulp file
+
+7) Setting up ESLint With Node
+
+- a collaborator might not have a linter configured
+- so, setting up linting as part of the build process is a good way to ensure lint access for all members of a project
+- the build system will the flag liniting errors
+
+7a) gulp-eslint - https://www.npmjs.com/package/gulp-eslint
+
+npm install gulp-eslint --save-dev
+
+- eslint's gulp plugin
+
+7b) Add Lint Task In Gulpfile
+
+- example from site is sufficient
+
+8) ESLint Pre-Commit Hooks
+
+- another way of forcing eslint onto your project collaborators
+- everyone can go crazy on their own systems, but when they commit to the shared repo,
+- the hook script will run to perform linting
+- if linting fails the commit will not go through
+
+8a) https://www.udacity.com/course/how-to-use-git-and-github--ud775
+
+- see the git/github course for more details on pre-commit hooks
+
+9) Unit Testing in Gulp
+
+- use unit tests to ensure your code works as expected
+- so, the above steps protect you from style and syntax errors
+- but, still no guarantee that your codes runs as expected
+
+9a ) Unit Test
+
+- javascript functions that programatically test an api or aspect of a program
+- like linting, unit test exists to prevent mistakes
+- what you want to do is set up your tests to run automatically after bulid
+- a little tricky because the test for your front-end-code actually needs to run in a browser
+- so, for automation you need programitic access to a browser
+
+9b) The Headless Browser
+
+- browser without a gui
+- can run from command line; i.e. it offers the programmatic access we desire
+- an example of a headless browser is phantomjs
+- can use phantomjs + jasmine + node to run your unit tests in a real browser environment
+
+9c) PhantomJS(http://phantomjs.org/) 
+
+- PhantomJS is a headless WebKit scriptable with a JavaScript API
+- it has fast and native support for various web standards: ...
+- DOM handling, CSS selector, JSON, Canvas, and SVG
+
+9d) PhantomJS Gulp Plugin
+
+- https://www.npmjs.com/package/gulp-jasmine-phantom
+
+9e) npm install --save-dev gulp-jasmine-phantom
+
+- installs the gulp plugin that runs Jasmine tests with either PhantomJS or minijasminenode2
+
+10) Next Steps for Testing
+
+- you can add the 'tests' task to the 'default' task and javascript watcher
+- however, the problem with this is that the tests can take a long time to run
+- running complex unit tests especially in a headless browser can be really slow
+- so adding tests to our live-editing workflow will kill programmer efficiency
+
+11) Continous Integration
+
+- automated process of getting changes into existing codebases then building and running tests
+- the goal is not to create a backlog when you go to deploy
+
+- idea that you are always making sure that your code can be integrated in the remote repo
+- a remote CI machine provides a great place for your time intensive tasks
+- e.g. your gulp test task (i.e your unit tests)
+
+11a) Jenkins
+
+- an extensible automation server
+- can be used as a simple CI server ...
+- or turned into the continuous delivery hub for any project
+
+11b) CI on Jenkins
+
+- Jenkins server watches for commits in your repository, then ...
+- triggers any terminal commands you feed it
+- so you can take the Gulp test task and hook it up in the cloud (the Jenkins server)
+- it means that the test suite will run after every commit
+- this tests will run on a completey different computer
+- this allows you to keep coding without interruption (increased programmer efficiency)
+- if a test fails, you get an email; then you can fix it in your next commit
+
+11c) Continuous Integration in Udacity Intro to DevOps course
+
+- https://www.udacity.com/course/intro-to-devops--ud611
+- https://www.udacity.com/course/viewer#!/c-ud611/l-4225318865/m-4458598949
+
+12) Outro
+
+- the linting and test tasks (CI) should give us some comfort that our code works as expected
+- now we can iterate on the code base without worrying to much
+- linting and CI will help you find errors in your code when they are easily fixable
+
+13) Sample Gulp File
+
+/*eslint-env node*/
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var browserSync = require('browser-sync').create();
+var eslint = require('gulp-eslint');
+var jasmine = require('gulp-jasmine-phantom');
+
+gulp.task('default', ['styles', 'lint'], function() {
+  gulp.watch('sass/**/*.scss', ['styles']);
+  gulp.watch('js/**/*.js', ['lint']);
+  browserSync.init({
+    server: './'
+  });
+});
+
+gulp.task('styles', function() {
+  gulp.src('sass/**/*.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(autoprefixer({
+        browsers: ['last 2 versions']
+      }))		
+      .pipe(gulp.dest('./css'));
+});
+
+gulp.task('lint', function () {
+    // ESLint ignores files with "node_modules" paths. 
+    // So, it's best to have gulp ignore the directory as well. 
+    // Also, Be sure to return the stream from the task; 
+    // Otherwise, the task may end before the stream has finished.
+    return gulp.src(['**/*.js','!node_modules/**'])
+
+        // eslint() attaches the lint output to the "eslint" property 
+        // of the file object so it can be used by other modules. 
+        .pipe(eslint())
+
+        // eslint.format() outputs the lint results to the console. 
+        // Alternatively use eslint.formatEach() (see Docs). 
+        .pipe(eslint.format())
+
+        // To have the process exit with an error code (1) on 
+        // lint error, return the stream and pipe to failAfterError last. 
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('tests', function () {
+  gulp.src('tests/spec/extraSpec.js') // finds correct tests file(s) to run
+      .pipe(jasmine({		      // tell jasmine to use phantomjs
+	integration: true,	      // true means use phantonjs; false tests nodejs code
+	vendor: 'js/**/*js'	      // our source files; used to construct html Spec runner
+      }))
+});

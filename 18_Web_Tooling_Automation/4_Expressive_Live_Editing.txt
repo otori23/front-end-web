@@ -1,0 +1,80 @@
+
+1) Your Normal Workflow
+
+- continously switching between editor -> shell -> browser
+
+- in editor: make a change to your code and save
+- in shell: rebulid if you need to
+- in browser: reload the page
+
+- repeat
+
+- doing these micro-context switching thousands of times a day can become tedious
+- live editing solve this problem
+
+2) Live Editing
+
+- have a watcher in your editor or bulid process
+- these are connected to a similar watcher in your browser
+- when you save a file the watchers communicate and and page is reloaded in teh browser
+- this happens on the fly without manual intervention
+
+2a) Results of Live Editing
+
+- less context switching
+- you can have your editor and browser window side-by-side as you code
+- then you see your browse automatically update when you save files
+
+3) Can Setup Live Editing in Three Different Ways
+
+- Every keystroke in Sublime 	(editor)
+- Every save via Gulp		(build system)
+- All in the browser		(skip editor and build system)
+
+3a) Preference
+
+- the build tool version is recommended
+
+4) Live Editing Using Browser
+
+4a) Chrome Dev Tools, Workspaces - https://developer.chrome.com/devtools/docs/workspaces
+
+- allows you to ditch editor all together
+- make changes to css right in styles panel and have them persist
+- also persists changes in your javascript
+- check out their website to see how to set it up
+
+5) Live Editing Using Editor
+
+- flaw with this method is that the Editor is not aware of you build process
+
+5a) Brackets - http://brackets.io/
+
+- an editor that comes with live editing built in
+- can press a button that will launch an instance of a browser with your updates already live
+
+5b) Sublime Text - Takana Plugin
+
+- does not have live editing built in
+- but the Takana plugin gets it close, but not quite all the way there
+
+5c) Takana Plugin - http://usetakana.com/
+
+- PacakgeControl: https://packagecontrol.io/packages/Takana 
+- supports css and scss live editing 
+- does not support html editing
+
+6) Live Editing Using Build Tool - Browser Sync
+
+- allows for live editing that is assisted by our build tool
+- which is an improvement over the other methods
+
+6a) Browser Sync - www.browsersync.io
+
+npm install -g browser-sync
+
+- free and open source
+- compatible with most node-based build tools (e.g. gulp)
+- use in conjuction with the gulp watch task
+- browser sync work by creating/proxying a local web server
+- this server serves your files and tracks them for changes
