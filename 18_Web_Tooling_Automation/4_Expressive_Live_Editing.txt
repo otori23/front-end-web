@@ -78,3 +78,18 @@ npm install -g browser-sync
 - use in conjuction with the gulp watch task
 - browser sync work by creating/proxying a local web server
 - this server serves your files and tracks them for changes
+
+/*eslint-env node*/
+var gulp = require('gulp');
+var browserSync = require('browser-sync').create();
+
+gulp.task('default', function() {
+	// place code for your default task here
+  	browserSync.init({
+  		server: {
+    		baseDir: "./",
+    		index: "index.html"
+		}
+ 	});
+ 	browserSync.stream();
+});
