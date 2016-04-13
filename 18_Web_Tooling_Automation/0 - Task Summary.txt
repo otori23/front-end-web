@@ -1,4 +1,33 @@
+1) Development Mode Tasks
+
 CSS Preprocessing 		- ['styles']
 Watching For File Changes	- ['watch']
 Linting				- ['lint']
 Tests				- ['test']
+
+1a) 'default' task
+
+- implements development build task workflow:
+
+i)  	run the dependent tasks
+ii) 	start watching the src files
+iii)  	when src files changes run task to generate content for prodction
+iv)	when generated content changes, browserSync will reload content in browser
+
+gulp.task('default', ['copy-html', 'copy-images', 'styles', 'lint'], function() {
+  gulp.watch('sass/**/*.scss', ['styles']);
+  gulp.watch('js/**/*.js', ['lint']);
+  gulp.watch('index.html', ['copy-html']);
+  //no need to watch images, they rarely change
+
+  browserSync.init({
+    server: './dist'
+  });
+});
+
+
+2) Production Mode Tasks
+
+Copy				- ['copy-html', 'copy-images']
+Concatenation			- ['styles', 'scripts', 'scripts-dist']
+Minification			- ['scripts-dist']

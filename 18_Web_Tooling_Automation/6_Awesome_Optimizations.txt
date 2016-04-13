@@ -1,0 +1,406 @@
+
+1) Intro
+
+- so far,...
+- setup great editing environments (livereload + linting)
+- setup safety checks (unit tests)
+- we have optimized the development work flow, but still need more
+- we need to optimize the production versions of our application
+
+1a) what do we need to do after finishing coding and planning a release?
+
+- minifying + concatenating source files
+- optimizing images
+- etc
+
+1b) Impossible to Optimize by Hand
+
+- hundreds of different devices, browsers, and screen combinations that consume your site
+- not feasible to optimize every aspect of your site by hand
+- build process can include automation to do these optimizations
+
+1c) The Automated Build - Production Mode Tasks
+
+- takes your raw source and optimize for production environment
+- don't run these taks all the time as they will slow down your iterative build time
+- makes live editing and linting less powerful
+
+2) Development and Production Modes
+
+- want to split your gulp tasks between development and production modes
+
+2a) Development Tasks
+
+- tasks you always need
+- tasks that only make sense during coding
+- e.g. live editing, css preprocessing
+
+2b) Auto-Generated Production Files (Generated Assests)
+
+- so far, the only example of this has been transforming scss -> css
+- but more file types to come
+
+2c) Testing Production Versions of Your App
+
+- production tasks transform source files
+- so, sometimes test the production versions of the app
+
+3) Structure to Separated Source Files and Generated Assets
+
+- will create a 'dist/' folder to hold generate content
+- this separates the source files from the generated content
+
+3a) App Folder Structure
+
+- the gulp tasks will place all generated content into the 'dist/' folder
+
+app/
+  dist/
+    js/
+    css/
+    index.html
+  js/
+  img/
+  sass/
+  tests/
+  node_modules/
+  gulpfile.js
+  index.html
+
+3b) 'Copy' Gulp Tasks
+
+- will use copy tasks to move soruce files into 'dist' folder
+
+4) Automatically Reload The Index.Html
+
+- code that makes browsesync listen for changes to dist/index.html
+
+gulp.watch('./dist/index.html')
+    .on('change', browserSync.reload);
+
+5) Next Set of Optimizations - Concatenation and Minification
+
+- allows our page to load quicker
+
+6) Concatenation
+
+- glues a bunch of files together to create just one file
+
+7) CSS - Use SASS
+
+- can use a separate gulp task to perform css minification
+- however, in this lesson we will use SASS to achieve the css concatenation + minification
+
+7a) CSS Concatenation Using SASS - "@import"
+
+- then use '@import' directive in the sass file to include other sass file to the base file
+- the sass preprocessor will inline these imported files and produce one big css file 
+- include this css file in your html
+
+- could use gulp-concat if you really wanted instead of sass
+
+7b) CSS Minification Using SASS 
+
+- add an option to the sass pipeline in gulp
+
+.pipe(sass({outputStyle: 'compressed'}))
+
+8) JavaScript
+
+8a) JS Concatenation: Solve 2 Problems at Once
+
+- reduces # of http requests need to load your page in production (big deal for mobile)
+- most basic variant of dependency management; no need to use tons of script block in html; can just use one script block
+
+8b) JS Concatenation Using 'gulp-concat' Plugin
+
+- see the 'scripts' (development mode task) and 'scripts-dist' (production mode task) 
+- after running one of these tasks, replace all the script blocks in you html with only one that references 'all.js'
+
+8c) JS Minification
+
+- shrinks file size of JS
+
+8d) JS Minification Using 'gulp-uglify' Plugin
+
+- uglify is most popular minifier
+- does some heavy but safe optimization
+- this is time-intensive so you don't want to do it while live-editing your code
+- only perform in production mode tasks (e.g. scripts-dist)
+
+9) Setting Up a Production Task - The 'dist' task
+
+- see 'dist' task below
+
+10) The Difference Between Minification and GZipping
+
+https://css-tricks.com/the-difference-between-minification-and-gzipping/
+
+- use minification in combinations with gzip
+- gzip compresses the file before it gets sent out to the browser
+- the browser will expand the compressed file
+- this all happens in the background without the user knowing about it
+- just need to enable this behaviour on the server side
+
+11) Writing Future Proof JavaScript
+
+- similar to how we use sass instead of css
+- write your js in a higher level language or latest ECMAScript specification (e.g. ES6)
+- currently the browser does not support many of the features of ES6
+- so transpile ES6 into a language that the browser supports
+
+12) Transpiler
+
+- take one programming language and transform it into another language
+- e.g. ES6 -> Vanilla JS
+- sometimes they stay very close ECMAScript syntax adding just a few extra features
+- other times, they are full implementations of a totally differnet language
+
+12a) Babel (http://babeljs.io/)
+
+- a transpiler that sticks with ECMAScript syntax
+- popular, feature rich, and very well supported by the community
+- the compiler for writing next generation JavaScript
+- form their site: 
+12b) Some Babel (ES6) Features
+
+- arrow functions 
+- generators
+- classes
+- etc
+
+12c) Optionlly Add Transpiling to Build Process
+
+npm install gulp-babel
+
+var babel = require('gulp-babel');
+
+gulp.task('scripts', function() {
+  gulp.src('js/**/*.js')
+      .pipe(babel())
+      .pipe(concact('all.js'))
+      .pipe(gulp.dest('dist/js'));
+});
+
+12d) Why Transpile?
+
+- standardization takes a long time
+- browser vendors will take their time implementing ES6 (this may never even happen)
+- transpilers give you the ability to use tomorrows features today withour ruinning UX
+- you put javascript in and get javascript out
+
+13) Source Maps
+
+https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit
+
+- after all the optimizations, none of your code is particularly readable anymore
+- source maps are files that associate line numbers from the processed file to the original
+- now, the browser can lookup the current line number in the sourcemap... 
+- and open the right source file at the correct line when debugging
+- chrome devTools support source maps both for CSS and JavaScript
+
+13a) Source Map Plugin and Setup
+
+- install the gulp-sourcemaps plugin
+- require the gulp-sourcemaps plugin
+- in relevant task, add a pipe to sourcemaps.init() after you get the source but before you send the source files through any pipes that transform them materially
+- after all plugins and pipes have been applied but before you save to the destination, pipe through sourcemaps.write() with an optional location parameter if you don't want the source maps to be inlined
+
+var sourcemaps = require('gulp-sourcemaps');
+
+gulp.task('scripts-dist', function() { 
+  gulp.src('js/*/.js')
+      .pipe(sourcemaps.init()) 
+      .pipe(concat('all.js')) 
+      .pipe(uglify()) 
+      .pipe(sourcemaps.write()) 
+      .pipe(gulp.dest('dist/js')); 
+});
+
+13b) Plugins Used With the Source Map Plugin Must Support the Behaviour
+
+https://github.com/floridoo/gulp-sourcemaps/wiki/Plugins-with-gulp-sourcemaps-support
+
+- check website for plugins that support gulp-sourcemaps
+- all of the pipes between init and write must have support
+- in developer console, the output of app should automically link errors in the generated code to their line numbers in the original source
+
+13c) Source map Support for other languages
+
+http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/
+
+- source maps also support some languages/extensions that transpile to JavaScript 
+- e.g. Typescript, CoffeeScript and ES6 / JSX
+
+14) Image Optimization
+
+- makes websites huge
+- on average 63% of a websites bytes are images
+
+15) Udacity Love Optimization: Check Out the Udacity Courses
+
+Browser Rendering Optimization
+https://www.udacity.com/course/browser-rendering-optimization--ud860
+
+Web Performance Optimization
+https://www.udacity.com/course/website-performance-optimization--ud884
+
+Responsive Web Design
+https://www.udacity.com/course/responsive-web-design-fundamentals--ud893
+
+Responsive Images
+https://www.udacity.com/course/responsive-images--ud882
+
+16) Image Compression
+
+- goal is to reduce image file size
+- can use lossy or lossless compression
+- lossless is like reducing file size without throwing away any information
+
+16a) Imagemin (gulp-imagemin is plugin)
+
+- gulp-imagemin can losslessly compress JPEGs, GIFS, PNGs and SVGs out of the box
+- without any configuration this will take all of your images and only any safe optimizations
+- can use some configuration options to control the image optimization process
+- e.g. generting progressive images
+
+16b) Lossy Compression
+
+- produce much smaller file sizes
+- however, can only recreate approximation of original image
+- a few lossy optimizations that are truly smart, and PNG quantization is one of them
+
+16c) PNG Quantization (pngquant)
+
+- benefits from the fact that there are colors that our vision and brain perceives as very similar, even though they’re technically completely different
+- the quantization algorithm aims to understand which colors actually matter and remaps them to new, optimized colors
+- takes images with or without alpha transparency ...
+- and converts them to 256 or less colored 8-bit pngs
+
+16d) imagemin-pngquant
+
+- png quantization npm module
+- use inconjunction with gulp-imagemin
+- the plugin automatically exits without saving if a certain quality threshold isn’t passed
+
+16e) Sample
+
+gulp.task('default', function() {
+    return gulp.src('src/images/*')
+        .pipe(imagemin({
+            progressive: true,
+            use: [pngquant()]
+        }))
+        .pipe(gulp.dest('dist/images'));
+});
+
+16f) Progressive Rendering
+
+- loads an image in layers where each layer makes the image more detailed
+- it can make a page feel faster than typical rendering line by line
+
+16g) imagemin-pngquant options
+
+- can configure pngquant by adding quality or speed options
+- read more about these on the plugin homepage.
+
+16h) Even better compression options
+
+- smaller images can tolerate more aggressive lossy compression
+- can try other things like converting images to SVG where applicable
+- etc
+
+17) Sample Gulp File
+
+/*eslint-env node*/
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var browserSync = require('browser-sync').create();
+var eslint = require('gulp-eslint');
+var jasmine = require('gulp-jasmine-phantom');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+
+gulp.task('default', ['copy-html', 'copy-images', 'styles', 'lint'], function() {
+  gulp.watch('sass/**/*.scss', ['styles']);
+  gulp.watch('js/**/*.js', ['lint']);
+  gulp.watch('index.html', ['copy-html']);
+  //no need to watch images, they rarely change
+  gulp.watch('./dist/index.html').on('change', browserSync.reload);
+
+  browserSync.init({
+    server: './dist'
+  });
+});
+
+gulp.task('dist', [
+	  	'copy-html'
+          	'copy-images',
+	  	'styles',
+          	'lint',
+          	'scripts-dist'
+]);
+          
+gulp.task('scripts', function() {
+  gulp.src('js/**/*.js')
+      .pipe(concact('all.js'))
+      .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('scripts-dist', function() {
+  gulp.src('js/**/*.js')
+      .pipe(concact('all.js'))
+      .pipe(uglify())
+      .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('copy-html', function() {
+  gulp.src('./index.html')
+      .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('copy-images', function() {
+  gulp.src('img/*')
+      .pipe(gulp.dest('dist/img'));
+});
+
+gulp.task('styles', function() {
+  gulp.src('sass/**/*.scss')
+      .pipe(sass({
+	outputStyle: 'compressed'
+      }).on('error', sass.logError))
+      .pipe(autoprefixer({
+        browsers: ['last 2 versions']
+      }))		
+      .pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('lint', function () {
+    // ESLint ignores files with "node_modules" paths. 
+    // So, it's best to have gulp ignore the directory as well. 
+    // Also, Be sure to return the stream from the task; 
+    // Otherwise, the task may end before the stream has finished.
+    return gulp.src(['**/*.js','!node_modules/**'])
+
+        // eslint() attaches the lint output to the "eslint" property 
+        // of the file object so it can be used by other modules. 
+        .pipe(eslint())
+
+        // eslint.format() outputs the lint results to the console. 
+        // Alternatively use eslint.formatEach() (see Docs). 
+        .pipe(eslint.format())
+
+        // To have the process exit with an error code (1) on 
+        // lint error, return the stream and pipe to failAfterError last. 
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('tests', function () {
+  gulp.src('tests/spec/extraSpec.js') // finds correct tests file(s) to run
+      .pipe(jasmine({		      // tell jasmine to use phantomjs
+	integration: true,	      // true means use phantonjs; false tests nodejs code
+	vendor: 'js/**/*js'	      // our source files; used to construct html Spec runner
+      }))
+});
+ 
