@@ -1,0 +1,11 @@
+
+1) Course Intro
+
+- goal is to build better forms; best practices for designing and developing forms
+- the simpler the form, the more conversions you will see
+- according to chrome usage data, can make forms 30% faster by making them ready to autofill
+- faster forms -> happier users -> more conversions
+- want to build forms that work great for all you users: mobile or desktop
+- focus is on mobile since they are more challenging
+- high conversion forms are especially important for ecommerce sites
+
