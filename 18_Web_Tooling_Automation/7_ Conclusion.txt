@@ -1,0 +1,75 @@
+
+1) Intro
+
+- forget every thing you just learned and use a scaffolding tool (yo anyone?)
+- well, not exactly
+- all your projects are going to be pretty much setup thesame way
+- i.e. your folder structure, gulpfile, gulp plugins, etc will be mostly thesame
+- settin up the project and writing thesame gulp file over and over again is inefficient
+- so, you want to automate the automation
+
+2) Scaffolding
+
+- a way of create a starting point structure for your project ...
+- based on a few assumption that you control
+
+3) Most Basic form of Scaffodling
+
+- copy and paste
+- perfectly valid, but not elegant
+- want to use a scafolding tool
+
+4) Scaffolding Tools
+
+- HTML5 BoilerPlate 	: Simplest
+- Web Starter Kit	: Intermediate
+- Yeoman		: Advanced
+
+5) HTML5 Boiler Plate
+
+https://html5boilerplate.com/
+
+- all it does is give you a decent basis for your CSS, HTML, and JavaScript
+- makes sure your HTML is well formed
+- fall backs are provided
+- your css is normalized
+- load jquery and other convienent libraries in the html
+- provides a simple build script to combine and minify files
+
+
+6) Web Starter Kit
+
+https://developers.google.com/web/tools/starter-kit/
+
+- built at Google
+- proposes and opinionated starting point, includes:
+- a build configuration with live editing, etc
+- won't be a good fit for every propject out there
+
+7) Yeoman
+
+http://yeoman.io/
+
+- for advanced user - i.e. you
+- offers the most flexibility
+- use it with generators
+
+7a) $yo webapp
+
+- call yeoman with the webapp generator
+- prompts will ask you for what you need, then it create a project based on your preferences
+- think of it as a much fancier version of copy & paste
+
+8) Outro
+
+- now that you know all the basics of automating your development and build process, ...
+- you are in position to understand and customize the outputs of the scaffolding tools 
+
+9) Summary: What did we accomplish
+
+- setup our editor to code like a pro
+- got familiar with gulp
+- dramatically improved workflow with live editing
+- setup safety nets for easier teamwork and better quality control
+- optimize production version of site which will be shipped to users
+
