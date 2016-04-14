@@ -9,3 +9,25 @@
 - focus is on mobile since they are more challenging
 - high conversion forms are especially important for ecommerce sites
 
+2) Fixing Forms
+
+- need to critic forms to know how to create good ones
+- consolidated inputs
+- nice error messages
+- etc
+
+3) Luke Wroblewski - Product Director, Google
+
+Book: Web Form Design
+
+- explores all the details and little nuances that make forms work online
+- take the time to think about what you are asking people for
+
+4) Why Care About Form
+
+Good Forms
+
+Bad Forms
+
+
+
