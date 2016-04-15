@@ -23,11 +23,118 @@ Book: Web Form Design
 - explores all the details and little nuances that make forms work online
 - take the time to think about what you are asking people for
 
-4) Why Care About Form
+4) Why Care About Form - bad-good-forms.jpeg
+
+- form Properties we care about
 
 Good Forms
 
+- user can quickly finish
+- input fields have place holders that prompt user on entering correct input
+- the fonts on the input fields are visible and big
+- there is a progress bar that indicates what you've done, where are are curently, and what's left
+- 
+
 Bad Forms
 
+- hard to finish (i.e. long)
+- small fonts
+- no progress indicator
 
+5) The Principles of Useful Forms
 
+- remember the goal of your form is to get a conversion
+- that means, a new user signs up or makes a purchase
+- most effective strategy is to make forms quick and easy to finish
+
+5a) Amazon's One Click Ordering
+
+- best example of a super fast (i.e quick and easy to finish) form
+- down side is it only works for some products and only if the user is already signed in
+
+5b) Other Useful Form Properties
+
+useful labels
+pronged validation
+progress indicators
+
+- these build customer confidence
+- thus, conversions go up
+
+6) Pre-Fill Some Input with Information You Aleady HAve about User
+
+- gets user closer to finishing form
+
+6a) Postal Code
+
+- use user exisitng data from last login
+- use gelocation in browser - works even if the user is not logged in 
+
+6b) Date of Birth
+
+6c) Enable Autofill on Form Input
+ 
+7) Death to Dropdowns
+
+- dropdowns make for bad UX - I only see this being a problem on mobile
+- many taps to make a selection
+- basically avoid them; there are better input types
+
+8) HTML5 Inputs Types - Much better Options than Dropdown
+
+tel
+url
+email
+
+- on mobile these types will bring up appropriate input interface
+
+https://developers.google.com/web/fundamentals/design-and-ui/input/?hl=en
+http://www.amazon.com/Stargate-Atlantis-Season-1/dp/B000ICKPOQ
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-type
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
+
+9) When is it approriate to use a dropdown 
+
+- to give users a predefined list of options
+- but can be inconvienient when ther are too many options
+- and they are not flexible as user can only choose one of the options
+
+9a) Datalist = select = text input
+
+- combines helpfulness of predefined list with the flexibility of a text input
+
+9b) Datalist Syntax
+
+- consist of input + datalist + option elements
+- the inputs 'list' attribute must match the datalist "id" attribute
+ 
+<input list="nanodegrees">
+<datalist id="nanodegrees">
+  <option value="Android"></option>
+  <option value="Data Analyst"></option>
+  <option value="Front End"></option>
+  <option value="Full Stack"></option>
+  <option value="Intro to Programming"></option>
+  <option value="iOS"></option>
+  <option value="Tech Entrepreneur"></option>
+</datalist>
+
+10) The Perfect Form
+
+- NO FORMS!!!! Don't use forms if you don't have to
+
+11) Ways to Predict What Your Users Will Type
+
+- i.e if you already have user data, then use this to prefill the form
+
+11a) Location Services
+
+Ido's Geolocation Example
+http://codepen.io/greenido/pen/qOEbGp
+
+HTML5Rocks Geolocation Example
+http://www.html5rocks.com/en/tutorials/geolocation/trip_meter/
+
+12) Next - Other Time Saving Tips
+
+autofill + validation

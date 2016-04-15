@@ -1,0 +1,26 @@
+1) Instructors
+
+Cameron Pittman - Instructor @ Udacity
+Ido Green - Developer Advocate @ Google
+ 
+2) Web Form Design by Luke Wroblewski  (Author)
+
+3) Sample Sites from Class
+
+Auto Complete
+http://greenido.github.io/Product-Site-101/form-cc-example-m3.html
+
+Death to Dropdowns - Airline Picker
+http://udacity.github.io/course-web-forms/lesson1/flightPicker/
+
+4) HTML5 Inputs
+
+http://www.slideshare.net/greenido/web-forms-the-right-way
+https://developers.google.com/web/fundamentals/design-and-ui/input/?hl=en
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-type
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
+
+5) Location Services Examples
+
+Ido 		- http://codepen.io/greenido/pen/qOEbGp
+HTML5Rocks 	-  http://www.html5rocks.com/en/tutorials/geolocation/trip_meter/
