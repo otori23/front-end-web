@@ -1,0 +1,287 @@
+
+1) Goal
+
+- make form inputs even simpler
+- add useful labels and prompts
+- enabling autofill
+- validating inputs
+
+2) The Label Element
+
+- use as container for associate input
+- the assiciated input is nested as a child element
+- prominent and visible 
+- users indication/prompt as to what the associated input element is supposed to be
+
+2a) label 'for' attibute
+
+- specifies which form element a label is bound to
+- use in place of nesting bounded input element as child
+
+2b) nesting vs 'for' attibute
+
+- nesting is preffered
+- makes HTML more semantic
+
+2c) using both nesting and 'for' attribute
+
+- labels
+ need `for` attributes to ensure screen reader support
+- some devices/scenarios may requre the use of the 'for' attrbitue to work properly
+- in this case may need to use both methods of binding an input element to a label
+
+2d) Labels Improve Touch Target Size
+
+- more screen real estate give to input element because the label is part of the input
+- better UX on mobile/touch environments
+
+<!DOCTYPE html>
+
+
+
+<!--
+
+For the first input, add a label by using the `for` attribute.
+
+For the second input, add a label by nesting. Note that BOTH labels
+
+need `for` attributes to ensure screen reader support.
+
+-->
+
+
+
+<html lang="en">
+
+<head>
+    
+  <meta charset="UTF-8">
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  <title>Quiz - Labels</title>
+
+</head>
+
+
+<body>
+    
+  <form>
+        
+    <label for="bill-address">
+            
+      <span>Same as billing address</span>
+        
+    </label>
+        
+    <input type="checkbox" id="bill-address">
+
+        
+    
+    <br>
+
+        
+
+    <label for="tel-number">
+            
+      <span>Telephone Number</span> 
+            
+      <input type="tel" id="tel-number">
+        
+    </label>
+        
+    
+  </form>
+
+</body>
+
+</html>
+
+3) Interview with Luke W.Part 3
+
+- customer wants to buy something; company wants to sell something
+- what sitting between them??? A FORM
+
+- so, all the little details of a form are important
+- what items are included in the form
+- what types of controls are used for input
+- what type of feedback are they getting
+- how are things organized
+- what shows up before and after teh form as part of the broader flow of things
+
+- must consider the whole picture when designing a form
+
+- don't just reproduce a databases fields on the screen with a submit button at the bottom
+
+4) Label Sizing and Position
+
+- avoid placing elements below the input element
+- maybe covered up by virtual keyboard
+
+4a) Portrait View Ports
+
+- labels should be above the input elements
+
+4b) Landscape View Ports
+
+- labels should be below the input elements
+
+5) Placeholders <input placeholder="...">
+
+- useful for text or numeric inputs
+- gives users a concrete idea of what they should type
+- they disappear as soon as user starts typing; so not a replacement for labels
+
+6) Calender
+
+- many forms need the concept of a date
+- can be a three/four step input process (day, month, year, time)
+- or can use a calender widget which simplifies the whole process
+- want to make it easy for users to enter dates
+- this reduces the chances they abandon your form
+
+6a) <input type="datetime-local" ...>
+
+- browser's implementation of a calender widget
+- however, this might not match the visual theme of your application
+- to solve this can edit the widget's styles
+- or use webcomponents or a javascript component
+
+6b) Calender References
+
+- any airline site
+- http://codepen.io/greenido/pen/xwGEWO
+- https://www.tjvantoll.com/2013/04/15/list-of-pseudo-elements-to-style-form-controls/#input_date
+
+7) Typos
+
+- keep in mind it is hard to type on a small screen
+- if users find it hard to use you forms, the abandon it, you lose potential transaction
+- enter autocomplete
+
+8) The 'autocomplete' Attribute 
+
+
+- automatically fills the users saved information into a form
+- helps reduce potential input errors
+- browsers use many heuristics to determine which fields they can auto-populate based on data that has been preiously specified by the user
+
+8a) name + autocomplete attributes
+
+- specify both attributes to give hints to the browser
+
+<input autocomplete="fname"> 	- for name input
+<input autocomplete="tel">  	- for telephone input
+<input autocomplete="email">	- for email input
+
+8b) References
+
+https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill?hl=en
+
+9) The 'autofocus' Attribute
+
+- automatically puts cursor on an input when that input is rendered
+- makes it easy for users to quickly begin using the form
+- mobile browsers ignore this attribute so that the keyboard does not randomly appear
+- recommended to use autofocus only on elements that are above-the-fold
+
+10) Use Past Data To Fill Inputs
+
+- most time we are asking users to enter the same information over and over again
+- name, address, telephone number, credit card, etc
+- becareful not to use stored user data, which is actually not what the user want to fill in
+- e.g. you have one address saved, but user want to use another shipping address
+- in this case ask user which address they want to use, and give them option to enter a totally new one
+11) The 'required' Attribute
+
+- add required to any HTML5 input to let users know that the input must be filled out in order to finish the form
+
+
+12) The 'validate' Attribute
+
+- allows uses to know that they are filling in the form correctly
+- give real time feedback; so users don't get frustrated submitting incorrect data
+
+12a) Front-end Validation vs Server-side Validation
+
+- front-end validation is not a replacement for server-side validation
+- must also validate on the server-side
+- the purpose of front-end validation is for good UX
+
+13) Numeric Inputs - Attributes
+
+- min	:sets the minimum values that the arrows in the input will allow
+- max	:sets the minimum values that the arrows in the input will allow
+- step 	:sets the increments for between possible values
+- value	:sets the starting value of the input
+
+- note that the user can still type whatever number they want in textbox
+
+14) Range Input Type - <input type=range min=10 max=30 value=10 step=1>
+
+- limits possible values user can enter
+- displays as a slide bar
+- must use js pull value from range, if you want to display its current value
+
+// grab <input id="range-example" type="range" min="0" max="5" step="1"> from the page
+var rangeInput = document.querySelector('input#range-example');
+
+// grab <p id="output"></p> to display the output
+var output = document.querySelector('p#output');
+
+// update the display when the range changes
+rangeInput.onchange = function() {
+  output.innerHTML = this.value;
+};
+
+15) the 'pattern' attribute
+
+<input type="text" id="grade" size="2" minLength="1" maxLength="2" 
+       pattern="A|A\+|([B-D][+-]?)|F" required>
+
+- value is regular expression that specifies pattern of the text input
+
+16) Constraints Validation API 
+
+- use js to validate inputs on the fly
+- use for more complex validation scenarios
+
+16a) setCustomValidity()
+
+- if you pass an empty string to it, then input is valid
+- if you pass a none-empty string to it, then input is valid
+
+http://udacity.github.io/course-web-forms/lesson2/setCustomValidity/
+-------------------------------
+
+var puppyInput = document.querySelector('#puppy-input');
+var submit = document.querySelector('#submit');
+
+submit.onclick = function () {
+  if (puppyInput.value !== "puppy") 
+  {
+    puppyInput.setCustomValidity("The input should say 'puppy'. You typed: '" + puppyInput.value + "'");
+  } 
+  else 
+  {
+    puppyInput.setCustomValidity("");
+  }
+};
+
+17) Interview with Luke W part 4
+
+- culture of learning (constantly iterate on protoypes) over a culture of delivery
+- build and try new stuff before it is needed
+- allows you to develop innovative insights and see opportunities for delivery
+- if you are just building something just to satisfy next deliver; you never innovate
+
+17a) His Process For Building and Evaluating Forms
+
+- iterate on prototypes internally
+- publish to public and track metrics - quantitative data
+- talk to users to understand why they did what they did; based on what you saw in metrics - qualitative data
+
+18) Next 
+
+- move on from single inputs to looking at form as a whole
+

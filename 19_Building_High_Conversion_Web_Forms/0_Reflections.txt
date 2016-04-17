@@ -19,8 +19,30 @@ http://www.slideshare.net/greenido/web-forms-the-right-way
 https://developers.google.com/web/fundamentals/design-and-ui/input/?hl=en
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-type
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label
 
 5) Location Services Examples
 
 Ido 		- http://codepen.io/greenido/pen/qOEbGp
 HTML5Rocks 	-  http://www.html5rocks.com/en/tutorials/geolocation/trip_meter/
+
+
+6) Calender References
+
+- http://codepen.io/greenido/pen/xwGEWO
+- https://www.tjvantoll.com/2013/04/15/list-of-pseudo-elements-to-style-form-controls/#input_date
+
+7) AutoComplete
+
+https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill?hl=en 
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-autocomplete
+
+8) Numerical Input on Wufoo
+
+http://www.wufoo.com/html5/types/7-number.html
+
+9) Interview with Luke W part 4
+
+https://classroom.udacity.com/courses/ud890/lessons/5247541854/concepts/53873653260923
+
+- culture of learning over a culture of delivery
