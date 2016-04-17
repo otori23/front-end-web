@@ -46,3 +46,15 @@ http://www.wufoo.com/html5/types/7-number.html
 https://classroom.udacity.com/courses/ud890/lessons/5247541854/concepts/53873653260923
 
 - culture of learning over a culture of delivery
+
+10) Ploymer
+
+https://www.polymer-project.org/1.0/
+
+10a) Ploymer Gold Elements for Ecommerce
+
+https://elements.polymer-project.org/browse?package=gold-elements
+
+11) Google Chrome Extensions
+
+https://developer.chrome.com/extensions/getstarted 

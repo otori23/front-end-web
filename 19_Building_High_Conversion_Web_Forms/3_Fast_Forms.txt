@@ -1,0 +1,133 @@
+
+1) So Far
+
+- build better input by pick the right type for the situataion
+- enabled autocomplete, require, validation
+- now look at the form as a whole
+- really importnatn for ecommerce
+- main goal is to minimize the amount of time your use spends filling out forms
+
+2) For Principles
+
+- make forms as short and sweet as possible (no redundancies and enable autocomplete)
+- provide healpful prompts (via labels, etc) 
+- provide immediate feedback (via require, validation, progress bar, etc)
+
+2a) Form Principles Deck
+
+http://www.slideshare.net/greenido/web-forms-the-right-way
+
+- really want to understand how your user experiences the form:
+how long will it take
+can I save my progress and finish later
+can I start on one device and finish on another
+
+- most important thing is to give your users the option to finish later
+
+3) LukeW Interview Part5 - Testing New Forms
+
+- you want to really think about what your form looks to people outside the organization
+- e.g. legal, marketing, database structure, etc have their requirements so a simple form becomes bloated
+
+- good technique is to have a real person play the role of the form, and have a conversation with the person and see how information flows and is exchanged
+
+4) Don't Force Registration before Purchasing
+
+- have option to checkout as a guest
+- registration gates really just push users away
+
+4a) Practices that Most Likely Drive Users Away
+
+- registration gates on checkout
+
+5) Finish on another Device - Save to Shopping Cart
+
+- people use mobile device when on the go; and thier laptops when at home
+- people will visit thesame site on both devices
+- people typically shop in public on their mobile device; but wait until they get home to pay
+- saving to a shopping cart is the way to go
+
+6) From Quiz - http://udacity.github.io/course-web-forms/lesson3/bigForm1/start/
+
+- what are potential areas of improvement?
+- how would you make this form faster
+- how would you make this form simpler]
+- remember:  Fast Forms = More Conversions
+
+some information seems unnecessary:
+middle initial, age, gender, no autofill, no validation, 
+option to use same address for billing and shipping
+
+7) One Wierd Trick - Location
+
+- can use a devices location to speed up the checkout process
+
+7a) Entering Address Information is Extremely Annoying
+
+- no uniform format for entering an address
+- also they require several input fields
+
+7b) Autofill using GPS or WiFi
+
+- address can be easily generated on mobile devices as they have gps or wifi
+- can use the gps or wifi info to auto fill address to a close approximation of actual value
+
+7c) Autofill using Previously Saved Address
+
+- can use autofill option to retrieve an address that was previously saved in the browser
+
+8) Quiz: Build A Checkout
+
+8a) Local Versions Of Solution
+
+checkout-start	 	:original source
+checkout-polymer 	:polymer-based solution
+checkout-solution 	:native html based solution
+
+8b) Live Versions of Solutions
+
+http://udacity.github.io/course-web-forms/lesson3/bigForm1/start/
+https://udacity.github.io/course-web-forms/lesson3/bigForm1/polymer/dest/
+http://udacity.github.io/course-web-forms/lesson3/bigForm1/solution/
+
+8c) Install and Run the Polymer Checkout Form:
+
+- Unzip lesson3-quizBigForm1-polymer.zip and cd into it
+- Install npm, bower and gulp if you haven't already
+- Run npm install
+- Run bower install
+- Host over localhost and open dest/index.html in your browser
+- As you make your edits to the files in src/, use gulp watch to watch for changes and rebuild to dest/.
+
+8d) Solution Notes
+
+native
+
+- used place holder instead of labels
+- labels are still in the DOM for screen readers, but they are hidden
+
+ploymer
+
+- has a progress bar up top
+- uses geolocation to fill out 
+
+9) Ploymer - Gold Elements
+
+- used ploymers gold elements to desing check out form
+- gold elements are good for ecommerce???
+- research more on ploymer material design
+
+10) LukeW Mobile First
+
+- huge opportunity; many users
+- new capabilities - gps, multi-touch, sensors, etc
+- think really hard about what fits on the small real estate of the screen; so mobile forces you to think about what really matters
+
+11) Outro
+
+- short forms
+- don't ask for redundant information
+- give feedback
+- use location services to help with address
+
+11a) Next Touch Interactions for Mobile Users
