@@ -1,0 +1,84 @@
+
+1) Intro
+
+- building great UX for mobile users is more challenging than for desktop
+- you need to support touch events for mobile
+
+2) Touch Events
+
+- have their own pseudo classes and event cycles
+
+2a) Fastest way To Support Touch Events
+
+- change UI to respond to a change of state of a DOM element
+- DOM elements can be in one of the following states: default, hover, focus, active
+- so the touch event puts the DOM element in some state, and you have css pseudo classes that apply styles to the DOM element when it is in a certain state
+
+3) Too Much Touch
+
+Quick note: some mobile browsers will select text if the user long presses on the screen. This is super useful for copying and pasting, but can be frustrating if a user didn’t intend to select any text.
+
+You can prevent this from happening using the user-select CSS property seen here:
+
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+user-select: none;
+
+4) Touch Events on HTML5Rocks
+
+http://www.html5rocks.com/en/mobile/touch/
+
+5) Mobile Forms - LukeW Interview 8
+
+- for touch designs, the screen has to be considered in the context of your hand
+- how big is a thumb?, how far can it reach?
+- this impacts where you put controls, how large they are, and how easy they are to manipulate
+- checboxes and radio buttons can be difficlut to use on a mobile device
+
+5a) One Touch, One Eye Ball
+
+- desgin your mobile forms to be easy to complete with one touch and on eye ball
+
+6) Quick Practice With Event Listeners
+
+6a) Basic Syntax
+
+target.addEventListener(type, listener[, useCapture]);
+
+6b) Example of a Useful Event Listener
+
+// Check if pointer events are supported.
+if (window.PointerEventSupport) {
+  // Add Pointer Event Listener
+  swipeFrontElement.addEventListener(pointerDownName, this.handleGestureStart, true);
+} else {
+  // Add Touch Listener
+  swipeFrontElement.addEventListener('touchstart', this.handleGestureStart, true);
+  // Add Mouse Listener
+  swipeFrontElement.addEventListener('mousedown', this.handleGestureStart, true);
+}
+
+6c) Event Listeners on MDN
+
+https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+
+7) Information You Receive with Touch Events
+
+- Use the event object to tailor actions to events
+- Each touch event includes three lists of touches
+
+7a) Touch Event Lists
+
+- touches: a list of all fingers currently on the screen
+- targetTouches: a list of fingers on the current DOM element
+- changedTouches: a list of fingers involved in the current event. For example, in a touchend event, this will be the finger that was removed
+
+7b) Objects in Lists that contain touch information
+
+- identifier: a number that uniquely identifies the current finger in the touch session.
+- target: the DOM element that was the target of the action
+- client/page/screen coordinates: where on the screen the action happened
+- radius coordinates and rotationAngle: describe the ellipse that approximates finger shape
+
+
