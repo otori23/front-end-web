@@ -1,0 +1,165 @@
+0) References
+
+Touch Events
+https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
+
+HTML5 Canvas
+http://www.w3schools.com/tags/ref_canvas.asp
+
+createEvent-dispatchEvent and preventDefault example
+https://developer.mozilla.org/samples/domref/dispatchEvent.html
+
+1) Interfaces
+
+TouchEvent - represents an event that occurs when the state of touches on the surface changes
+
+Touch - represents a single point of contact between the user and the touch surface
+
+TouchList - represents a group of touches; this is used when the user has, for example, multiple fingers on the surface at the same time
+
+2) Touch Event Names
+
+touchstart
+touchmove
+touchend
+touchcancel
+
+3) Touch Event Handler Argument
+
+function aTouchEventHanlder(evt) {
+	//get touch event information from evt
+}
+
+3a) evt.changedTouches
+
+- a TouchList whose touch points (Touch objects) varies depending on the event type, as follows:
+
+i) touchstart event
+it is a list of the touch points that became active with the current event.
+
+ii) touchmove event
+it is a list of the touch points that have changed since the last event.
+
+iii) touchend event
+it is a list of the touch points that have been removed from the surface (that is, the set of touch points corresponding to fingers no longer touching the surface)
+
+3b) evt.preventDefault()
+
+- keeps the browser from continuing to process the touch event
+- this also prevents a mouse event from also being delivered to the browser
+
+4) Event Manipulation
+
+event.cancelBubble
+event.preventDefault
+event.returnValue
+event.stopPropagation
+
+<div id="foo">
+ <button id="but" />
+</div>
+
+$("#foo").click(function() {
+   // mouse click on div
+});
+
+$("#but").click(function(ev) {
+   // mouse click on button
+   ev.stopPropagation();
+});
+
+4a) event.preventDefault
+
+- prevents the default action the browser makes on that event
+- only address the browser; so says nothing about other DOM elements
+- in snippet, only the browsers default action is stopped but the div's click handler still fires
+
+4b) event.stopPropagation
+
+- stops the event from bubbling up the event chain
+- address other DOM elements; says nothing about the browser
+- in snippet, only the buttons click handler is called and the divs click handler never fires
+
+4c) event.cancelBubble
+
+- deprecated, use stopPorpagation instead
+- sets or retrieves whether the current event should bubble up the hierarchy of event handlers
+
+4d) event.returnValue
+
+- seems non-standard and/or deprecated; do not use this
+- sets or retrieves the return value from the event
+
+5) Touch Object Model
+
+important properties: pageX, pageY, identifier
+
+5a) Touch.identifier
+
+- a unique integer for each touch
+- remains consistent for each event during the duration of each finger's contact with the surface
+
+6) Copying a Touch Object
+
+- some browsers (mobile Safari, for one) re-use touch objects between events
+- so it's best to copy the bits you care about, rather than referencing the entire object
+
+function copyTouch(touch) {
+  return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
+}
+
+7) Handling clicks
+
+- since calling preventDefault() on a touchstart or the first touchmove event of a series prevents the corresponding mouse events from firing, it's common to call preventDefault() on touchmove rather than touchstart
+- that way, mouse events can still fire and things like links will continue to work
+
+8) Refiring Touch Events as Mouse Events
+
+- another method for handling clicks is to refire touhc events as mouse events
+- some frameworks take this approach
+- below is an over-simplified example
+
+function onTouch(evt) {
+  evt.preventDefault();
+  if (evt.touches.length > 1 || (evt.type == "touchend" && evt.touches.length > 0))
+    return;
+
+  var newEvt = document.createEvent("MouseEvents");
+  var type = null;
+  var touch = null;
+
+  switch (evt.type) {
+    case "touchstart": 
+      type = "mousedown";
+      touch = evt.changedTouches[0];
+      break;
+    case "touchmove":
+      type = "mousemove";
+      touch = evt.changedTouches[0];
+      break;
+    case "touchend":        
+      type = "mouseup";
+      touch = evt.changedTouches[0];
+      break;
+  }
+
+  newEvt.initMouseEvent(type, true, true, evt.originalTarget.ownerDocument.defaultView, 0,
+    touch.screenX, touch.screenY, touch.clientX, touch.clientY,
+    evt.ctrlKey, evt.altKey, evt.shiftKey, evt.metaKey, 0, null);
+  evt.originalTarget.dispatchEvent(newEvt);
+}
+
+- see "createEvent-dispatchEvent and preventDefault example" in references
+
+9) Techinque for Preventing Pinch Zooming - Call preventDefault() only on a second touch
+
+- this behavior is not well defined in the touch events spec
+- results in different behavior for different browsers 
+- e.g., iOS will prevent zooming but still allow panning with both fingers
+- Android will allow zooming but not panning
+- Opera and Firefox currently prevent all panning and zooming
+
+9a) meta viewport
+
+- currently, it's not recommended to depend js to prevent pinch zoom
+- but rather to depend on meta viewport to prevent zooming
