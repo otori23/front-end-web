@@ -1,0 +1,276 @@
+
+1) Intro
+
+- every web developer needs to be able to handle asynchronous request with confidence and ease
+- many way to handle asynchronous calls already
+- native javascript promises are the recommended way
+- they are flexible, have intuitie syntax and error handling
+
+1a) Class Goals
+
+- use promises to request json data from exeternal source (nasa, caltech)
+
+2) Callbacks vs Promises
+
+- the promise object is used for deferred and asynchronous computations - MDN
+
+2a) What is Asynchronous Work?
+
+var file = get('file.json');
+
+- work that happens at an unknown or asynchronous time
+
+2b) Normal Synchronous Code
+
+- code that executes in a single unbroken timeline
+
+var planetName = 'Kepler22b';
+console.log(planetName); // Kepler22b
+
+- one line of code executes and ...
+- there is a guarantee that the next line executes immediately afterwards
+
+2c) Asynchronous Code
+
+- not guaranteed to execute in a single unbroken timeline
+
+var file1 = get('file1.json');
+var file2 = get('file2.json');
+
+console.log(file1); //undefined
+console.log(file2); //undefined
+
+- programmer has no idea when an asynchronous operation will complete
+- in the snippet you don't know which get request will return first
+
+3) Examples of Asynchronous Code
+
+- network requests
+- events
+- threads
+- something with an unknown finishing time
+
+4) Callbacks vs Thens
+
+- callbacks are default way to handle asynchronous work
+- it is called at some later time when some condition is met
+
+function loadImage(src, parent, callback) {
+  var img = document.createElement('img');
+  img.src = src;
+  img.onload = callback; // called at some later time; i.e. after image is fully loaded
+  parent.appendChild(img);
+}
+
+5) Issues/Questions with Callbacks
+
+5a) how do you handle error?
+
+- any operation can fail at anytime; especially with network requests
+
+5b) how do you create a sequence of work?
+
+- what if the callback itself performs an asynchronous request
+- can lead to situation with several levels of nested callbacks; aka pyramid of doom
+- leads to unmaintainable code: very hard o refactor or debug
+
+6) Compare Code Written with Callbacks vs Promises
+
+6a) Callbacks
+
+get('example.json', function() {
+  doSomething(function() {
+    doSomethinElse();
+  });
+});
+
+6b) Promises
+
+var sequence = get('example.json');
+  .then(doSomething)
+  .then(doSomethingElse);
+
+- nice clean sequence of events
+
+7) Course Map
+
+- course is broken down into four stages that build on one another
+
+Wrapping Stage
+Thening Stage
+Catching Stage
+Chaning Stage
+
+7a) Wrapping Stage
+
+- learn syntax of constructing promises
+- a promise constructor by itself is not super useful
+
+7b) Thening Stage
+
+- learn how to react to the resolution of a promise
+- e.g. get result of asynchronous work and preform other actions
+
+7c) Catching Stage
+
+- handle errors in the asynchronous work
+- e.g. recover
+
+7d) Chaning Stage
+
+- learn how to create long sequences of asynchronous work
+- the focus of 2nd lesson
+
+8) Jake Archibalds Fantastic Guide to Promises - Must Read
+
+- http://www.html5rocks.com/en/tutorials/es6/promises/
+
+9) Four States a Promise Can Have - [Fulfilled (Resolved) | Rejected | Pending | Settled]
+
+9a) Fulfilled (aka Resolved)
+
+- it worked; the action related to the promise succeded
+
+9b) Rejected
+
+- it didn't work; the action related to the promise failed 
+
+9c) Pending
+
+- still waiting; the promise has not been fulfilled or rejected 
+
+9d) Settled
+
+- something happened; the promise either fulfilled or rejected
+
+
+10) Promises TimeLine - How and When are Promises Executed
+
+- consider what happens in this time line:
+
+10a) start -> event fires -> event listener is set -> time continues
+
+- well nothing happens; we startred listening after the event fired
+
+10b) start -> Promise reolves -> Set action for resolution value -> time continues
+
+- the action for the resolution WILL execute
+
+10c) A Promise Constructor
+
+new Promise(function(resolve, reject) {
+  reslove('hi');  // works
+  resolve('bye'); // can't happen a second time
+});
+
+- only the 1st resolve settles the promise
+- compared to an event which can file MANY times
+
+11) Promises Execute on Main Thread (so are still potentially blcoking)
+
+- if work in promise takes a long time, can block browser from rendering
+- JANK!!!!
+- not a pass for safely executing long running operations
+- simply a technique for deciding what will happen once an asynchronous task settles
+
+11a) Promises <-> Try/Catch Analogy
+
+- think of promises as try/catch wrappers around asynchronuos work
+
+try {
+  ...
+}
+catch {
+ ...
+}
+
+12) When Should You Consider Using Promises?
+
+- we use promises to wrap asynchronous work
+- remember, promises work on the main thread
+- so, using then to wrap synchnronous work makes no sense
+
+13) Promises Syntax
+
+new Promise(function(resolve[, reject]) {
+  var value = doSomething();
+  if (thingWorked) {
+    resolve(value);
+  }
+  else if(somethineWentWrong) {
+    reject()'
+  }
+}).then(function(value) {
+  //success!
+  return nextThing(value);
+}).catch(rejectFunction);
+
+
+- remember a Promise is a try/catch wrapper around code that will finsih at an unpredictable time
+
+- Promise is a constructor
+- you can store the object it returns in a variable; or work on it immediately
+- Cam will typically work on it without storing it as a vaiable
+- you pass a function to the promise with two arguments (resolve and reject)
+- the reject argument is optional
+
+13a) Resolve and Reject
+
+- two callbacks
+- used to specify when a promise has resolved or failed
+- calling resolve constitutes fulfillment
+- calling reject constitutes failure
+- when either resolve or reject is called, the promise is settled
+- the function passed to .then or .catch is then executed
+
+14) Example: image tag loader
+
+- wrap image tag loader in a Promise because i want to do work after image is laoded
+
+new Promise(function(resolve, reject) {
+  var img = document.createElement('img');
+  img.src = 'image.jpg';
+  img.onload = resolve; // reslove is called at sometime after loading
+  image.onerror = reject; // reject is called someimte after the load attempt
+  document.body.appendChild(img);
+});
+.then(finsihLoading)
+.catch(showAlternateImage);
+
+15) Arguments to resolve or reject Callbacks
+
+- arguments passed to reslove will be same as arguments passed to function in .then
+- arguments passed to reject will be same as arguments passed to function in .catch
+- if nothing is passed to resolve/reject then the function to .thn/.catch recieves undefined
+
+new Promise(function(resolve[, reject]) {
+  var value = doSomething();
+  if (thingWorked) {
+    resolve(value);				--> SAME as value below
+  }
+  else if(somethineWentWrong) {
+    reject()'
+  }
+}).then(function(value) {			--> SAME as value above
+  //success!
+  return nextThing(value);
+}).catch(rejectFunction);
+
+16) Passing a Promise Object as the Argument to resolve/reject
+
+- the passed promise will execute 1st
+- then whatever value it resolves to will be passed to the next link in the chain
+- i.e. the next .then or .catch
+- resolve leads to the next .then in the chain
+- reject leads to the next .catch in the chain
+
+17) Error if Body of Promise -> Call .catch
+
+- if error in body of Promise function, ...
+- .catch gets called
+- more to come on error handling in lesson 2
+
+
+
+
+
