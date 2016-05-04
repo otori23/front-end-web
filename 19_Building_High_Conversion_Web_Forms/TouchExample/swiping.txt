@@ -1,0 +1,15 @@
+Keywords to Research
+
+- swipe gesture web apps browser
+
+JS Libraries
+
+http://quojs.tapquo.com/
+http://www.awwwards.com/touchswipe-a-jquery-plugin-for-touch-and-gesture-based-interaction.html
+http://padilicious.com/code/touchevents/
+http://hammerjs.github.io/recognizer-swipe/
+
+Stack Overflow
+
+http://stackoverflow.com/questions/15084675/how-to-implement-swipe-gestures-for-mobile-devices
+http://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
