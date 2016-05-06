@@ -1,0 +1,58 @@
+
+1) Quiz: Fetch And Show First Planet
+
+1a) Instructions
+
+- checkout the first-thumb-start branch and navigate to app/scripts/app.js
+- get the planet data and add the search header
+- create the first thumbnail with createPlanetThumb(data)
+- handle errors!
+-- pass 'unknown' to the search header
+-- log the error
+- checkout the first-thumb-solution branch to see my code!
+
+1b) Anonymous vs Named Functions in Then Callbacks
+
+- the two methods below for registering then callbacks are equivalent
+
+Method 1
+--------------------
+function doSomething(arg) {
+  // do something with arg
+}
+
+new Promise(function(resolve) {
+  resolve("arg");
+})
+.then(function(arg1) {
+  doSomething(arg1);
+})[
+--------------------
+
+Method 2
+--------------------
+function doSomething(arg) {
+  // do something with arg
+}
+
+new Promise(function(resolve) {
+  resolve("arg");
+})
+.then(doSomething)
+--------------------
+
+1c) Can Add Several Catches to The Chain
+
+getJSON('../data/earth-like-results.json')
+.then(function(resp) {
+  addSearchHeader(resp.query);
+  return getJSON(resp.results[0]);
+})
+.catch(function(error) { // handle error for 1st .then
+  throw Error('Search Request Error');
+});
+.then(createPlanetThumb)
+.catch(function(error) { // handle error for every other .then that comes after 1st .catch
+  addSearchHeader('unknown');
+  console.log(error);
+});
