@@ -451,3 +451,60 @@ Watch with Gulp
 
 30) Quiz: Fetch API
 
+- using XHR directly is a pain
+- so, the fetch API is an abstraction on XHRs to hide some complexity
+- current support: chrome, firefox, opera, android browsers
+- it uses native promises
+
+30a) Instructions
+
+- checkout the fetch-start branch and navigate to app/scripts/app.js
+- rewrite get with the Fetch API: https://davidwalsh.name/fetch
+- finish the getJSON() method, which should take a URL and return the parsed JSON response
+- getJSON() needs to return a Promise!
+- test by logging the response and by passing the query string from getJSON() to addSearchHeader()
+- handle errors by passing 'unknown' to addSearchHeader() and logging them
+- checkout the fetch-solution branch to see my code
+
+31) Chaining Promises
+
+doSomething1(arg1)
+.then(function(arg2) {
+  return arg2.result; 	// this is the Promise return by the 1st then
+			// when it resolves, then next then in the chain is run
+
+			// so I return a promise that was created by a library function
+			// then it is the responsiblity of api to resolve/reject promise
+
+			// or I can explicity create and return a promise myself
+			// then I must resolve/reject the promise myself
+})
+.then(function(arg3) {
+  console.log(arg3);	// last then in the chain does/returns nothing 
+});
+
+32) What Happens Next?
+
+- .then's also return promises
+- so you can .then of another .then
+
+32a) Thenables
+
+- this term is used to describe promises and .thens
+- "Thenable" used in context of promises on MDN
+(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#Methods)
+
+32b) What is a Thenable?
+
+- any method or object that returns a .then (promises, .then's, .catch's)
+- any thenable can become part of a chain of asynchronous work
+
+33) Passing Information Between Asynchronuos Methods in a Chain 
+
+- when creating a chain of asynchronuous work, 
+- each subsequent link in the chain receives either the fullfiled value of the previous promise, or the return value of the previous .then
+
+33a) Chaining Thenables
+
+- an incredibly powerful technique for simplifying complex sequences of asynchronous work
+- practice a few chaining strategies in the next lesson

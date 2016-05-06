@@ -1,9 +1,12 @@
 
-1) Promises Guide
+1) Promises API on MDN
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#Methods
+
+2) Promises Guide
 http://www.html5rocks.com/en/tutorials/es6/promises/
 
-2) Document.readState
+3) Document.readState
 https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
 
-3) Service Worker vs. Web Worker vs. Web Socket
+4) Service Worker vs. Web Worker vs. Web Socket
  https://aarontgrogg.com/blog/2015/07/20/the-difference-between-service-workers-web-workers-and-websockets/
