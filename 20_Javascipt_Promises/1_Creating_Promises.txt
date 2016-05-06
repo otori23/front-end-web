@@ -442,6 +442,9 @@ Watch with Gulp
 - they allow you to add a powerful layer of control between you app and the network
 - this means you can create apps that work offline
 
+28a) Service Worker vs. Web Worker vs. Web Socket
+ https://aarontgrogg.com/blog/2015/07/20/the-difference-between-service-workers-web-workers-and-websockets/
+
 29) The Fetch API - https://davidwalsh.name/fetch
 
 - uses native promises to simplify XMLHttpRequests (XHRs)
