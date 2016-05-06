@@ -25,7 +25,7 @@ var file = get('file.json');
 - code that executes in a single unbroken timeline
 
 var planetName = 'Kepler22b';
-console.log(planetName); // Kepler22b
+console.log(planetName); //Kepler22b
 
 - one line of code executes and ...
 - there is a guarantee that the next line executes immediately afterwards
@@ -96,9 +96,9 @@ var sequence = get('example.json');
 
 - course is broken down into four stages that build on one another
 
-Wrapping Stage
-Thening Stage
-Catching Stage
+Wrapping Stage 	- create the promise that wraps the unit of work you want to do
+Thening Stage 	- do follow up work after the promise resolves
+Catching Stage  - do follow up work after the promise rejects
 Chaning Stage
 
 7a) Wrapping Stage
@@ -270,7 +270,105 @@ new Promise(function(resolve[, reject]) {
 - .catch gets called
 - more to come on error handling in lesson 2
 
+18) Quiz: Write Your First Promise (\Quizes\setTimeout) - Wrapping Phase
 
+- this is like a drill execerise for the "Wrapping" phase of using Promises
+- create promise to wrap async work (i.e. the setTimeout)
+- resolve the promise in setTimeout's callback
+- remember the Promise itself works on the main thread
 
+19) Quiz: Wrapping ReadyState (\Quizes\readyState) - Thening Phase
 
+- see class solution; my solution was too simple
 
+20) Document.readState Values [loading | interactive | complete]
+
+- when the value of this property changes a "readystatechange" event fires on the document object
+
+20a) loading
+
+- the document is still loading
+
+20b) interactive (document event fired: DOMContentLoaded)
+
+- the document has been parsed...
+- but sub-resources such as images, stylesheets and frames are still loading
+- the state indicates that the DOMContentLoaded event has been fired.
+
+20c) complete (document event fired: load)
+
+- the document and all sub-resources have finished loading
+- the state indicates that the load event has been fired
+
+20d) Example: Different states of readiness
+
+switch (document.readyState) {
+  case "loading":
+    // The document is still loading.
+    break;
+  case "interactive":
+    // The document has finished loading. We can now access the DOM elements.
+    var span = document.createElement("span");
+    span.textContent = "A <span> element.";
+    document.body.appendChild(span);
+    break;
+  case "complete":
+    // The page is fully loaded.
+    console.log("The first CSS rule is: " + document.styleSheets[0].cssRules[0].cssText);
+    break;
+}
+
+20e) Example: readystatechange as an alternative to DOMContentLoaded event
+
+// alternative to DOMContentLoaded event
+document.onreadystatechange = function () {
+  if (document.readyState == "interactive") {
+    initApplication();
+  }
+}
+
+20d) Example: readystatechange as an alternative to load event
+
+// alternative to load event
+document.onreadystatechange = function () {
+  if (document.readyState == "complete") {
+    initApplication();
+  }
+}
+
+21) Working w/Exoplanet Explorer
+
+Exoplanet Explorer
+http://www.exoplanetexplorer.com/
+
+Ploymer Starter Kit
+https://developers.google.com/web/tools/polymer-starter-kit/?hl=en
+
+Git Repo
+https://github.com/udacity/exoplanet-explorer
+
+Local Clone
+~/exoplanet-explorer
+
+Each Quiz will Give you a Branch to Checkout
+git checkout xhr-start
+
+All of your work will be done in
+app/scripts/app.js
+
+If you get the following error from Gyp:
+"Error: self signed certificate in certificate chain"
+
+See this bug:
+https://github.com/nodejs/node-gyp/issues/695
+
+Build with Gulp
+>gulp
+
+Watch with Gulp
+>gulp serve
+
+22) Quiz: Wrap an XHR
+
+- starting branch: git checkout xhr-start
+- soultion bracnh: git checkout xhr-solution
