@@ -502,7 +502,36 @@ doSomething1(arg1)
 33) Passing Information Between Asynchronuos Methods in a Chain 
 
 - when creating a chain of asynchronuous work, 
-- each subsequent link in the chain receives either the fullfiled value of the previous promise, or the return value of the previous .then
+- each subsequent link in the chain receives either:
+
+i) the fullfiled value of the previous promise, 
+
+new Promise(function(resolve) {
+    setTimeout(function(){
+    resolve("Done");
+  }, 1000);
+}).then(function(msg){
+  console.log(msg);  // Done
+  return new Promise(function(resolve) { resolve("Message From Promise"); });
+}).then(function(msg){
+  console.log(msg); // Message From Promise
+});
+
+ii) or the return value of the previous .then
+
+new Promise(function(resolve) {
+    setTimeout(function(){
+    resolve("Done");
+  }, 1000);
+}).then(function(msg){
+  console.log(msg);  // Done
+  return "Message From Then";
+}).then(function(msg){
+  console.log(msg); // Message From Then
+});
+
+- note the 2nd .then still executes even if the 1st .then returns nothing
+- in this case the arg of the 2nd .then is undefined
 
 33a) Chaining Thenables
 
