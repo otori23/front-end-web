@@ -1,0 +1,46 @@
+Promise API Reference
+
+All methods work in Chrome, Opera, Firefox, Microsoft Edge, and Safari unless otherwise noted. The polyfill provides the below for all browers.
+
+1) Static Methods
+
+Promise.resolve(promise);
+Returns promise (only if promise.constructor == Promise)
+
+Promise.resolve(thenable);
+Make a new promise from the thenable. A thenable is promise-like in as far as it has a "then" method.
+
+Promise.resolve(obj);
+Make a promise that fulfills to obj. in this situation.
+
+Promise.reject(obj);
+Make a promise that rejects to obj. For consistency and debugging (e.g. stack traces), obj should be an instanceof Error.
+
+Promise.all(array);
+Make a promise that fulfills when every item in the array fulfills, and rejects if (and when) any item rejects. Each array item is passed to Promise.resolve, so the array can be a mixture of promise-like objects and other objects. The fulfillment value is an array (in order) of fulfillment values. The rejection value is the first rejection value.
+
+Promise.race(array);
+Make a Promise that fulfills as soon as any item fulfills, or rejects as soon as any item rejects, whichever happens first.
+
+Note: I'm unconvinced of Promise.race's usefulness; I'd rather have an opposite of Promise.all that only rejects if all items reject.
+
+2) Constructor
+
+new Promise(function(resolve, reject) {});
+
+resolve(thenable)
+Your promise will be fulfilled/rejected with the outcome of thenable
+
+resolve(obj)
+Your promise is fulfilled with obj
+
+reject(obj)
+Your promise is rejected with obj. For consistency and debugging (eg stack traces), obj should be an instanceof Error. Any errors thrown in the constructor callback will be implicitly passed to reject().
+
+3) Instance Methods
+
+promise.then(onFulfilled, onRejected)
+onFulfilled is called when/if "promise" resolves. onRejected is called when/if "promise" rejects. Both are optional, if either/both are omitted the next onFulfilled/onRejected in the chain is called. Both callbacks have a single parameter, the fulfillment value or rejection reason. "then" returns a new promise equivalent to the value you return from onFulfilled/onRejected after being passed through Promise.resolve. If an error is thrown in the callback, the returned promise rejects with that error.
+
+promise.catch(onRejected)
+Sugar for promise.then(undefined, onRejected)

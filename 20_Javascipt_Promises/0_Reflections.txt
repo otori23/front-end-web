@@ -10,3 +10,9 @@ https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState
 
 4) Service Worker vs. Web Worker vs. Web Socket
  https://aarontgrogg.com/blog/2015/07/20/the-difference-between-service-workers-web-workers-and-websockets/
+
+5) Promises: Resolve Is Not the Opposite of Reject - Jake Archibald
+https://jakearchibald.com/2014/resolve-not-opposite-of-reject/
+
+6) The Return Value of .then
+

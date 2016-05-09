@@ -1,0 +1,275 @@
+1) Compatibility with other libraries
+
+- the JavaScript promises API will treat anything with a then (i.e. a thenable) method as promise-like 
+
+1a) JQuery Deferreds
+
+var jsPromise = Promise.resolve($.ajax('/whatever.json'));
+
+- are not Promise/A+ compliant; i.e. not compliant with natvive Promise API
+- JQuery promises are just a subset of Deferreds with same issues as Deferreds
+- thankfully you can cast them to standard promises
+
+1b) Promises.then(function(arg){}) - Native Promise Callback Takes Only One Argument
+
+- sometimes JQuery deferreds pass multiple arguments to their callbacks
+
+var jqDeferred = $.ajax('/whatever.json');
+
+jqDeferred.then(function(response, statusText, xhrObj) {
+  // ...
+}, function(xhrObj, textStatus, err) {
+  // ...
+});
+
+- whereas native JS promises ignore all but the first:
+
+jsPromise.then(function(response) {
+  // ...
+}, function(xhrObj) {
+  // ...
+});
+
+- so, if you cast a deferred to a native promise, only the 1st arg in the callback is ever used
+- thankfully this is usually what you want, or at least gives you access to what you want
+- also, be aware that jQuery doesn't follow the convention of passing Error objects into rejections
+
+2) Return Value of a .then
+
+When you return something from a "then" callback, it's a bit magic
+
+If you return a value, the callback of the next "then" is called with that value
+
+However, if you return something promise-like, the next "then" waits on it, and is only called when that promise settles (succeeds/fails)
+
+3) Error Handling Flow - PromiseLogicFlow.jpeg
+
+- it's customary, but not required, to reject with an Error object
+- the benefit of Error objects is they capture a stack trace, making debugging tools more helpful
+
+4) JavaScript exceptions and promises
+
+4a) Explicit Rejection
+
+- a promise explicity calls reject(...)
+
+4b) Implicity Rejection
+
+- a exception is thrown inside the constructor callback of a promise
+- this settles the created promise in the rejected state
+- so, can just "throw err;" in Promise callback if you want to implicitly reject it
+
+var jsonPromise = new Promise(function(resolve, reject) {
+  // JSON.parse throws an error if you feed it some
+  // invalid JSON, so this implicitly rejects:
+  resolve(JSON.parse("This ain't JSON"));
+});
+
+jsonPromise.then(function(data) {
+  // This never happens:
+  console.log("It worked!", data);
+}).catch(function(err) {
+  // Instead, this happens:
+  console.log("It failed!", err);
+}); 
+
+4c) The same goes for errors thrown in "then" callbacks
+
+get('/').then(JSON.parse).then(function() {
+  // This never happens, '/' is an HTML page, not JSON
+  // so JSON.parse throws
+  console.log("It worked!", data);
+}).catch(function(err) {
+  // Instead, this happens:
+  console.log("It failed!", err);
+});
+
+5) Browser support & polyfill
+
+https://github.com/stefanpenner/es6-promise#readme
+
+6) Parallelism and Sequencing
+
+- thinking async isn't easy
+- if you're struggling to get off the mark, try writing the code as if it were synchronous
+- below is what we trying to accomplish if we did it synchronuosly
+- this is not an option as it will block the browser
+
+try {
+  var story = getJSONSync('story.json');
+  addHtmlToPage(story.heading);
+
+  story.chapterUrls.forEach(function(chapterUrl) {
+    var chapter = getJSONSync(chapterUrl);
+    addHtmlToPage(chapter.html);
+  });
+
+  addTextToPage("All done");
+}
+catch (err) {
+  addTextToPage("Argh, broken: " + err.message);
+}
+
+document.querySelector('.spinner').style.display = 'none';
+
+7) Promise.resolve
+
+- creates a promise that resolves to whatever value you give it
+
+7a) Promise.resolve();
+
+- sequence is a promise that resolved with no input argument
+- i.e. the next .then callback will be called with undefined as an argument
+
+7b) Promise.resolve('Hello');
+
+- creates a promise that fulfills with 'Hello'
+- i.e. Hello will be passed the callback function of the next .then in the chain
+
+7c) Promise.resolve(thenable)
+
+- creates a genuine Promise that fulfills/rejects in the same way
+- returns a promise that is already resolved 
+- the new promise resolves the same way (i.e. with same args) that the thenable promise was resolved
+
+8) Promise.reject(val)
+
+- creates a promise that rejects with the value you give it (or undefined)
+
+9) A Fully Async Version of the Sync Version
+
+getJSON('story.json').then(function(story) {
+  addHtmlToPage(story.heading);
+
+  return story.chapterUrls.reduce(function(sequence, chapterUrl) {
+    // Once the last chapter's promise is done…
+    return sequence.then(function() {
+      // …fetch the next chapter
+      return getJSON(chapterUrl);
+    }).then(function(chapter) {
+      // and add it to the page
+      addHtmlToPage(chapter.html);
+    });
+  }, Promise.resolve());
+}).then(function() {
+  // And we're all done!
+  addTextToPage("All done");
+}).catch(function(err) {
+  // Catch any error that happened along the way
+  addTextToPage("Argh, broken: " + err.message);
+}).then(function() {
+  // Always hide the spinner
+  document.querySelector('.spinner').style.display = 'none';
+});
+
+10) Problen with Current Async Version
+
+- the request are performed in series
+- thankfully there's an API to solve this
+
+10a) Promise.all
+
+- takes an array of promises
+- creates a promise that fulfills when all of them successfully complete
+- you get an array of results (whatever the promises fulfilled to) in the same order as the promises you passed in
+
+Promise.all(arrayOfPromises).then(function(arrayOfResults) {
+  //...
+});
+
+11) Async Version + Parrallel Requests
+
+getJSON('story.json').then(function(story) {
+  addHtmlToPage(story.heading);
+
+  // Take an array of promises and wait on them all
+  return Promise.all(
+    // Map our array of chapter urls to
+    // an array of chapter json promises
+    story.chapterUrls.map(getJSON)
+  );
+}).then(function(chapters) {
+  // Now we have the chapters jsons in order! Loop through…
+  chapters.forEach(function(chapter) {
+    // …and add to the page
+    addHtmlToPage(chapter.html);
+  });
+  addTextToPage("All done");
+}).catch(function(err) {
+  // catch any error that happened so far
+  addTextToPage("Argh, broken: " + err.message);
+}).then(function() {
+  document.querySelector('.spinner').style.display = 'none';
+});
+
+12) Async Version + Parrallel Requests + Update Page with Chapters as Chapters Arrive
+
+- the previous version waits for all the chapters to arrive before updating the page
+- we want the update the page (in sequence) as the chapter's arrive
+- i.e. as soon as chapter 1 arrives add it to page; then as soon as chapter 2 arrives, add it to page; etc
+
+getJSON('story.json').then(function(story) {
+  addHtmlToPage(story.heading);
+
+  // Map our array of chapter urls to
+  // an array of chapter json promises.
+  // This makes sure they all download parallel.
+  return story.chapterUrls.map(getJSON)
+    .reduce(function(sequence, chapterPromise) {
+      // Use reduce to chain the promises together,
+      // adding content to the page for each chapter
+      return sequence.then(function() {
+        // Wait for everything in the sequence so far,
+        // then wait for this chapter to arrive.
+        return chapterPromise;
+      }).then(function(chapter) {
+        addHtmlToPage(chapter.html);
+      });
+    }, Promise.resolve());
+}).then(function() {
+  addTextToPage("All done");
+}).catch(function(err) {
+  // catch any error that happened along the way
+  addTextToPage("Argh, broken: " + err.message);
+}).then(function() {
+  document.querySelector('.spinner').style.display = 'none';
+});
+
+13) Node.js-style Callbacks or Events
+
+- doing the above with Node.js-style callbacks or events is around double the code
+- more importantly isn't as easy to follow
+- when combined with other ES6 features promises get even easier
+
+13a) Use Promises + ES6 Generators to Make Async Code Look Like Sync Code
+
+13b) Generators
+
+- allow functions to exit at a particular point, like "return" 
+- but later resume from the same point and state
+- keyword used to 'return' is 'yield'
+
+14) Resolving in Practice
+
+- you can resolve a value without worrying if it's a value, a promise, or a promise that resolves to a promise that resolves to a promise etc etc
+
+- apiCall will reject if method isn't provided, or if postJSON rejects for whatever reason- you've safely handed off the resolution of the promise onto postJSON.
+
+function apiCall(method, params) {
+  return new Promise(function(resolve, reject) {
+    if (!method) {
+      throw TypeError("apiCall: You must provide a method");
+    }
+
+    var data = {
+      jsonrpc: "2.0",
+      method: method
+    }
+
+    if (params) {
+      data.params = params;
+    }
+
+    resolve(postJSON('/my/api/', data));
+  });
+}
