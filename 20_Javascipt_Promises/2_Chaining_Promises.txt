@@ -1,3 +1,16 @@
+0) array
+
+0a) array.map
+
+- sends requests all at once; i.e. in parallel
+
+0b) array.reduce
+
+- create sequence/chain of promises
+- this process request results in a certain order
+- the way .map returns the results dictate the order to process the results
+
+--------------------------------------------------------------------------------------
 
 1) Quiz: Fetch And Show First Planet
 
@@ -170,3 +183,162 @@ async('example.json')		--> 13
 - synchronuous code is always in series
 - asynchronuous code can be in series or in parallel
 
+5) Array Methods and Promises
+
+- use array methods to programmatically create long chain of promises
+- there are diffrent strategies for controling the order in which promises resolve
+- the corner stone of these strategies is the idea of a sequence
+- i.e. a sequence of promises that are chanied on after another using .then
+
+6) Quiz: Promises with .forEach
+
+- grow the sequence like this:
+
+sequence = initial value;
+sequence = sequnece.then()
+sequence = sequence.then().then()
+etc...
+
+- for each thumb nail url: do two actions
+
+getJSON
+createPlanetThumb
+
+6a) Instructions
+
+- checkout the foreach-start branch and navigate to app/scripts/app.js.
+- refactor .forEach to create a sequence of Promises that always resolves in the same order it was created
+-- fetch each planet's JSON from the array of URLs in the search results
+-- call createPlanetThumb(data) on each planet's response data to add it to the page
+- use developer tools to determine if the planets are being fetched in series or in parallel
+- checkout the foreach-solution branch to see my code
+
+6b) Solution: Resolve in Sequence
+
+- this solution works, but all the requests happen is series
+- each time through the forEach loop, 'sequence' grows by two .then's
+
+getJSON('../data/earth-like-results.json')
+    .then(function(response) {
+      var sequence = Promise.resolve();
+      response.results.forEach(function(url) {
+        sequence = sequence.then(function(){
+          return getJSON(url);
+        }).then(createPlanetThumb);
+      })
+    .catch(function(e) {
+        console.log(e);
+      });
+    });
+
+6c) A Solution That Does Not Resolve in Sequence
+
+- the thumbs are added to the DOM in some unknown order
+
+getJSON('../data/earth-like-results.json')
+    .then(function(response) {
+      var sequence = Promise.resolve();
+      response.results.forEach(function(url) {
+        sequence.then(function(){		<-- THE ONLY DIFFERENCE IS IN THIS LINE
+          return getJSON(url);
+        }).then(createPlanetThumb);
+      })
+    .catch(function(e) {
+        console.log(e);
+      });
+    });
+
+7) Quiz: Promises With .Map
+
+- use array's .map method to iterate over urls
+- foreach item in array execute a function that getJSON and createPlanetThumb
+
+7a) Instructions
+
+- checkout the map-start branch and navigate to app/scripts/app.js
+- use .map to fetch all the planets in parallel
+- call .map on an array and pass it a function
+- .map will execute the function against each element in the array immediately
+- checkout the map-solution branch to see my code!
+
+7b) Solution With No Ordering REquirement
+
+getJSON('../data/earth-like-results.json').then(function(response) {
+      response.results.map(function(url) {
+        getJSON(url).then(createPlanetThumb);
+      });
+    });
+
+7c) Solution That Still Maintains Order of Which Thumbs URL
+
+getJSON('../data/earth-like-results.json').then(function(response) {
+      var thumbPromises = response.results.map(getJSON);
+      var sequence = Promise.resolve();
+      thumbPromises.forEach(function(thumbPromise) {
+        sequence = sequence.then(function() {
+          return thumbPromise.then(createPlanetThumb);
+        });    
+      });
+    });
+
+
+8) Promise.all
+
+Promise.all(arrayOfPromises)
+.then(function(arrayOfValues) {
+  ...
+})
+
+- takes an array of promises
+- executes them
+- return an array of values; where the values are in same order as input promises
+- rejects if just one Promise rejects
+- resloves after every Promise resolves
+
+9) Quiz: All Promises
+
+9a) Instructions
+
+- checkout the all-start branch and navigate to app/scripts/app.js
+- use Promise.all() to refactor the .map code by passing Promise.all() an array of Promises
+- each Promise will be executed in parallel
+- the return values will be returned in the same order as the Promises were created
+- checkout the all-solution branch to see my code
+
+9b) Solution
+
+getJSON('../data/earth-like-results.json').then(function(response) {
+      Promise.all(response.results.map(getJSON))
+      .then(function(allThumbData) {
+        allThumbData.forEach(createPlanetThumb);
+      });
+    });
+
+10) Quiz: Bonus Question: Parallel Requests
+
+- all getJSON requests should be parallel
+- don't wait for all responses
+- as soon as a response is available add it DOM
+- but the responses must be added in order 
+- so, it response #3 has to wait for response 1 and 2 before it can be added to DOM
+
+10a) Solution
+
+- request in parallel; process response in series
+- fetch JSON for all our chapters at the same time, ... 
+- then create a sequence to add them to the document:
+
+getJSON('../data/earth-like-results.json').then(function(response) {
+      response.results.map(getJSON)
+      .reduce(function(sequence, thumbPromise) {
+        // Use reduce to chain the promises together,
+        // adding content to the page for each chapter
+        return sequence.then(function() {
+          // Wait for everything in the sequence so far,
+          // then wait for this chapter to arrive.
+          return thumbPromise;
+        }).then(function(thumb) {
+          createPlanetThumb(thumb);
+        });
+      }, Promise.resolve());
+    });
