@@ -1,0 +1,162 @@
+
+1) Intro
+
+- cover how to build sites and apps that work great without regard for what type of connection the user has
+- use service worker to intercept network traffic
+- explore service worker dev tools
+- tame idb (the in-browser database)
+- explore UX strategies that deal with varying network conditions and updates
+
+2) The Problem
+
+- network connectivity is a hugh unknown
+- Wittr: a progressive web app
+- a web app that looks like native app installed on your system
+- however, if you open it without a web connection you see the "can't connect" page 
+- if the connection between your device and server is poor you can wait a long time waiting for the application to load before you can use it
+
+3) The Benefits of Offline First
+
+- how can we deal with the delays?
+- attempt a network fetch; it that fails, get content from cache (some previously load content)
+
+- however, if connect is alive but bad, we still get the bad UX of waiting to load
+
+3a) Offline First
+
+- means getting as many things on the screen as possible using stuff already on the user's device; i.e. in caches
+- we will only go to the network for resources if/when it becomes available- fresh data from network can be used to update the page and chace for next time there is no connection
+
+
+
+4) What Does Online First Look Like
+
+- we try the network first
+- if that fails, we serve some offline content
+- e.g. cahce data, fancy error page, etc
+- so this strategy works well with good connectivity, or when you are clearly offline
+- however, with poor connectivity (aka lie-fi) the UX is bad; because you are constantly waiting for the network before you can do anything
+
+5) Offline First
+
+- get content from offline 1st
+- then try to get content from network imeediately after that
+- get something on screen without waiting for network to succede of fail
+
+6) The Demo App - Wittr
+
+- a simple social networking timeline
+- currently slow with lie-file; and a total failure offline
+
+7) Install the Demo App
+
+git clone https://github.com/jakearchibald/wittr
+
+7a) I forked it Instead
+
+git clone https://github.com/otori23/wittr
+
+8) Quiz: Running The Demo App
+
+- run 'npm install' to install all dependencies the application requires.
+- use 'npm run serve' to kickoff the build scripts and launch a server that hosts the demo application at http://localhost:8888
+
+9) Exploring the Demo Apps Code
+
+- when you navigate to Wittr the browser makes a request for some HTML
+- like all web request browser this goes via the browsers HTTP cache
+
+browser <-> HTTP Cache <-> Internet
+
+- if there is no match there, the request continues to the internet
+- then hopefully the response makes its way back to the browser
+- the response tells the browser that it needs some css, so that is fetched (again through cache)
+- when that arrives we get our 1st page render with a page full of content
+- at same time browse downloads the css it also requests some javascript (again through cache)
+- when js arrives, it opens a websocket 
+- the establishes a websocket which opens a persistent connection to the server
+- now the server can continuously stream newer posts as they arrive
+- this provides the live update of feeds to the user
+
+9a) wittr/public/js/main/index.js
+
+- applications js entry point
+- load polyfills that some brwosers may need (promises, url api, etc)
+- the main work happens in IndexController.js; loadScripts function creates a new instance
+
+9b) IndexController.js
+
+- the IndexController constructor is run for every page load
+- create PostsView, ToastsVeiew and open socket connetion
+
+9c) PostsView
+
+- helps with updating the posts on the page
+
+9d) ToastsView
+
+- helps display error messages
+
+9c) _openSocket Method
+
+- opens a WebSocket
+- the message event is fired when data is recieved for new posts to display
+
+9d) _onSocketMessage
+
+- when you post a revieved message, the _onSocketMessage method is called
+- parses the data as JOSN an passes it on to the PostsView (this._postsView.addPosts(message))
+
+10) Build System - Babel
+
+- the application is written in ES6
+- so the build system uses babel
+
+10a) ES5
+
+- I think this is just what you think of as 'Javascript' 
+
+11) localhost:8889
+
+- a configuration server for the app
+- gives you basic control over connectivity to the server
+- notice that things only work well with a perfect network connection
+- the goal of the class is to fix the app to work for the other cases
+- e.g. Slow, Lie-fi, Offline
+
+12) Test Result Form Entry
+
+- when on of the challenges requires you to change the project (config settings or code)
+- implenent the chanllenge and get things working
+- then, type the test name into the "Test ID" and press enter
+- the system will run a test and decide if everything is working as it should
+- if you want to stop the animation started by the test, just clear the "Test ID" field
+
+13) Changing Connection Type To Offline
+
+- refresh app to see what happens
+- type 'offline' into Test ID field on configuration page and press enter
+
+14) Changing Connection Type To Lie-fi
+
+- refresh app to see what happens
+- type 'lie-fi' into Test ID field on configuration page and press enter
+
+14b) Lie-fi is THE WORST Type of UX
+
+- to aviod this you will need to learn about some new browser features
+
+15) Introducing Service Worker
+
+- zero connectivity => bad experience
+- low connectivity => maddening
+- previously, not much you could do about it
+- you just make your request and then everything is out of your hands
+- it might work, it might not
+- it might be fast, it might not
+- you have zero control until the request succeds if it even succeds\
+
+- this story has changed with a relatively new browser feature called service worker
+- gives users new power over the network
+
+
