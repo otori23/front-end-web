@@ -1,0 +1,97 @@
+
+1) An Overview Of Service Worker
+
+- all it is, is a simple javascript file that sits between you and netwok requests
+- it is a type of Web Worker: run separately from your page and can't access the DOM
+- but does control pages by intercepting requests as the browser makes them
+
+1a) What Happens After a Request has Been Intercepted
+
+- you can sent the request on to the network as ususal (i.e. through the cache)
+- or you can skip the network go to some kind of cache and create a response with information from the cache
+
+2) Register a Service Worker with the Browser
+
+navigator.serviceWorker.register('/sw.js')
+
+- sw.js is your service worker scripts
+- this line returns a promise
+- so, you get callbacks for success and failure
+
+navigator.serviceWorker.register('/sw.js')
+.then(function(reg) {
+  console.log('Yay!');
+})
+.catch(function(err) {
+  console.log('Boo!');
+});
+
+- if your register a service worker that is already registered, the browser won't register it again
+- it will just the promise associated with the already registered service worker
+
+3) Service Worker Scope
+
+- you can provide a scope to the sevice worker when it is registered
+- the service worker will control any page whose url begins with the scope
+e.g. /my-app/ | /my-app/hello/world/
+
+- it will ignore those pages that don't begin with the scope
+eg.g / | /another-app/ | /my-app (this last one does not have the trailing slash)
+
+navigator.serviceWorker.register('/sw.js', {
+  scope: '/my-app/'
+});
+
+3a) Multiple Service Workers with Different Scopes
+
+- can have multiple service workers with different scopes
+- this is handy say for github pages where multiple projects have same origin
+- now you can have a different service worker for each project
+
+https://jakearchibald.github.io/svgomg/
+https://jakearchibald.github.io/trained-to-thrill/
+https://jakearchibald/github.io/isserviceworkerready/
+
+3b) Default Scope
+
+- determined by the location of the service worker script
+- basically the path that the script sits in
+
+SW URL 			Default Scope
+/foo/sw.js		/foo/
+/foo/bar/sw.js		/foo/bar/
+/sw.js			/
+
+- so ususally you don't need to set the scope, you just put the sw in the right place
+
+3c) What is Happening Within the Service Worker
+
+- you listen for specific events
+- will introudce these events as course progresses
+
+self.addEventListener('install', function(event) {
+  // ...
+});
+
+self.addEventListener('activate', function(event) {
+  // ...
+});
+
+self.addEventListener('fetch', function(event) {
+  // ...
+});
+
+4) Find Out About Service Worker Support
+
+https://jakearchibald.github.io/isserviceworkerready/
+
+- as of 2015: chrome + opera support it; firefox on its way
+- can use it right away though to improve UX
+- if browser does not support then users just don't get the good UX
+
+4a) Make Sure to Wrap Code in a Simple Feature Detect
+
+if(navigator.serviceWorker) {
+  navigator.serviceWorker.register('/sw.js'); // only runs when browser supports this feature
+}
+
