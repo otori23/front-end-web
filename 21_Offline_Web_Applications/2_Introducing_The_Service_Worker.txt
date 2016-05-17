@@ -27,7 +27,7 @@ navigator.serviceWorker.register('/sw.js')
 });
 
 - if your register a service worker that is already registered, the browser won't register it again
-- it will just the promise associated with the already registered service worker
+- it will just return the promise associated with the already registered service worker
 
 3) Service Worker Scope
 
@@ -95,3 +95,21 @@ if(navigator.serviceWorker) {
   navigator.serviceWorker.register('/sw.js'); // only runs when browser supports this feature
 }
 
+5) wittr/public/js/sw/index.js
+
+- add ServiceWorker to Wittr Project and mess around with requests
+- make changes to index.js, bulid system picks it up
+- navigate to localhost:8888/sw.js to see changes; extra output in file is from Babel
+
+6) Add Listener for Service Wroker "fetch" Event
+
+self.addEventListener('fetch', function() {
+  console.log(event.request);
+});
+
+
+- the request for the page's html, in the scope of the sw, 1st goes to the sw
+- this triggers a 'fetch' event in the service worker
+- there is also a 'fetch' event for every request triggered by the page (css, js, images, etc)
+- event if these requests are to another origin
+- you can inspect the request in the 'fetch' event listener
