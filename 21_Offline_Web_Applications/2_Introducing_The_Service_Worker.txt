@@ -101,15 +101,96 @@ if(navigator.serviceWorker) {
 - make changes to index.js, bulid system picks it up
 - navigate to localhost:8888/sw.js to see changes; extra output in file is from Babel
 
-6) Add Listener for Service Wroker "fetch" Event
+6) Add Listener for Service Worker "fetch" Event
 
 self.addEventListener('fetch', function() {
   console.log(event.request);
 });
-
 
 - the request for the page's html, in the scope of the sw, 1st goes to the sw
 - this triggers a 'fetch' event in the service worker
 - there is also a 'fetch' event for every request triggered by the page (css, js, images, etc)
 - event if these requests are to another origin
 - you can inspect the request in the 'fetch' event listener
+
+7) Registering a Service Worker
+
+- the sw does nothing until you register it with the browser
+
+7a) localhost:8888/sw.js
+
+- see contents of file: babel output + your handler 
+
+7b) wittr/public/js/main/IndexController.js
+
+- this is where you register the sw
+- the construction if IndexController sets up the app
+- setups up views to get ready for recieving witts
+- also, sets up the websocket for the live updates
+
+7c) "Private" Methods in JS begin with Underscore
+
+- js does not have private methods
+- but by convention any method that begins with "_" is considered "private"
+
+7d) this._registerServiceWorker
+
+- add registration code here
+- the scopte is the entire origin so the default scope is fine
+
+7e) Test on Config Page
+
+Test ID = registered
+
+7f) Solution
+
+- register sw without errors
+- avoid errors in older browsers
+- log message on success
+- log message on failure
+
+IndexController.prototype._registerServiceWorker = function() {
+  // avoid errors in older browsers
+  if(!navigator.serviceWorker) return;
+
+  navigator.serviceWorker.register('/sw.js')
+  .then(function() {
+    console.log('Registration worked!');
+  })
+  .catch(function() {
+    console.log('Registration failed');
+  });
+});
+
+8) SW Event Handler - Limited to HTTPS
+
+- HTTPS: secure form of HTTP
+- has access to the request
+- can modify the request here (e.g. its headers)
+
+9) HTTP vs HTTPS
+
+- with plain http, any node between the client and server can access and modify the request
+- so, without encryption, a client can get content that is very different from what was requested
+- malicious scripts can:
+-- capture your input data
+-- alter databases
+-- read cookies
+- https encrypts the request
+
+9a) SW
+
+- the sw has a different lifecycle than the pages
+- the sw lives longer that pages, so they can be used to persist an attack like this
+- BAD!!!
+- so, it is not acceptable to allow a malicious middle man to get control of your sw
+- so, that is why sw only operates on https requests
+- but requests to localhost are exempt; i.e. can be http
+
+10) The Service Worker Lifecycle -  is Complex
+
+- when we create sw, it took 2 refreshes to see the console.log output from the sw event handler
+- also, when you edited event handler, takes 2 refreshes again to see new console.log
+
+
+
