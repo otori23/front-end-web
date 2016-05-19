@@ -421,5 +421,90 @@ self.addEventListener('fetch', function(event) {
 16a) fetch(url)
 
 - lets you make network requests and lets you read the response
+- an improvement on the XHR api which is 15 years old at this point
+- XHR was not particularly well thought out to begin with
+
+16b) Problem with XHR
+
+- deals with many different response types; not just XML (think json)
+- deals with other protocols; not just HTTP (think file system)
+- the returned object is like a strange mixture of request and response
+- which is XML all caps but only the H in http is in caps
+- the code is cumbersome to use; the flow just feels like it is in the wrong order
+- does not support promises, so you end up with deeply nested callback code (tower of doom)
+- does not support lower level things like streams
+- have to declare response type before you even make the request
+- compare XHR api and fetch api
+
+16c) XHR Code
+
+var client = new XMLHttpRequest();
+
+client.addEventListener('load', function() {
+  console.log(client.response);
+});
+
+client.addEventListener('error', function() {
+  console.log("It failed");
+});
+
+client.responseType = 'json';
+client.open('GET', '/foo');
+client.send();
+
+16d) Fetch Code
+
+fetch('/foo')
+.then(function(response) {
+  return response.json();
+})
+.then(function(data) {
+  console.log(data);
+})
+.catch(function() {
+  console.log('It failed');
+});
+
+- cleaner
+- supports promises
+- elegant error handling
+
+16e) Back to Crafting a Response
+
+- remember, event.respondWith takes a response, or a promise that resolves to a response
+- the 'fetch' api returns a promise that resolves to a response
+- so, it composes well with event.respondWith
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    fetch('/imgs/dr-evil.gif')
+  );
+});
+
+- fetch does a normal browser fetch, so results may come from the browser HTTP cache
+- this is a benefit in this case
+
+16f) Quiz: Hijacking Requests 2 Quiz
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout gif-response
+
+- want to hijack only particular requests
+- take a look at code in: public/js/sw/index.js
+- only respond to requests with a url ending in ".jpeg"
+- event.request gives you information about the request
+- once completing the task enter the Test ID gif-response
 
 
+self.addEventListener('fetch', function(event) {
+  // TODO: only respond to requests with a
+  // url ending in ".jpg"
+  if(event.request.url.endsWith('.jpg')) {
+  	event.respondWith(fetch('/imgs/dr-evil.gif'));
+  }
+});
+
+17) Hijacking Requests 3
+
+- explore some request hijacking patterns
