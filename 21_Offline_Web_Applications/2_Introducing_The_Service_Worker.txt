@@ -192,5 +192,234 @@ IndexController.prototype._registerServiceWorker = function() {
 - when we create sw, it took 2 refreshes to see the console.log output from the sw event handler
 - also, when you edited event handler, takes 2 refreshes again to see new console.log
 
+10a) SW LifeCycle Process
+
+- start with window client for page that does not have sw defined
+- make code changes to add sw and do a refresh
+- new window client is created for page that has sw registered; old window client goes away
+- the new page makes request for all of its resources then registers the sw
+- sw only takes control of page when the page is loaded
+- so, the sw has no control over the currently loaded page (i.e. the page that requested for it)
+- then now when you do a refresh, the sw already exists and will take control of the new page loaded
+
+10b) Making a New Version of SW
+
+- if a page loads via a sw, it will check for a change to the sw in the background
+- when a new sw is loaded; it waits until all pages using the old service work are gone
+- then the new sw takes control of loaded pages
+
+10c) Forcing Using a New Version of the SW
+
+- will need to naviagate to another domain
+- then navigate back to the domain with SW
+- this forces the old SW to be removed, then the new SW that was waiting can now take control
+
+10d) Similar to Update Process for Browsers (e.g. Chrome)
+
+- chrome will download its update in the background
+- but these updates don't take effect until the browser is closed and then opened again
+- hamburger icon on top right is colored 'green' to notify user that there is a pending update available
+
+10e) HTTP Cache Time
+
+- when browser refetches a sw looking for updates, it goes through the browsers HTTP cache
+- so, it is strongly recommended to keep the cache time on your service worker short
+- instructor uses a cache time of 0, on all of his sw projects
+- if you set your sw script to cache for more than a day, the browsers will ignore limit time to 24 hrs
+
+11) Enabling Service Worker Dev Tools (in Chrome Canaray)
+
+- dev tools that show you what state the service work is in
+
+11a) Chrome Canary
+
+- nightly build of chrome that has all the latest stuff
+
+12) Service Worker Dev Tools
+
+- demonstrate servic worker lifecycle and developer tools to observe it
+
+12a) The Console Tab - Default Context
+
+- any code you run in the console, will run against the window object by default
+- i.e. the code runs in the context of the window (golbal object); so, self = the window object
+- so, at this point, self.registration, which only exists in service worker, is undefined
+
+12b) The Console Tab - Switch Context
+
+- can use tool bar item to switch context to that of sw
+- so, now self = the sw object; self.registration does have meaning
+
+12c) The Debugger (Sources Tab) - Works With ServiceWorker
+
+- go to the sources panel, find the code for service worker and debug it like any other js code in project
+- can set a break-point in the fetch event
+- when the bugger pauses your code, you can inspect variable values, stack trace, etc in debugger
+
+12d) The Resources Tab
+
+- sw has its own panel in the resources tab
+- on the sw panel, can use 'bin' icon to unregister the sw
+- this is useful if you want to refetch the sw from scratch
+- the tabs within the sw panel, give you insight into the sw lifecycle
+- i.e. can select appropriate tab to see which sw is installing, waiting, active, or redundant
+- if a tab is greyed out, this means there are no sw's in that state
+
+12e) Quiz: Service Worker Dev Tools - SW 
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout log-requests
+
+- then make a change to sw and get it into a waiting state
+
+- once the task is completed: enter the Test ID = sw-waiting into config server
+
+12f) Quiz: Service Worker Dev Tools - SW Active
+
+- make the waiting sw active
+- do this by either closing all windows that are using the current sw
+- or, navigate to a page that isn't in the sw's scope
+- once completed, enter the Test ID sw-active
+
+13) Service Worker Dev Tools Continued
+
+- closing tab or navigating to another domain is a bit of a pain during development
+- there are other ways to get your sw on client to update when changes are made on the server
+
+13a) Reload Page + Shift
+
+- loads the page but bypasses the service worker
+- this behaviour is part of teh service worker spec
+- causes an already "waiting" service worker to become active
+- need to do another page reload to start using the newly active service worker
+- i.e. get the console output of the newly activated sw
+- quick way to test minor chages unrealated to the service worker (i.e. minor css changes)
+
+13b) GET http://localhost:8888/sw.js net::ERR_FILE_EXISTS
+
+- an output line in console
+- chorme is saying th has checked the service worker and there were no changes
+- this is a bug in chromes behaviour, but, it does not break anything
+
+13c) Source Tab -> Service Workers Tab -> "Force update on page load" checkbox
+
+- change sw life cycle to be developer friendly
+- in this mode when you reload a page, the sw is always fetched and immediately made active, ...
+- then the page refreshes, so you see the console logs immediately
+- no need for an additional refresh
+- this change in behaviour only happens when dev tools is open; makes view quick changes really easy
+
+13d) Caveat with "Force update on page load" method
+
+- this is note thesame lifecycle users will be getting
+- only happening in developer environment while the tab is openned
+
+13e) Resources Tab -> SW Panel -> State Colors
+
+- active service worker has red icon
+- waiting service worker has green icon
+
+14) Hijacking Requests
+
+- currently server is having all the fun when it comes to sending content back to the browser 
+- now it's our turn to have fun
+
+so far:
+
+browser <-> service worker <-> HTTP cache <-> Internet (i.e. the server)
+
+by now:
+
+browser <-> service worker
+
+- nothing will go to the network
+- this is an important step in going offline first
+
+14a) event.respondWith()
+
+- this tells the browser that the sw will handle the response
+- no need to get response from the network
+- this method takes a response object or a promise that resolves with a response
+
+14b) new Response()
+
+- one way to create a response object
+- 1st parameter is the body of the response (blob, buffer, string, etc.)
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    new Response('Hello World')
+  );
+});
+
+14c) Respond With HTML
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    new Response('Hello <b>World</b>')
+  );
+});
+
+- the browser will just print out the response string as plain text
+- i.e. the browser will not interprete the string as markup
+
+14d) Network Tab -> Response Headers
+
+content-type: text/plain;charset=UTF-8
+
+- this means the browser will not parse the response as html
+- need to change this to allow browser to interprete response as markup
+- use the second parameter in Response object constructor to specify response headers
+
+14e) Second Argument of Response Constructor
+
+- an object; the 'headers' property is an object of headers and values
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    new Response('Hello <b>World</b>', {
+     headers: {'foo': 'bar'})
+  );
+});
+
+- the code above will show the response header to be:
+
+content-type: text/plain;charset=UTF-8
+foo: bar
+
+15) Quiz: Hijacking Requests 1 Quiz
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-custom-response
+
+- return html repsonse (header contains: content-type: text/html)
+- have an element with class "a-winner-is-me"
+- once completing the task enter the Test ID html-response
+
+self.addEventListener('fetch', function(event) {
+	// TODO: respond to all requests with an html response
+	// containing an element with class="a-winner-is-me".
+	// Ensure the Content-Type of the response is "text/html"
+  event.respondWith(
+    new Response('Hello <b class="a-winner-is-me">World</b>', {
+      headers: {'Content-Type': 'text/html'}
+    })
+  );
+});
+
+15a) Goal With Hijacking Requests
+
+- hijack particular requests in particular ways
+- depending on the information in the request and the response
+
+16) Hijacking Requests 2 - Goto Network for Response but not for what was Originally Requested
+
+- will use the fetch api for this
+
+16a) fetch(url)
+
+- lets you make network requests and lets you read the response
 
 
