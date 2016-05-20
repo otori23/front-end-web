@@ -290,7 +290,7 @@ git checkout log-requests
 13a) Reload Page + Shift
 
 - loads the page but bypasses the service worker
-- this behaviour is part of teh service worker spec
+- this behaviour is part of the service worker spec
 - causes an already "waiting" service worker to become active
 - need to do another page reload to start using the newly active service worker
 - i.e. get the console output of the newly activated sw
@@ -752,3 +752,291 @@ self.addEventListener('fetch', function(event) {
 - Cache avatars
 
 24) Updating the Static Cache
+
+- time to disable the "Force update on page load"
+- this lets you the developer experience the sw lifecycle as the user does
+
+24a) Service Worker Forced Updates
+
+- i.e. select this option in dev tools "Sources" tab
+- great during development
+- public/scss/_theme.scss - contains sass vars referenced throught the rest of the style sheets
+- can change the app's theme color here
+- can make a change here and have it immediately refelcted in page on page refresh
+
+24b) Remember What Forced Update Option Does
+
+- reloads the service worker from the network on every refresh
+- the fetched service worker installs even if the service worker did not change
+
+24c) The Service Worker Normal Life Cycle
+
+- just a normal refresh will still give you the old css in the sw cache
+- will need to to do a Shift+Refresh to bypass current service worker
+- so you will get all the app assests from the server
+- this means you will get the new version of the css
+- there was no change to the sw code, so the install event for the service work is not invoked
+- this means that the new css was never cached
+- so, when you refresh page normally you get the old stale css from the sw cache
+
+- we need to get the service worker to pick up the changes in the css
+
+24d) Steps to Get Service Worker to Cache Changes in CSS
+
+- to get css to update, we need to make a change in the service worker
+- the browser will then treat this updated worker as a new version
+- the new sw gets its own install event where it will fetch the apps resources and place in its own cahce
+- we will explicitly use a brand new cache that is different the cache used by the old version of the sw
+- this does not happen automatically, we actually have to specifiy a new name for a cache to create
+- e.g. gchange cache name like 'wittr-static-v1' -> 'wittr-static-v2'
+- the once the old service worker (& cahce) is realeased (navigate to different domain, or close window), ...
+- the new sw (and its cache) will take control for the page
+
+25) How To Get Rid of the Old Cache
+
+25a) The Service Worker 'activate' Event
+
+- fires when a sw becomes active
+- i.e. when the sw is ready to control pages and teh previous sw is gone
+- this is the perfect time to get rid of old caches
+
+25b) event.waitUntil
+
+- use to signal the length of the process
+- while you are activating the browser will queue other service worker events such as fetch
+- so, by the time the sw recieves its first fetch, youknow you have the caches created
+
+25c) caches.delete(cacheName);
+
+- deletes the specified cache
+- returns a promise
+
+25d) caches.keys();
+
+- get the name of all your cahces
+- returns a promise
+
+26) Update Your CSS Quiz
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-handling-updates
+
+- once completing the task enter the Test ID new-cache-ready
+
+26a) Steps
+
+- update the css in a way that does not disrupt the currently running version of the site
+- make sure to disable "Force update on page reload" on SW tab in source tab of dev tools
+- take a look at file: public/js/sw/index.js
+- the task is to change the theme of the site
+- all the colors are stored as sass variables
+- check out the colors in file: public/cscc/_theme.scss
+- just uncomment the pink/green theme at the bottom of the file
+- in the sw update the cahce name
+- then use the activate event to remove the old cahce
+- once change are made reload page
+- you should see we in the 'waiting' state
+- before it activates, go to config server and enter 'new-cache-ready'
+
+26b) Solution
+
+i) The Easy Way
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    // TODO: change the site's theme, eg swap the vars in public/scss/_theme.scss
+    // Ensure at least $primary-color changes
+    // TODO: change cache name to 'wittr-static-v2'
+    caches.open('wittr-static-v2').then(function(cache) {
+      return cache.addAll([
+        '/',
+        'js/main.js',
+        'css/main.css',
+        'imgs/icon.png',
+        'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
+        'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    // TODO: remove the old cache
+    caches.delete('wittr-static-v1')
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+
+ii) The Scalable Way
+
+var staticCacheName = 'wittr-static-v2'; // the cahce I want to keep
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    // TODO: change the site's theme, eg swap the vars in public/scss/_theme.scss
+    // Ensure at least $primary-color changes
+    // TODO: change cache name to 'wittr-static-v2'
+    caches.open('wittr-static-v2').then(function(cache) {
+      return cache.addAll([
+        '/',
+        'js/main.js',
+        'css/main.css',
+        'imgs/icon.png',
+        'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
+        'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cachesNames.filter(function(cacheName) {
+          return cacheName.startsWith('wittr-') && // basically only consider caches for witter app
+                 cacheName != staticCacheName;
+        }).map(function(cacheName) {
+          return cahce.delete(cacheName);
+        })
+    );
+  })
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+- maintain a save list of cache names you want to keep
+- remove anything that is not on the list
+
+26c) The Browser Cache
+
+- remember that requests go through the standard browser cache
+- so if you have a resource that has a cache time of a year, any updates would just come from HTTP cache
+- so you would not get any changes you made
+- on the development end, can get around this you can set all resources to have a cache age of 0
+- but on client, you are not in control, so you need some cahce busting strategy
+
+26d) HTTP Cache Busting on Client
+
+- add version numbers to your resource file names
+- this can be done automatically with a build system where the version # is generate from the file contents
+- this way the client browser will always have to go to the server to fecth the new version
+- you could also use the build script to generate the name of the cache that you want to keep
+- or any other resource for that matter
+
+26c) Activate SW
+
+- need to close window for all pages using sw
+- or navigate all pages using sw to a different domain
+- or shift+refresh
+- after it activates, go to config server and enter 'new-cache-used'
+
+27) Adding UX to the Update Process
+
+- the goal is to tell the user once a new update has been found
+
+- when a new worker is dicovered, ...
+- it waits until all pages using the current version go away before it can take over
+- this could be a while
+
+27a) How to Alert User That a New Service Worker is Available
+
+- present user with form which has option to 'update' or 'dismiss' 
+- use the sw registration object to accomplish this
+
+28) The ServiceWorker Registration Object
+
+navigator.serviceWorker.register('/sw.js').then(function(reg) {
+  //  methods
+  reg.unregister();
+  reg.update();
+
+  // properties
+  reg.installing;
+  reg.waiting;
+  reg.active;
+
+  // events
+  reg.addEventListener('updatefound', function() {
+    // reg.installing has changed
+    var sw = reg.installing;
+    console.log(sw.state);
+  });
+});
+
+- registering a service worker returns a promise
+- this promise fulfils with a service worker registration object
+- this object has properties and methods related to the service worker registration
+
+28a) reg.unregister() and reg.update()
+
+- can use object to unregister a service worker or programatically trigger an update
+
+28b) reg.installing, reg.waiting, and reg.active
+
+- also get three properties: installing, waiting, and active
+- they give you insight into sw lifecycle
+- they also map directly to dev tools view we've been working with so far
+
+28c) reg.updatefound Event
+
+- the object has an event 'updatefound' which is called when an update is found
+- when this event fires, reg.installing will be the new service worker
+
+28d) Can Inspect State in Service Worker Objects Themselves
+
+var sw = reg.installing;
+console.log(sw.state);
+
+28e) Service Worker States [installing | installed | activating | activated | redundant]
+
+- installing: the installer has fired, but not yet completed
+- installed: the installation has successfully completed by has not yer activated
+- activating: the activate event has fired but not yet complete
+- activated: the serviceWorker is ready to receive fetch events
+- redundant: the serviceWorker has been thrown away
+
+28f) The 'redundant' State
+
+- happens when the sw has been superseded by a newer worker
+- or if the sw failed to install
+
+28g) The Service Worker State Change Event
+
+- fired whenever the value of the state property changes
+
+sw.addEventListener('statechange', function() {
+  // sw.state has changed
+});
+
+29) navigator.serviceWorker.controller
+
+- refers to the sw that controls this page
+- you want to tell the user there's and update ready
+- however update happens in background 
+
+29a) When navigator.serviceWorker.controller is null
+
+- means the page did not load using the service worker
+- it came from the network instead
+
+if(!navigator.serviceWorker.controller) {
+  // page didn't load using a service worker
+}
+
