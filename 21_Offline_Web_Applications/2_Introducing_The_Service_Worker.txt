@@ -508,3 +508,247 @@ self.addEventListener('fetch', function(event) {
 17) Hijacking Requests 3
 
 - explore some request hijacking patterns
+- another thing we can do, in the sw 'fetch' handler, is send the request to the network...
+- analyze the response and send some other information to the browser
+
+17a) Example Custom Failure Message
+
+self.addEventListener('fetch', function(evetn) {
+  event.respondWith(
+    fetch(event.request).then(function(response) {
+      if(response.status == 404) { // was able to reach the server
+        return new Response("Whoops, not found"); // resource does not exist on server; network is active
+      }
+      return response;
+    }).catch(function() { // was not able to reach the server
+      return new Response("Uh oh, that totally failed"); // for cases where network not active 
+    })
+  );
+});
+
+17b) Can Create Complex Rules for Requests
+
+- so can get response from multiple sources, and use these results to craft one response to page
+- can go to network, if that fails, go somewhere else on network, or go somewhere locally
+- i.e. chain two fetch request together
+
+18) Quiz: Hijacking Requests 3 Quiz
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout error-handling
+
+- so we have seen a custom 404 message served by sw
+- but what if we want to serve an image instead
+- take a look at code in public/js/sw/index.js
+- so, instead of text resonpse, fetch git from network an show gif instead
+
+- once completing the task enter the Test ID gif-404
+
+18b) Solution
+
+- if you return a promise within a promise, it passes the eventual value to the outer promise
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    fetch(event.request).then(function(response) {
+      if (response.status === 404) {
+        // TODO: instead, respond with the gif at
+        // /imgs/dr-evil.gif
+        // using a network request
+        //return new Response("Whoops, not found");
+        return fetch('/imgs/dr-evil.gif');
+      }
+      return response;
+    }).catch(function() {
+      return new Response("Uh oh, that totally failed!");
+    })
+  );
+});
+
+19) Caching and Serving Assets
+
+- to make wittr truly offline first, we need somewhere to store the app's assests
+- i.e. the HTML, CSS, JS, images, fonts, etc
+- this is where the cache API comes in
+
+20) The Cache API
+
+- gives use the caches object on the global object 
+
+20a) Windows.caches (https://developer.mozilla.org/en-US/docs/Web/API/Window/caches) 
+
+-  read-only property 
+- returns the CacheStorage object associated with the current origin
+- enables service worker functionality 
+- such as storing assets for offline use, and generating custom responses to requests
+
+20b) Open Cache with Name = "my-stuff"
+
+caches.open('my-stuff').then(function(cache) {
+  //...
+});
+
+20c) The Cache - What Does 'my-stuff' Contain; How is it Structured?
+
+- a cache box contains request and response pairs from any secure origin
+- we can use it to store fonts, scripts, images, anything...
+- assest could be from our own origin as wll as elsewhere on the web
+
+20d) Add Cache Items - cache.put, cache.addAll
+
+cache.put(request, response);
+
+- can pass in a request or a URL and a response
+
+cache.addAll(['/foo', '/bar']); 
+
+- takes an array or requests or URLs
+- fetches them, and puts the request-response pairs into the cache
+- the operation is atomic, if any fail to cache none of them are added
+- uses fetch under the hood, so requests go via the browser cache
+
+20e) Get Stuff Out of The Cache - cache.match
+
+cache.match(request);
+
+- returns a promise for a matching response if one is found
+- or null otherwise
+
+caches.match(request);
+
+- same as cache.match, but it tries to find a response in all available caches starting with the oldest
+
+21) The Service Worker 'install' Event
+
+- when a browser runs a sw for the 1st time, the install event is fired for the sw
+- the browser will no let the sw take control of the page until the install phase is completed
+- the app programmer is in control of what is involved in the install phase of the sw
+
+21a) The Install Phase
+
+- use it as an opportunity to get everything we need from the network
+- and create a cache for them (i.e. build the resources in the cache)
+
+21b) Adding the 'install' Event
+
+self.addEventListener('install', function() {
+  event.waitUntil(
+    <<a Promise>>
+  );  
+});
+  
+21c) event.waitUntil
+
+- let's us signal the progress of the install
+- pass it a promise
+- if/when the promise resolves the browser knows that the install is complete
+- if the promise rejects, the browser knows that the install failed; and the sw is discarded
+
+22) Quiz: Install And Cache Quiz
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-install
+
+- take a look at public/js/sw/index.js
+- there is an array of urls defined; add these resources to a cache named 'wittr-static-v1' 
+
+- once completing the task enter the Test ID install-cached
+
+22a) Verify State of Cache
+
+- go to "Resoruces" tab in Dev Tools
+- select "Cache Storage" panel
+- look for your cahce in there
+
+22b) Solution
+
+self.addEventListener('install', function(event) {
+  var urlsToCache = [
+    '/',
+    'js/main.js',
+    'css/main.css',
+    'imgs/icon.png',
+    'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
+    'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
+  ];
+
+  event.waitUntil(
+    // TODO: open a cache named 'wittr-static-v1'
+    // Add cache the urls from urlsToCache
+    caches.open('wittr-static-v1').then(function(cache) {
+  	  return cache.addAll(urlsToCache);
+    })
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  // Leave this blank for now.
+  // We'll get to this in the next task.
+});
+
+23) Quiz: Cache Response Quiz
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-cache-response
+
+- we assume you have already created the cache (as in the last step)
+- your code goes in the 'fetch' handler
+- the goal is to respond to the request with an entry from the cache if there is one
+- or else get response from the network
+- hint: you need to call event.respondWith synchronously
+- hint: you can't call it within a promise handler, that's too late
+
+- once completing the task enter the Test ID cache-served
+
+- you can put the server in offline mode and you will still get a response
+
+23a) Solution
+
+self.addEventListener('install', function(event) {
+  var urlsToCache = [
+    '/',
+    'js/main.js',
+    'css/main.css',
+    'imgs/icon.png',
+    'https://fonts.gstatic.com/s/roboto/v15/2UX7WLTfW3W8TclTUvlFyQ.woff',
+    'https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOD8E0i7KZn-EPnyo3HZu7kw.woff'
+  ];
+
+  event.waitUntil(
+    // TODO: open a cache named 'wittr-static-v1'
+    // Add cache the urls from urlsToCache
+    caches.open('wittr-static-v1').then(function(cache) {
+  	  return cache.addAll(urlsToCache);
+    })
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  // Leave this blank for now.
+  // We'll get to this in the next task.
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      if(response) return response;
+      return fetch(event.request);
+    })
+  );
+});
+
+23b) Solution Short Comings
+
+- we don't update the posts in the cache
+- this is because we cache the HTML once at install time
+- so, at this point, we are always stuck with the same set of messages in the cache
+
+23c) To do List to Get to Full Offline 1st Success
+
+- Unobstrusive app updates
+- Get the user onto the latest version of app
+- Continually update cache of posts
+- Cache photos
+- Cache avatars
+
+24) Updating the Static Cache
