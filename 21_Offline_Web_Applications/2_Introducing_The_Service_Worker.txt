@@ -967,7 +967,7 @@ navigator.serviceWorker.register('/sw.js').then(function(reg) {
   reg.unregister();
   reg.update();
 
-  // properties
+  // properties: will point to a service worker object or be null
   reg.installing;
   reg.waiting;
   reg.active;
@@ -1029,14 +1029,58 @@ sw.addEventListener('statechange', function() {
 
 - refers to the sw that controls this page
 - you want to tell the user there's and update ready
-- however update happens in background 
+- however update happens in background
+- so, the update could be: ready & waiting, it could be in progress, or it might not have started yet
+- this means we need to look at the state of things when the page loads
+- we also need to listen for future changes
 
-29a) When navigator.serviceWorker.controller is null
+29a) If There is no controller - navigator.serviceWorker.controller = null 
 
 - means the page did not load using the service worker
-- it came from the network instead
+- it loaded directly from the network instead
 
 if(!navigator.serviceWorker.controller) {
   // page didn't load using a service worker
 }
 
+29b) Otherwise Look At the Registration
+
+if (reg.waiting) { // alread there
+  // there's ana update ready!
+  // so, tell user about it
+}
+
+if (reg.installing) { // in progress
+  // there's an update in progress
+
+  // this update may fail
+  // so, we listen to the state changes and track it, and...
+  // if it reareahes the installed state, alert user
+  
+  reg.installing.addEventListener('statechange', function() {
+    if (this.state == 'installed') {
+      // there's an update ready!
+      // so, tell the user about it
+    }
+  });
+}
+
+29c) Otherwise, Listen for the 'updateFound' Event
+
+reg.addEventListener('updatefound', function () { // start sometime later
+
+  // track the state of the installing worker
+  // if it reaches the install state, we tell the user 
+  reg.installing.addEventListener('statechange', function () {
+    if (this.state == 'installed') {
+      // there's and update ready!
+      // so, tell the user about it
+    }
+  });
+}
+
+30) Summary of Last Item
+
+- last item was about how to tell user about updates
+- the updates may be already there, in progress, or start some time later    
+  });
