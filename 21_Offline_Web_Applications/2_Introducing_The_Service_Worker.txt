@@ -1155,7 +1155,7 @@ self.addEventListener('message', function(event) {
 - so, when the user clicks the referesh button, it sends a message to our sw
 - the message tells the sw telling it to call skip waiting
 
-33d) navigator.serviceWorker.addEventListener('controlchange', ...)
+33d) navigator.serviceWorker.addEventListener('controllerchange', ...)
 
 - we have already seen navigator.serviceworker.controller
 - the page gets an event when this value changes
@@ -1199,3 +1199,42 @@ git checkout task-update-reload
 - on config server, enter the Test ID update-reload and press enter
 - then you have 8 secs to hit the refresh button in your notification
 - this confirms it's all working
+
+35) Summary
+
+- the update method described in this chapter is just one of many options on how to handle app updates
+- you have access to all the moving parts so, do what works best
+
+35a) SVGOMG - how it handles updates
+
+- is an svg compression tool
+- similar to the way wittr updates, except...
+- if update lands before the user is interacted with the page, sw takes over and refreshes instantly
+- if the user has not interacted with page, the instant refresh is not distractive in this case
+
+35b) Ask Server for a Change Log
+
+- analyze change log between new version and current version
+- for minor updates maybe don't bother user at all; they can get the update naturally
+- for urgent security fix, maybe refresh the page no matter what the user was doing
+- forced update is annoying, but necessary in this case
+
+36) Quiz: Caching The Page Skeleton
+
+- goal is to swap out root page with skeleton page
+- continue to make every thing work offline first
+- only need to edit the serviceworker: public/js/sw/index.js
+- note that the root page is currently being cached and served up in the fetch event
+- goal is to cache the page skeleton instead, and serve this if the root page is requested
+- once you have changed to code, refresh the page
+- browser presents update notification; so, choose to refresh
+- confirm changes are working, by checking the source on the root page
+- the source should be small 
+
+36#) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-page-skeleton
+
+- once completing the task enter the Test ID serve-skeleton
