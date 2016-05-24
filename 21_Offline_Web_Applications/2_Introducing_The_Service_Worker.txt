@@ -1077,10 +1077,125 @@ reg.addEventListener('updatefound', function () { // start sometime later
       // so, tell the user about it
     }
   });
-}
+});
 
 30) Summary of Last Item
 
 - last item was about how to tell user about updates
 - the updates may be already there, in progress, or start some time later    
-  });
+
+31) Quiz: Adding UX Quiz
+
+- goal is to tell the user when there is an update available
+
+31a) public/js/main/IndexController.js
+
+- this is where the service worker is registered
+- look at the _updateReady method
+- calling this method will show a notification to the user
+- the goal of the quiz is to call this method at the correct times
+- start in the sw registeration function and look at the guiding comments in that method
+- when code is done, need browser to pick up the changes
+- so in browser dev tools, delete the service worker, then refresh the page
+- this refreshes and chaces the javascript
+- now make a change to the sw; just a comment is sufficient; then refresh the page
+- if your code is working, you will see the notification
+- head over to the config page to test 
+
+31b) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-update-notify
+
+- once completing the task enter the Test ID update-notify
+
+32b) Solution 
+
+- if you deployed this change you would bump up the version of your cache
+- so the old and new cache don't step on each other
+- next, we let the user opt into the notification
+
+33) Triggering an Update
+
+- we have notifications appearing
+- however our goal is to give users a button they can press to get the latest version
+- click this button should tell the waiting service worker take over straightaway
+- this bypasses the usual sw life cycle
+- then refresh the page so it reloads with the latest assets from the newest cache
+
+33a) Three New Components that Help Us Achieve This
+
+- self.skipWaiting()
+- postMessage
+- navigator.serviceWorker.addEventListener('controlchange', ...)
+
+33b) self.skipWaiting()
+
+- a sw can call skipWaiting while it's waiting or installing
+- this signals that it should not queue behind another service worker; it should take over straightaway
+- we want to call this when the user hits the refresh button in our update notification
+- how do we send this signal from page to waiting sw?
+- ... postMessage
+
+33c) postMessage
+
+// from a page
+reg.installing.postMessage({foo: 'bar'});
+
+- your page can send messages to any sw using postMessage
+
+// in the service worker
+self.addEventListener('message', function(event) {
+  event.data; // {foo: 'bar'}
+});
+
+- you can listen for messages in the sw using teh message event
+
+- so, when the user clicks the referesh button, it sends a message to our sw
+- the message tells the sw telling it to call skip waiting
+
+33d) navigator.serviceWorker.addEventListener('controlchange', ...)
+
+- we have already seen navigator.serviceworker.controller
+- the page gets an event when this value changes
+- this means a new service worker has taken over
+- use this as a signal to reload the page
+
+34) Quiz: Triggering An Update Quiz
+
+- the branch contains stubbed out methods and comments to guide you
+
+34a) public/js/main/IndexController.js
+
+- _updateReady is called when there is an update to show
+- here, tell the new sw to take over the page immediately (i.e. skipWaiting)
+- be sure to handle this message in the service worker
+
+- in _registerServiceWorker, there is a todo
+- here, listen for the pages controlling service worker changing
+- use this as a signal to reload the page
+
+34b) public/js/sw/Index.js
+
+- a todo at the bottom
+- here, you listen for the message to take over page control
+
+34c) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-update-reload
+
+- once code is complete need to get it picked up by browser
+- again, in dev tools, delete the sw, and refresh page; this will refresh and cache js
+- then make a change to sw (i.e. a comment) and refresh page again
+- if code is working, you will see notification as before
+- pressing refresh will reload the page (i.e. build new cache for new version)
+
+34d) Testing
+
+- make change to sw and refresh page; this will give you an update notification
+- on config server, enter the Test ID update-reload and press enter
+- then you have 8 secs to hit the refresh button in your notification
+- this confirms it's all working
