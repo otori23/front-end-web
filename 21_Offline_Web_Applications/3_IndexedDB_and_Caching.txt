@@ -1,0 +1,92 @@
+
+1) Introducing the IDB Promised Library
+
+- when user opens Wittr, want to display latest posts recived by device before going to the network
+- then make a websocket connection to start receiving new posts
+- display new posts + add them to set of posts you already have stored
+- finally remove entries that are to old to be worth keeping
+- use a database for this
+
+2) Advantage of a Database
+
+- you can add and remove individual posts as needed
+- iterate ofver then, and query the data
+- the web platform has a database called index DB
+
+3) Index DB (IDB)
+
+- has a bad reputation
+- IDB is similar to NoSQL systems (different from relational databases)
+- supported by every major browser
+
+3a) Shape of IDB Databases
+
+- can have multiple databases with any given name
+- generally you will only have one database per app
+- that database contains multiple objects stores; one for each kind of thing you want to store
+
+3b) Examples of object stores
+
+- posts
+- preferences
+- users
+
+3c) Object Stores (images/object_store_key.jpeg)
+
+- contain multiple values
+- e.g. JavaScript objects, strings, numbers, dataes, or arrays
+- items in the object stores can have a separate primary key
+- or, you can assign a property of the values to be the key
+- key must be uniqe within an object store
+- it becomes the way to identify a particular object
+
+- later, get, set, add, remove, iterate over items in object stores as part of a transaction
+
+4) Transaction
+
+- all read/write operations in IDB must be part of a transaction
+- i.e. if you create a transaction for a series of steps, and one of the actions fail, none of them are applied
+- the state of the database would be as if none of the steps happened
+
+4a) Example of Steps in a Transaction
+
+- Add "hello:world" to "keyval" store
+- Get the first value from the "people" store
+- Change the persons' name to "James"
+- Write it back to the "people" store
+
+5) Indexes in Object Store (image/indexes.jpeg)
+
+- you can also create indexes within an object store
+- they provide a different view of the same data ordered by particular properites
+
+6) Why Does IDB hava a BAD Reputation
+
+- the API is awful
+- the API forces you to create spaghetti code
+- it is asynchronuous, and it pre-dates promises
+- sort of has itw own event-based promise system which is confusing
+
+6a) Note on IDB's API
+
+- it is too clumsy, so instructore will use an abstraction library instead of IDB's API directly
+
+7) IndexedDB Promised (https://github.com/jakearchibald/indexeddb-promised)
+
+- an abstraction of the native IDB API
+- a small library that mirrors the native IDB API
+- it uses promises rather than events
+- other than that, it is thesame as IDB
+- so anything you learn about the library, you can apply to native IDB directly
+- for the most part this also works in the reverse direction
+- i.e. you can use IDB documentation to understand what the library is doing
+
+10) Getting Started with IDB (
+
+10a) localhost:8888/idb-test/
+
+- just a blank page with a script tag
+
+10b) public/js/idb-test/index.js
+
+- all it contains is an import for the idb library we will use
