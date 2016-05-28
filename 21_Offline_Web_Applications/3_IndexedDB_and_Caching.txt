@@ -132,3 +132,67 @@ idb.open('test-db', 1, function(upgradeDb) {
 - by default datastore has keys that are separate from the data
 - typically what you want
 - you can inline the key and data into a single entity if you choose (see item 3c)
+
+13) Object Store API
+
+- the library's version of the objectstore is same as native object store
+- however the library's object store returns promises
+- this makes it way more usable than plain IDB
+
+14) objectStore.put(myItem, optionalKey)
+
+var dbPromise = idb.open('test-db', 1, function(upgradeDb) {
+  var keyValStore = upgradeDb.createObjectStore('keyval');
+  keyValStore.put('world', 'hello');
+});
+
+- can look up .put api on MDN
+- the native IDB api returns a request object
+- these request objects are what make IDB a pain to deal with
+- therefore, the library version returns a promise instead
+- note the input args are: (value, key) 
+- NOT (key, value)
+
+14a) dbPromise
+
+- the library idb.open returns a promise object
+- this promise resolve to the database object
+- later, we can use this database object to get and set items in the database
+
+25) Reading from DataBase - Use Transactions + dataStore.get(key)
+
+// read "hello" in "keyval"
+dbPromise.then(function(db) {
+  var tx = db.transaction('keyval');
+  var keyValStore = tx.objectStore('keyval');
+  return keyValStore.get('hello');
+}).then(function(val) {
+  console.log('The value of "hello" is:', val);
+});
+
+- the code for transactions seems repetative
+- however, it is possible to have a transaction that uses multiple object stores 
+
+26) Write to Database = Use Transaction + objectStore.put
+
+// set "foo" to be "bar" in "keyval"
+dbPromise.then(function(db) {
+  var tx = db.transaction('keyval', 'readwrite'); // notice 2nd parameter
+  var keyValStore = tx.objectStore('keyval');
+  keyValStore.put('bar', 'foo');
+  return tx.complete;
+}).then(function() {
+  console.log('Added foo:bar to keyval');
+});
+
+- .put returns a promise
+- however this promise does not necessarily signal that the put operation worked
+- as we saw, if the transaction fails, all the operations that were part of the transactions are undone
+- this ensures that you data is not left in some half-baked state
+- either all of it happens or none of it happened
+
+16a) Transaction.complete
+
+- a promise that fulfills if and when the transaction completes
+- and it rejects if it fails
+
