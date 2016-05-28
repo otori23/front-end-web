@@ -81,7 +81,7 @@
 - for the most part this also works in the reverse direction
 - i.e. you can use IDB documentation to understand what the library is doing
 
-10) Getting Started with IDB (
+10) Getting Started with IDB
 
 10a) localhost:8888/idb-test/
 
@@ -90,3 +90,45 @@
 10b) public/js/idb-test/index.js
 
 - all it contains is an import for the idb library we will use
+
+11) idb.open(name, version, upgradeCallback)
+
+- create a new (or open exisiting) database
+
+import idb from 'idb';
+
+idb.open('test-db', 1, function(upgradeDb) {
+
+});
+
+11a) upgradeCallback Argument
+
+- this function is called if the browser has not heard about this database before
+- also, called if the version of the db the browser knows about is less than the version # passed in
+- for database integrity this is the only place you can create and remove objectsotres and indexes
+
+11b) upgradeDb argument to upgradCallBack
+
+- used to define the database; i.e. the model/handle that represents the database
+- api for upgradDb is in the library doc
+- upgradDb really just a mirror of the native idb api; but for a few minor differences
+- so can get information directly from Mozilla Developer Network (MDN)
+
+11c) The Minor Differences
+
+- covered in library docs
+- the library docs says library db createObjectStore similat to native db's idbDatabase.createObjectStore
+- so, go to MDN for full story (api) of database object 
+
+12) Create a DataStore
+
+import idb from 'idb';
+
+idb.open('test-db', 1, function(upgradeDb) {
+  var keyValStore = upgradeDb.createObjectStore('keyval');
+});
+
+- create the 'keyValStore' datastore
+- by default datastore has keys that are separate from the data
+- typically what you want
+- you can inline the key and data into a single entity if you choose (see item 3c)
