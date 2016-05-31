@@ -484,6 +484,30 @@ IndexController.prototype._onSocketMessage = function(data) {
 
 26) Quiz: Using IDB Cache
 
+- goal: add database for wittr and add posts into it
+- look at file: public/js/main/IndexController.js
+- in constructor a promise for the database is created: this._dbPromise = openDatabase();
+- complete this openDatabase function
+- it should return a promise for a database called wittr
+- the database should have an object store called wittrs that uses the 'id' property as its key
+- also create an index called by-date which is sorted by the time property
+- the idb polyfill is already added at the top of script: import idb from 'idb'
+
+26a) Adding Messages to the Database
+
+- use code in public/js/idbtest/index.js as a reference
+
+- in the _onSocketMessage method, the database is fetched
+- goal: add each of the messages to the Wittr store
+- we are not using the entries in the database yet; just adding entries
+
+26b) indexedDB.deleteDatabase('wittr')
+
+- use this statment in the console if you want to remove the database and start afresh
+- once you have created database refresh browser to run the code
+- remember to have: "Force update on page load"
+- test on settings page using the code: "idb-store"
+
 26a) Steps
 
 - to get the project into the sample state use the commands
@@ -491,3 +515,36 @@ git reset --hard
 git checkout task-idb-store
 
 - once completing the task enter the Test ID idb-store
+
+27) Quiz: Using IDB 2
+
+- now you have wittr messages in the database
+- we want to now display them
+- we want to get posts that are in the database and display them ...
+- before connecting to the web socket that gets us newer posts
+
+27a) Get Messages in the Database on Screen
+
+- look at file: public/js/main/IndexController.js
+- previously we called: this._openSocket() in the construction
+- however, now we call this._showCahcedMessages
+- the we open the socket on after the _showCachedMessages resolves
+- the goal is to fully implement _showCachedMessages function
+
+27b) _showCachedMessages
+
+- get messages out of database
+- pass them to the method: _postsView.addPosts(messages)
+- make sure they are in date decending order
+- this may not be the order in which they come out of the database (e.g. use array.reverse())
+- bump up cache version # in service worker so that the changes are picked up
+- if everything works, post should be displayed even when you load the page offline 
+- test with code 'idb-show' on settings page
+
+27a) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-show-stored
+
+- once completing the task enter the Test ID idb-show
