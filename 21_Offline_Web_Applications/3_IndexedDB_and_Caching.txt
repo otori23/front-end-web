@@ -354,3 +354,140 @@ dbPromise.then(function(db) {
 return animalIndex.getAll('cat');
 
 
+23) Quiz: More IDB
+
+- edit the idb script: public/js/idbtest/index.js
+- create an index on the people data store, that orders people by age
+- so, in the upgrade function create the index
+- then at bottom of script write code to log out all the people in that order
+- when done, refresh the browser and you should see the peoples names logged out in order
+- also, confirm in dev tools
+- in the settings page, enter: idb-age
+
+23a) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-idb-people
+
+- once completing the task enter the Test ID idb-age
+
+24) Database Cursor
+
+- represents an object in the database (think iterator)
+- can get the handle for a cursor from the datastore or index of the datastore
+- cursors are useful for when you want to modify items as you loop through them in data store
+
+24a) store.openCursor() or index.ppenCursor()
+
+- returns cursor wrapped in a promise
+
+24b) cursor.value
+
+- the current item in the store that the cursor is pointing to
+
+24c) cursor.continue()
+
+- move to the next item
+- returns a promise for a cursor representing the next item or 'undefined' if there isn't one
+
+24d) !cursor
+
+- test cursor to see if there are any items left to iterate through
+
+24e) cursor.update(newValue)
+
+- changes the vaule of the item
+
+24f) cursor.delete()
+
+- removes the item
+
+24g) cursor.advace(2)
+
+- skips the next two items
+
+24h) Cursor Sample Code
+
+- the code below kinda sets up an asynchronous loop unit the cursor is undefined
+
+dbPromise.then(function(db) {
+  var tx = db.transaction('people');
+  var peopleStore = tx.objectStore('people');
+  var ageIndex = peopleStore.index('age');
+
+  return ageIndex.openCursor();
+}).then(function(cursor) {
+  if(!cursor) return;
+  reutrn cursor.advance(2);
+}).then(function logPerson(cursor) {
+  if(!cursor) return;
+  console.log('Cursored at:', cursor.value.name);
+  // cursor.update(newValue);
+  // cursor.delete();
+  return cursor.continue().then(logPerson);
+}).then(function() {
+  console.log('Done cursoring');
+});
+
+25) git checkout -f idb-cursoring
+
+- get the code that excersises the cursor
+
+24) Using the IDB Cache and Display Entries
+
+- plan is to create a database for Wittr that stores posts
+- when Wittr loads via the sw, it does so without going to the network
+- it fetches the page skeleton and assest straight from the cachce
+- currently the application goes out to the network for posts
+- we change this behaviour so that Wittr initially gets posts from the datastore and displays them
+- this means we are now showing post content before going to the network
+- the Wittr connects the websocket to get updated posts
+- the websocket bypasses the sw and http cache
+- as new posts arrive via the websocket the are displayed and added to the datastore for next time
+
+25) Populate Databases with Posts from the WebSocket - public/js/main/IndexController.js
+
+- in the IndexController constructor we open a ws (this._openSocket())
+- in the _openSocket method there is a listener for the ws 'message' event
+- the listener hands of to _onSocketMessage, passing on the data it recieved
+- _onSocketMessage parses the data as json, then passes it to addPosts
+
+25a) console.log the message in _onSocketmMessage
+
+IndexController.prototype._onSocketMessage = function(data) {
+  var messages = JSON.parse(data);
+  console.log(messages)
+  this._postsView.addPosts(messages);
+};
+
+- this gives you an idea of what attributes the message object has
+
+25b) The Posts (Message) Attributes
+
+{
+  avatar: ...,
+  body: ...,
+  id: ...,
+  name: ...,
+  time: ...
+}
+
+- these are the objects we store in IDB
+- the 'id' attribute is the obvious primary key
+- we want to display them in date order, so create an index on the time attribute
+
+25c) "Force Update on page load"
+
+- have this checked on the "Sources" tab of dev tools
+- makes development more efficient
+
+26) Quiz: Using IDB Cache
+
+26a) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-idb-store
+
+- once completing the task enter the Test ID idb-store
