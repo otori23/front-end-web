@@ -548,3 +548,44 @@ git reset --hard
 git checkout task-show-stored
 
 - once completing the task enter the Test ID idb-show
+
+28) Cleaning IDB
+
+- at this point only adding things to database
+- at some point you will end up with way too much stuff in the database
+- the broswer will limit size of you db anyways; so, you want to just keep what you need
+
+28a) Quiz Description
+
+- goal: ensure that database ony has 30 witts in it at any single time
+- take a look at public/js/main/IndexController.js
+- in _onSocketMessage, we are already adding items into the database
+- but after we add the items, we need to ensure that there are no more than 30 in the object store
+- use this code as reference: public/js/idb-test/index.js
+- again if you data base gets into a bad state, use the following @ the console: 
+indexedDB.deleteDatabase('wittr')
+
+- use Shift + Refresh to bypass SW when testing code until your get everything working
+- then bump the version of the service worker static cache to pick up your changes
+- if all works, there should be no more than 30 messages in your datastore for Wittrs
+- test with code: idb-clean in the settings page
+
+28b) Quiz: Cleaning IDB
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-clean-db
+
+- once completing the task enter the Test ID idb-clean
+
+28c) Bumping the Version of the Static Cache
+
+- do this when you have settled on something to ship
+
+28d) dbPromise.openCursor(null, 'prev')
+
+- use to open a cursor that goes through an index/store backwards
+
+29) Cache Photos
+
+- some of the posts on wittr have photos too, and we want to cahce does also
