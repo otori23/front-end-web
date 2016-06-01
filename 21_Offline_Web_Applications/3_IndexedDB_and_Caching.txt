@@ -589,3 +589,8 @@ git checkout task-clean-db
 29) Cache Photos
 
 - some of the posts on wittr have photos too, and we want to cahce does also
+- at the moment we are only caching resources at install time
+- however, the photos appear over the lifetime of the app with the posts
+- we want to cache photos as they appear
+- photos could go in IDB with rest of post data
+- but that means reading pixel data and coverting it into a blob... it is complicated
