@@ -594,3 +594,103 @@ git checkout task-clean-db
 - we want to cache photos as they appear
 - photos could go in IDB with rest of post data
 - but that means reading pixel data and coverting it into a blob... it is complicated
+- you will aslo loose the ability to stream the image which is a performance hit
+
+30) Using IndexedDB vs the Cache to Store Photos
+
+30a) IDB
+
+- need to get the image data out of the db as one lump
+- convert the image data to the image itself
+- only then can you put it on the page
+
+30b) Cache
+
+- can stream the image data out of the cache
+- means you don't need to wait for the whole image
+- you can convert the little bits of stream data into bits of the image
+- then progressively build the image on the page
+- DON'T need to wait for the whole image before displaying it
+
+30c) Advantages of Using the Cache for Images
+
+- cache api is a much better fit for the images
+- more efficient and leads to more renders
+- even if data is coming from the disk
+
+
+
+31) Image HTML - It is a Responsive Image
+
+<img src="/photos/65152-800px.jpg"
+  srcset="/photos/65152-1024px.jpg 1024w,
+          /photos/65152-1024px.jpg 800w,
+          /photos/65152-1024px.jpg 640w,
+          /photos/65152-1024px.jpg 320w"
+  sizes="(min-width: 800px) 765px,
+         (min-width: 600px) calc(100w - 32px),
+         calc(100vw -16px">
+
+- responsive image lets browser decide what image to load based on window width + network conditions
+- when post data arrives via ws, which version of image do we cache?
+
+31a) Which Version of Image to Cache
+
+- post arrives
+- the browser uses the data in the post to make a request for the image it chose
+- this request goes through the sw before, going out on the network (i.e. HTTP cache, then Internet)
+- when the sw get the response, it store the image in a cache, and also sends it to the page
+
+31b) Image Cache
+
+- note that the image get's its own cache (separate from static content)
+- this is separate from the static cache we created at install time
+- we want our images to live through different versions of the app; this is why they have thier own cache
+- the static cache however, is reset on every new version of the application
+- so, when sw get a request for an image that has already be cached,...
+- it returns the image from the image cahce
+
+31d) The Benefits of the Image Cache
+
+- we will return an image from the cahce even if the browser requests a different size of the image
+- this is acceptable because posts on witter are short lived
+- if browser requests a bigger version of image, returning a smaller one from cache is not a huge problem
+- returning a bigger image than the one the browser asks for is also fine
+
+31c) The Static Cache
+
+- we reset the contents of our static cache whenever we update our js or css
+- the static cache reset happens on every new version of the app
+
+32) Using the Response Object to Cache Images
+
+- you can only use the body of a response once
+
+32a) Error 1
+
+response.json(); // read response as json
+response.blop(); // ERROR!!!! read response as blob
+event.respondWith(response); // ERROR!!!! This also uses the body of the response
+
+- the 2nd line is an error because the response has already been consumed by the 1st line
+- after 1st line executes, keeping the response data in memory would be a waste
+- most if the time this behaviour is what you want
+- think of if respones was a 3 GB video, you don't want all 3GB in memory
+- the browser just needs what it is currently showing + some buffer material
+- but this behaviour won't work for caching our photos
+
+32b) response.clone() to the Rescue
+
+event.respondWith(
+  caches.open('').then(function(cahce) {
+    return fetch(request).then(function(response) {
+      cache.put(request, response.clone()); // send clone to cache
+      return response; // send response itself to browser
+    });
+  })
+);
+
+- we want to open a cache
+- fetch from the network
+- send the response (clone) to the cache AND the browser
+
