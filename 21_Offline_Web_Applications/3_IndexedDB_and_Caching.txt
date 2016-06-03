@@ -682,7 +682,7 @@ event.respondWith(response); // ERROR!!!! This also uses the body of the respons
 32b) response.clone() to the Rescue
 
 event.respondWith(
-  caches.open('').then(function(cahce) {
+  caches.open('').then(function(cache) {
     return fetch(request).then(function(response) {
       cache.put(request, response.clone()); // send clone to cache
       return response; // send response itself to browser
@@ -694,3 +694,130 @@ event.respondWith(
 - fetch from the network
 - send the response (clone) to the cache AND the browser
 
+33) Steps to Support Caching Photos
+
+33a) Setup Image Cache From Service Worker
+
+//create a new variable that specifies the name of the image cahce
+var staticCacheName = 'wittr-static-v6';
+var contentImgsCache = 'wittr-content-imgs';
+
+//then create an array that stores all the names of the caches that we care about 
+var allCaches = [
+  staticCacheName,
+  contentImgsCache
+];
+
+33b) In 'activate' Event Handler Delete all the Caches You Don't Care About
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    cache.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+          return cacheNAme.startsWith('wittr-') &&
+                 !allCaches.includes(cacheName);
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+});
+
+33c) In the 'fetch' Event handler Properly Handle the Requests for the Photos (aka Images)
+
+self.addEventListener('fetch', function(event) {
+  var requestUrl = new URL(event.request.url)
+
+  if (requestUrl.origin === location.origin) {
+    if (requestUrl.pathname === '/') {
+      event.respondWith(caches.match('/skeleton'));
+      return;
+    }
+
+    if (requestUrl.pathname.startsWith('/photos/')) {
+      event.respondWith(servePhoto(event.request));
+      return;
+    }
+  }
+
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+}
+  
+- look for requests from the same origin that end in the path: '/photos/'
+- when you see one of these, pass the request to the servePhoto function
+- return whatever servePhoto returns
+
+33d) The servePhoto Function Implementation
+
+function servePhoto(request) {
+  // sample of what a photo url looks like
+  // /photos/9-8028-7527734776-e1d2bda28e-800px.jpg
+
+  var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
+}
+
+- only want to store one copy of each photo
+- photo urls have width information at the end
+- e.g. /photos/9-8028-7527734776-e1d2bda28e-800px.jpg
+- note the "800px" at the end
+- create a new 'storage' url that does not have the size info; use regex for this
+- then we will use this new 'storage' url the key for the photo in the cache
+
+34) Quiz: Cache Photos Quiz
+
+- the goal is to serve photos from the cache if they are there
+- otherwise get them from the network, and put them in the cache for the next time
+- remember to use storeage url to match and put stuff int the image cache
+- so only end up with one image in the cache no matter how many sizes are requested
+
+- remember to set the "Force update on page load" option in Sources panel of dev tools
+- this way only need to reload once to see your changes
+- you know things are working when you see the 'wittr-content-imgs' cache in dev tools
+- the request urls in the cache will be missing the width and '.jpg' extension at the end
+
+- you should be able to take the server offline, reload page, and still get images
+- test in settings page with id: 'cache-photos'
+
+34a) Steps
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-cache-photos
+
+- once completing the task enter the Test ID cache-photos
+
+34b) Solution
+
+function servePhoto(request) {
+  // Photo urls look like:
+  // /photos/9-8028-7527734776-e1d2bda28e-800px.jpg
+  // But storageUrl has the -800px.jpg bit missing.
+  // Use this url to store & match the image in the cache.
+  // This means you only store one copy of each photo.
+  var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
+
+  // TODO: return images from the "wittr-content-imgs" cache
+  // if they're in there. Otherwise, fetch the images from
+  // the network, put them into the cache, and send it back
+  // to the browser.
+  //
+  // HINT: cache.put supports a plain url as the first parameter
+
+  return caches.open(contentImgsCache).then(function(cache) {
+    return cache.match(storageUrl).then(function(response) {
+      if (response) return response;
+
+      return fetch(request).then(function(networkResponse) {
+        cache.put(storageUrl, networkResponse.clone());
+        return networkResponse;
+      });
+    });
+  });
+}
