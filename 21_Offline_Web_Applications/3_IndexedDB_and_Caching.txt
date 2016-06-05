@@ -60,7 +60,7 @@
 - you can also create indexes within an object store
 - they provide a different view of the same data ordered by particular properites
 
-6) Why Does IDB hava a BAD Reputation
+6) Why Does IDB have a BAD Reputation
 
 - the API is awful
 - the API forces you to create spaghetti code
@@ -213,7 +213,7 @@ git checkout page-skeleton
 
 - once completing the task enter the Test ID idb-animal
 
-18) Create a new store with Object that are all of thesame kine
+18) Create a new store with Object that are all of thesame kind
 
 // The Code Below Has a Bug; It is just for illustration
 var dbPromise = idb.open('test-db', 2, function(upgradeDb) {
@@ -470,6 +470,7 @@ IndexController.prototype._onSocketMessage = function(data) {
   body: ...,
   id: ...,
   name: ...,
+  photo: ..., // this is an optional attribute
   time: ...
 }
 
@@ -821,3 +822,305 @@ function servePhoto(request) {
     });
   });
 }
+
+35) Cleaning Photo Cache
+
+- caching the photos is great
+- but like with IDB, cannot just keep adding to it forever
+- at some point we need to remove stuff that we don't need anymore
+
+35a) cache.delete(request)
+
+- remove a specific entry from the cache
+
+35b) cache.keys()
+
+- returns a promise for all the requests for entries in the cache
+
+cache.keys().then(function(requests) {
+  // ...
+});
+
+36) Cache API
+
+- available in the page as well as the service worker
+
+37) Cleaning Photo Cache Quiz Setup
+- take a look at file: public/js/main/IndexController.js
+
+37a) Clean When The Page Load Initially (i.e. in IndexController consutructor)
+
+- create a new method in the indexController prototype called _cleanImageCache
+- the IndexController constructor is called when the page loads
+- so call _cleanImageCache in the IndexController constructor
+
+37b) Clean at Regular Intervals
+
+- after the intial page load, photos can build up is the user keeps the page open for a long time
+- in IndexController constructor, set up _cleanImageCache with setInterval to be called every 5 mins
+
+export default function IndexController(container) {
+  this._container = container;
+  this._postsView = new PostsView(this._container);
+  this._toastsView = new ToastsView(this._container);
+  this._lostConnectionToast = null;
+  this._dbPromise = openDatabase();
+  this._registerServiceWorker();
+  this._cleanImageCache();
+
+  var indexController = this;
+
+  setInterval(function() {
+    indexController._cleanImageCache();
+  }, 1000 * 60 * 5);
+
+  this._showCachedMessages().then(function() {
+    indexController._openSocket();
+  });
+}
+
+// this method needs implementing
+IndexController.prototype._cleanImageCache = function() {
+  return this._dbPromise.then(function(db) {
+    if (!db) return;
+
+    // TODO: open the 'wittr' object store, get all the messages,
+    // gather all the photo urls.
+    //
+    // Open the 'wittr-content-imgs' cache, and delete any entry
+    // that you no longer need.
+  });
+};
+
+37c) The IDB and Cache APIs
+
+- cleaning the cache will bring together the IDB and Cache APIs
+
+37d) Implementing _cleanImageCache()
+
+- get all the messages from the database
+- look at what photos they (the messages) need
+- then going through the images cache and getting rid of the ones you don't need anymore
+- remember, the 'photos' property may not exactly match that of the url in the cache
+
+37e) Testing your Implementation - Examining The Cache
+
+- make sure the "Force update on page load" option is set on 'Sources' tab of developer tools
+- this way you only need to refresh once to see changes
+- examine the cache in the 'Resources' panel of dev tools
+- make sure the cache only contains images that are on the page
+
+37f) Testing your Implementation - Open Image in the Browser
+
+- open a new browser tab and request the images: 
+localhost:8888/photos/4-3087-2918949798-865f134ef3-640px.jpg
+
+- you will then see this image store in the cache
+- reload the Wittr app, the clean up code should kick in and the image should be gone from the cache
+
+37g) Test on Settings Page
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-clean-photos
+
+- once completing the task enter the Test ID cache-clean
+
+- you then have 8 seconds to trigger clean up code; do this by refreshing the page
+
+37h) Instructors Solution - uses getAll
+
+IndexController.prototype._cleanImageCache = function() {
+  return this._dbPromise.then(function(db) {
+    if (!db) return;
+
+    // TODO: open the 'wittr' object store, get all the messages,
+    // gather all the photo urls.
+    //
+    // Open the 'wittr-content-imgs' cache, and delete any entry
+    // that you no longer need.
+    var imagesNeeded = [];
+
+    var tx = db.transaction('wittrs');
+    return tx.objectStore('wittrs').getAll().then(function(messages) {
+      messages.forEach(function(message) {
+        if(message.photo) {
+          imagesNeeded.push(message.photo);
+        }
+      });
+
+      return caches.open('wittr-content-imgs');
+    }).then(function(cache) {
+      return cache.keys().then(function(requests) {
+        requests.forEach(function(request) {
+          var url = new URL(request.url);
+          if(!imagesNeeded.includes(url.pathname)) {
+            cache.delete(request);
+          }
+        });
+      });
+    });
+  });
+};
+
+37i) My Solution - uses cursor
+
+IndexController.prototype._cleanImageCache = function() {
+  return this._dbPromise.then(function(db) {
+    if (!db) return;
+
+    // TODO: open the 'wittr' object store, get all the messages,
+    // gather all the photo urls.
+    //
+    // Open the 'wittr-content-imgs' cache, and delete any entry
+    // that you no longer need.
+    var tx = db.transaction('wittrs');
+    var store = tx.objectStore('wittrs');
+    var photos = [];
+    store.openCursor().then(function processWitt(cursor) {
+      if(!cursor) return;
+
+      if(cursor.value.photo) {
+        photos.push(cursor.value.photo);
+      }
+      
+      return cursor.continue().then(processWitt);
+    }).then(function() {
+      caches.open('wittr-content-imgs').then(function(cache) {
+        cache.keys().then(function(requests) {
+          requests.forEach(function(request) {
+            var url = new URL(request.url);
+            if(!photos.includes(url.pathname)) {
+              cache.delete(request);
+            }
+          });
+        });
+      });
+    });
+  });
+};
+
+38) Caching Avatars
+
+- almost the same as caching the photos, but with one small difference
+- people constantly change their avatar, so we don't want people stuck with an old version
+- so when we fetch an avatar from cache, we will also fetch it from the network and update the cache
+- we will put them in same cache as the photos
+- this requires modifying the cache clean up code a little bit
+- we always want the store the avatar images in the 'imagesNeeded' or 'photos'collection
+
+38a) Avatar Images
+
+- are also responsive images
+- but vary by density rather than width
+- almost same as photos, but with slightly different url pattern
+
+38b) Sample Avatar Image Url
+
+<img width="40" height="40"
+  src="/avatars/sam-1x.jpg"
+  srcset="/avatars/sam-2x.jpg 2x,
+          /avatars/sam-3x.jpg 3x">
+
+39) Quiz: Caching Avatars
+
+- look at '/public/js/sw/index.js'
+- two things to implement: serveAvatar function + sw fetch event handler to respond to avatar requests
+
+39a) serveAvatar Function
+
+- called for avatar urls
+- returns from cache 
+- if not in cache get from network and put in cache
+- even if avatar was returned from cache; still get from network an put in cache for the then time
+- similar to servePhoto but not exactly thesame
+
+39b) Testing
+
+- set "Force update on page load" for sw
+- see avatar images in imgs cache
+- go offline refresh page, and avatars should still load
+- use code: 'cache-avatars' in settings page
+
+39c) Setup
+
+- to get the project into the sample state use the commands
+git reset --hard
+git checkout task-cache-avatars
+
+- once completing the task enter the Test ID cache-avatars
+
+39d) Solution
+
+// SW 'fetch' event handler
+self.addEventListener('fetch', function(event) {
+  var requestUrl = new URL(event.request.url);
+
+  if (requestUrl.origin === location.origin) {
+    if (requestUrl.pathname === '/') {
+      event.respondWith(caches.match('/skeleton'));
+      return;
+    }
+    if (requestUrl.pathname.startsWith('/photos/')) {
+      event.respondWith(servePhoto(event.request));
+      return;
+    }
+    // TODO: respond to avatar urls by responding with
+    // the return value of serveAvatar(event.request)
+    if (requestUrl.pathname.startsWith('/avatars/')) {
+      event.respondWith(serveAvatar(event.request));
+      return;
+    }
+  }
+
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+// serveAvatar Function
+function serveAvatar(request) {
+  // Avatar urls look like:
+  // avatars/sam-2x.jpg
+  // But storageUrl has the -2x.jpg bit missing.
+  // Use this url to store & match the image in the cache.
+  // This means you only store one copy of each avatar.
+  var storageUrl = request.url.replace(/-\dx\.jpg$/, '');
+
+  // TODO: return images from the "wittr-content-imgs" cache
+  // if they're in there. But afterwards, go to the network
+  // to update the entry in the cache.
+  //
+  // Note that this is slightly different to servePhoto!
+  return caches.open(contentImgsCache).then(function(cache) {
+    return cache.match(storageUrl).then(function(response) {
+      return fetch(request).then(function(networkResponse) {
+        cache.put(storageUrl, networkResponse.clone());
+        return response || networkResponse;
+      });
+    });
+  });
+}
+
+40) Outro
+
+- taken an entirely online only app and turned it into an offline 1st progressive app
+- Wittr's designed to cover some gnarly edge cases you amy encouter in the wild
+
+40a) Edge Cases
+
+- cache versioning for big updates like theme changes
+- interactive updates to get the user onto the latest version
+- dealing with server rendering by serving a page skeletion
+- responsive images
+- mulitple caches
+- indexedDB (most feared api on the platform)
+
+40b) Benefits of Offline 1st
+
+- you get content quickly
+- even when you have no/intermittent connection you still get some content
+- when you are offline, you get old content + a custom error message that has the theme of the app
+- this is huge improvement in UX - USERS NOTICE THIS!!!
